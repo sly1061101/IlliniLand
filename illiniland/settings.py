@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['illiniland.web.engr.illinois.edu']
 # Application definition
 
 INSTALLED_APPS = [
-    'forum.apps.ForumConfig'
+    'forum.apps.ForumConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
