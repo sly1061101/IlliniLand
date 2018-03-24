@@ -6,7 +6,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 def index(request):
-	return render(request, "forum/main.html")
+	if request.user.is_authenticated: 
+		return render(request, "forum/home.html")
+	else:
+		return render(request, "forum/main.html")
 
 def register(request):
 	if request.method == 'POST':
@@ -21,3 +24,12 @@ def register(request):
 			return HttpResponse("User: " + username + " already exist!")
 	else:
 		return render(request, "forum/register.html")
+
+def user(request):
+	return render(request, "forum/user.html")
+
+def profile(request):
+	return render(request, "forum/profile.html")
+
+def edit_profile(request):
+	return render(request, "forum/edit_profile.html")
