@@ -1,0 +1,87 @@
+
+illini {
+  color: #E84A27;
+}
+
+land {
+  color: #13294b
+}
+
+b.illini{
+  color: #E84A27;
+}
+b.land{
+  color: #13294b
+}
+
+img {
+  max-width: 100%;
+  max-height: 100vh;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.bg-ac {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('img/uiucbg.jpeg');
+    background-color: rgb(40,40,40);
+    min-height: 100%;
+}
+
+.input-group-addon {
+    padding: .5rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: #464a4c;
+    text-align: center;
+    background-color: #eceeef;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+#title {
+    letter-spacing: 5px;
+    word-spacing: 10px;
+    font-weight: 400;
+}
+
+.mb-5 {
+    margin-bottom: 3rem!important;
+}
+
+.center {
+  padding: 70px 0;
+  text-align: center;
+}
+
+.lead {
+    margin-bottom: 1.5rem;
+    line-height: 1.875rem;
+    display: block;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+.course-list {
+  width: 20%;
+}
+
+.question-card-container {
+  width: 75%;
+}
+
+.card.card-linked {
+  position: relative;
+  a.card-link {  /* This is the link of the entire card */
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  }
+}
