@@ -33,3 +33,9 @@ def profile(request):
 
 def edit_profile(request):
 	return render(request, "forum/edit_profile.html")
+
+def home(request):
+	return render(request, "forum/home.html")
+
+def course(request):
+	return render(request, "forum/course.html")
