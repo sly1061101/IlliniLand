@@ -6,10 +6,13 @@
 <body>
   <form method="POST">
   {% csrf_token %}
-  <p>Please select demo method:</p>
+  <p>Instruction:</p>
   <p>When inserting tuple, filling all four boxes. Department must exist, for example "CS".</p>
   <p>When querying or deleting, only fill in department and number, for example "CS" "411"</p>
   <p>When updating, fill in the department and number as well as the title and description you want to change to.</p>
+  <p>For Advanced Query, not need to input anything.</p>
+  <br>
+  <p>Please select what to demo and input necessary information as instruction:</p>
   <div>
     <label>Department:</label>
     <input type="text" name="department">
@@ -20,6 +23,7 @@
     <label>Description:</label>
     <input type="text" name="description">
   </div>
+  <br>
   <div>
     <input type="radio" id="insert"
      name="choice" value="insert">
@@ -37,6 +41,7 @@
      name="choice" value="delete">
     <label for="contactChoice3">Delete</label>
   </div>
+  <br>
   <div>
     <button type="submit">Submit</button>
   </div>
