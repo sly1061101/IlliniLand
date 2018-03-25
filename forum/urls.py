@@ -26,4 +26,5 @@ urlpatterns = [
     path('profile/', views.profile),
     path('edit_profile/', views.edit_profile),
     path('import_data/', views.import_data),
+    path('course/', views.course),
 ]
