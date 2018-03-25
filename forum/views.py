@@ -39,20 +39,31 @@ def edit_profile(request):
 def import_data(request):
 	if(request.method == 'POST'):
 		if request.POST['command'] == 'department':
-			with open('/Users/liuyi/Desktop/data.json') as json_file:
+			with open('./data.json') as json_file:
 				data = json.load(json_file)
 				for subject in data:
 					department = Department(name = subject)
 					department.save()
+			return HttpResponse("Finish!")
 		elif request.POST['command'] == 'course':
-			with open('/Users/liuyi/Desktop/data.json') as json_file:
+			with open('./data.json') as json_file:
 				data = json.load(json_file)
 				for subject in data:
 					for number in data[subject]['courses']:
 						title = data[subject]['courses'][number]['course_title']
+						description = data[subject]['courses'][number]['description']
 						department = Department.objects.get(name=subject)
-						course = Course(number=number, title=title, department=department, overall_score=0, difficulty=0, workload=0)
+						course = Course(number=number, title=title, department=department, description=description)
 						course.save()
-		return HttpResponse("success!")
+			return HttpResponse("Finish!")
+		elif request.POST['command'] == 'test':
+			a = ""
+			with open('./data.json') as json_file:
+				data = json.load(json_file)
+				for subject in data:
+					a += subject
+			return HttpResponse(a)			
+		else:
+			return HttpResponse("Invalid command!")
 	else:
 		return render(request, "forum/import_data.html")
