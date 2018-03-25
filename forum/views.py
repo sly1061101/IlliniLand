@@ -60,3 +60,9 @@ def import_data(request):
 			return HttpResponse("Invalid command!")
 	else:
 		return render(request, "forum/import_data.html")
+
+def home(request):
+	return render(request, "forum/home.html")
+
+def course(request):
+	return render(request, "forum/course.html")
