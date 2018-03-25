@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IlliniLand Initial Demo</title>
+</head>
+<body>
+  <form method="POST">
+  {% csrf_token %}
+  <p>Please select demo method:</p>
+  <p>When inserting tuple, filling all four boxes. Department must exist, for example "CS".</p>
+  <p>When querying or deleting, only fill in department and number, for example "CS" "411"</p>
+  <p>When updating, fill in the department and number as well as the title and description you want to change to.</p>
+  <div>
+    <label>Department:</label>
+    <input type="text" name="department">
+    <label>Number:</label>
+    <input type="text" name="number">
+    <label>Title:</label>
+    <input type="text" name="title">
+    <label>Description:</label>
+    <input type="text" name="description">
+  </div>
+  <div>
+    <input type="radio" id="insert"
+     name="choice" value="insert">
+    <label for="contactChoice1">Insert</label>
+
+    <input type="radio" id="query"
+     name="choice" value="query">
+    <label for="contactChoice2">Query</label>
+
+    <input type="radio" id="update"
+     name="choice" value="update">
+    <label for="contactChoice3">Update</label>
+
+    <input type="radio" id="delete"
+     name="choice" value="delete">
+    <label for="contactChoice3">Delete</label>
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+  </form>
+</body>
+</html>

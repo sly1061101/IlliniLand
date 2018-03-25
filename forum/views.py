@@ -5,6 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from forum.models import Department, Course
 import json
 
+from django.db import connection
+
 # Create your views here.
 
 def index(request):
@@ -36,6 +38,59 @@ def profile(request):
 def edit_profile(request):
 	return render(request, "forum/edit_profile.html")
 
+def course(request):
+	return render(request, "forum/course.html")
+
+#view for initial demo
+def initial_demo(request):
+	if request.method == 'POST':
+		# return HttpResponse(request.method.GET[])
+		department_ = "'"+request.POST['department']+"'"
+		number_ = request.POST['number']
+		title_ = "'"+request.POST['title']+"'"
+		description_ = "'"+request.POST['description']+"'"
+
+		if request.POST['choice'] == 'insert':
+			with connection.cursor() as cursor:
+				cursor.execute("INSERT INTO forum_course(number, title, description, department_id) VALUES (%s, %s, %s, (SELECT id FROM forum_department WHERE name = %s));" % (number_, title_, description_, department_))
+
+				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+
+				return HttpResponse("Successfully inserted tuple into DB!" + ret)
+		elif request.POST['choice'] == 'query':
+			with connection.cursor() as cursor:
+				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+				return HttpResponse(ret)
+		elif request.POST['choice'] == 'update':
+			with connection.cursor() as cursor:
+				cursor.execute("UPDATE forum_course SET title = %s, description = %s WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (title_, description_, number_, department_))
+				
+				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+
+				return HttpResponse("Successfully updated tuple in DB!" + ret)
+		elif request.POST['choice'] == 'delete':
+			with connection.cursor() as cursor:
+				cursor.execute("DELETE FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (number_, department_))
+				
+				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+
+				return HttpResponse("Successfully updated tuple in DB!" + ret)
+	else:
+		return render(request, "forum/initial_demo.html")
+
+# A special view for importing data into database. Only used for developing.
 def import_data(request):
 	if(request.method == 'POST'):
 		if request.POST['command'] == 'department':
@@ -60,9 +115,3 @@ def import_data(request):
 			return HttpResponse("Invalid command!")
 	else:
 		return render(request, "forum/import_data.html")
-
-def home(request):
-	return render(request, "forum/home.html")
-
-def course(request):
-	return render(request, "forum/course.html")
