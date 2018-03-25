@@ -55,14 +55,7 @@ def import_data(request):
 						department = Department.objects.get(name=subject)
 						course = Course(number=number, title=title, department=department, description=description)
 						course.save()
-			return HttpResponse("Finish!")
-		elif request.POST['command'] == 'test':
-			a = ""
-			with open('./data.json') as json_file:
-				data = json.load(json_file)
-				for subject in data:
-					a += subject
-			return HttpResponse(a)			
+			return HttpResponse("Finish!")	
 		else:
 			return HttpResponse("Invalid command!")
 	else:
