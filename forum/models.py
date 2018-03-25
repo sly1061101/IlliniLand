@@ -10,12 +10,16 @@ class Student(models.Model):
 	department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
 class Course(models.Model):
-	department = models.ForeignKey(Department, on_delete=models.CASCADE)
-	number = models.IntegerField()
-	title = models.CharField(max_length=100)
-	overall_score = models.FloatField()
-	difficulty = models.FloatField()
-	workload = models.FloatField()
+    course_number= models.IntegerField(default=200)
+    credit= models.IntegerField(default=10)
+    description= models.CharField(max_length=200,default='DEFAULT VALUE')
+    gened = ArrayField(models.CharField(max_length=200),null=True)
+    depart_name= models.ForeignKey(Department,on_delete=models.CASCADE)
+    prof_name= models.ForeignKey(Professor,on_delete=models.CASCADE)
+    difficulty=models.FloatField(default=10)
+    overall_score = models.FloatField()
+    workload=models.FloatField(default=200)
+    forum_id=models.IntegerField(default=250)
 
 class Forum(models.Model):
 	FIN = models.IntegerField(primary_key = True)
