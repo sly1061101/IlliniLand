@@ -59,14 +59,14 @@ def initial_demo(request):
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
 
-				return HttpResponse("Successfully inserted tuple into DB!" + ret)
+				return HttpResponse("Successfully inserted tuple into DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'query':
 			with connection.cursor() as cursor:
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				return HttpResponse(ret)
+				return HttpResponse("<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'update':
 			with connection.cursor() as cursor:
 				cursor.execute("UPDATE forum_course SET title = %s, description = %s WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (title_, description_, number_, department_))
@@ -76,7 +76,7 @@ def initial_demo(request):
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
 
-				return HttpResponse("Successfully updated tuple in DB!" + ret)
+				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'delete':
 			with connection.cursor() as cursor:
 				cursor.execute("DELETE FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (number_, department_))
@@ -86,7 +86,49 @@ def initial_demo(request):
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
 
-				return HttpResponse("Successfully updated tuple in DB!" + ret)
+				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
+		elif request.POST['choice'] == 'advanced1':
+			with connection.cursor() as cursor:
+				sql = """SELECT forum_department.name, COUNT(forum_course.id) 
+							FROM forum_course, forum_department 
+							WHERE forum_course.department_id = forum_department.id 
+							GROUP BY forum_department.name"""
+				cursor.execute(sql)
+
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+
+				return HttpResponse("Advanced SQL Query 1:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 1 (Number of courses provided by every department): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
+		elif request.POST['choice'] == 'advanced2':
+			with connection.cursor() as cursor:
+				sql = """SELECT d1.name
+						FROM
+						(SELECT forum_department.name
+						FROM forum_course, forum_department
+						WHERE (forum_course.department_id = forum_department.id)
+						  AND (forum_course.number >= 400)
+						  AND (forum_course.number < 500)
+						GROUP BY forum_department.name
+						HAVING COUNT(forum_course.id) > 15) AS d1
+						,
+						(SELECT forum_department.name
+						FROM forum_course, forum_department
+						WHERE (forum_course.department_id = forum_department.id)
+						  AND (forum_course.number >= 500)
+						  AND (forum_course.number < 600)
+						GROUP BY forum_department.name
+						HAVING COUNT(forum_course.id) > 15) AS d2
+						WHERE d1.name = d2.name"""
+
+				cursor.execute(sql)
+
+				result = cursor.fetchall()
+				ret = '<br/>'.join(str(v) for v in result)
+				ret = '<p>' + ret + '</p>'
+				
+				return HttpResponse("Advanced SQL Query 2:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 2 (Departments which provide both more than 15 400-level courses and 15 500-level courses): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
+
 	else:
 		return render(request, "forum/initial_demo.html")
 
