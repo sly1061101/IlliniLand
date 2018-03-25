@@ -25,4 +25,5 @@ urlpatterns = [
     path('user/', views.user),
     path('profile/', views.profile),
     path('edit_profile/', views.edit_profile),
+    path('import_data/', views.import_data),
 ]
