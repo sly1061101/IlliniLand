@@ -157,3 +157,9 @@ def import_data(request):
 			return HttpResponse("Invalid command!")
 	else:
 		return render(request, "forum/import_data.html")
+
+# view for testing template system
+def template_test(request):
+	var_test = [1, 2, 3, 4, 5];
+	context = {'var_test': var_test}
+	return render(request, "forum/template_test.html", context)

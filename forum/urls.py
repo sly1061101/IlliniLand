@@ -28,4 +28,5 @@ urlpatterns = [
     path('import_data/', views.import_data),
     path('course/', views.course),
     path('initial_demo/', views.initial_demo),
+    path('template_test/', views.template_test),
 ]
