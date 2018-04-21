@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from forum.models import Department, Course, Take, Question
+from forum.models import Department, Course, Take, Question, Answer
 from django.db.models import F
 import datetime
 import json
@@ -18,18 +18,22 @@ def index(request):
 		return render(request, "forum/main.html")
 
 def register(request):
+	status = "normal"
 	if request.method == 'POST':
 		username = request.POST['register_email']
 		password = request.POST['register_password']
-		if not (User.objects.filter(username=username).exists()):
-			user = User.objects.create_user(username = username, password = password)
-			user = authenticate(username = username, password = password)
-			login(request, user)
-			return HttpResponseRedirect("/")
+		password_confirm = request.POST['register_password_confirm']
+		if password == password_confirm :
+			if not (User.objects.filter(username=username).exists()):
+				user = User.objects.create_user(username = username, password = password)
+				user = authenticate(username = username, password = password)
+				login(request, user)
+				return HttpResponseRedirect("/")
+			else:
+				status = "already-exist"
 		else:
-			return HttpResponse("User: " + username + " already exist!")
-	else:
-		return render(request, "forum/register.html")
+			status = "password-different"
+	return render(request, "forum/register.html", {'status' : status})
 
 def course(request,course_id): # course?course_id=1
     context = {}
@@ -89,6 +93,19 @@ def home(request):
 
 	return render(request, "forum/user/home.html", context)
 
+def question(request, question_id):
+	context = {}
+	question = Question.objects.get(id = question_id)
+	answer_set = Answer.objects.filter(question__id = question_id)
+	context["question"] = question
+	context["answer_set"] = answer_set
+	return render(request, "forum/question.html", context)
+
+def new_answer(request, question_id):
+	new_answer = Answer(content = request.POST["new_answer"], question = Question.objects.get(id = question_id), user = request.user)
+	new_answer.save()
+	return HttpResponseRedirect("/question/" + str(question_id) + "/")
+
 def profile(request):
 	return render(request, "forum/user/profile.html")
 
@@ -110,11 +127,14 @@ def addCourse(request):
 			result = cursor.fetchall()
 			if result:
 				course_id = result[0][0]
-				cursor.execute("SELECT id FROM auth_user WHERE username = '%s';"%(request.user))
-				result = cursor.fetchall()
-				user_id = result[0][0]
-				cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
-				status = 'success'
+				user_id = request.user.id
+				cursor.execute("SELECT * FROM forum_take WHERE course_id = %s AND user_id = %s;"%(course_id, user_id))
+				result2 = cursor.fetchall();
+				if not result2 :
+					cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
+					status = 'success'
+				else:
+					status = 'already-exist'
 			else:
 				status = 'not-exist'
 	current_user = request.user
