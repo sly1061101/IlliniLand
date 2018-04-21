@@ -13,6 +13,8 @@
 
    <body class="bg-ac">
 
+  
+
      <!-- NAVBAR -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/"><b class=illini>Illini</b><b class=land>land</b></a>
@@ -32,8 +34,17 @@
               <a class="nav-link" href="/profile/">Profile</a>
             </li>
           </sul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" name = q type="search" placeholder="Course Name" value ='{{request.GET.q}}' aria-label= "Search">
+          <form class="form-inline my-2 my-lg-0" >
+            <input class="form-control mr-sm-2" name = keyword type="search" placeholder="Course Name" value ='
+            {{request.GET.q}}' aria-label= "Search">
+                <select>
+  <option value="course" searchtype>course</option>
+  <option value="professor" searchtype >professor</option>
+  <option value="question" searchtype>question</option>
+  <option value="all" searchtype>course</option>
+
+</select>
+              
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
           </form>
         </div>
@@ -41,7 +52,7 @@
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+      <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <!-- left course menu -->
         <div class="list-group course-list float-left">
           <a href="#" class="list-group-item list-group-item-action active">All</a>
@@ -105,8 +116,8 @@
           </div>
 
         </div>
-			</div>
-		</div>
+      </div>
+    </div>
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

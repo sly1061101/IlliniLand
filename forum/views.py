@@ -45,3 +45,43 @@ def search(request):
 
 def course(request):
 	return render(request, "forum/course.html")
+
+def fuzzy_search(term, choices):
+	result = process.extract(term, choices, limit = 6)
+	return [i[0] for i in result] #no need the point
+
+def index(request):
+
+	def search(request):  
+    searchtype = request.POST.get("searchtype")  
+    keyword = request.POST.get("keyword") 
+    if searchtype == "all":  
+    	with connection.cursor() as cursor:
+			cursor.execute("""SELECT * 
+								FROM Department, Course, Question, Answer 
+								"""
+									)
+			result = cursor.fetchall()
+			search = fuzzy_search(keyword, result)
+
+    elif searchtype == "course":    
+        with connection.cursor() as cursor:
+			cursor.execute("""SELECT * 
+								FROM  Course 
+								"""
+									)
+			result = cursor.fetchall()
+			search = fuzzy_search(keyword, result) 
+    elif searchtype == "question":  
+        with connection.cursor() as cursor:
+			cursor.execute("""SELECT * 
+								FROM  question 
+								"""
+									)
+			result = cursor.fetchall()
+			search = fuzzy_search(keyword, result)  
+    else:  
+
+       
+          
+    return render(request,"search.html",) 
