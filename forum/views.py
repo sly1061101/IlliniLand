@@ -35,6 +35,11 @@ def edit_profile(request):
 	return render(request, "forum/edit_profile.html")
 
 def home(request):
+	queryset_list =Post.objects.active()
+	query = request.GET.get("p")
+	if query:
+		queryset_list=queryset_list.filter(title_icontains= query)
+
 	return render(request, "forum/home.html")
 
 def course(request):
