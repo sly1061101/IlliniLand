@@ -38,7 +38,7 @@ def register(request):
 def course(request,course_id): # course?course_id=1
 	context = {}
 	curr_course = Course.objects.get(id=course_id)
-	context['course'] = curr_course
+	context['course'] = course
 	print(curr_course.get_avg_scores)
 
 	res = curr_course.get_avg_scores()
@@ -92,10 +92,10 @@ def home(request):
 	course_id = request.GET.get('course_id')
 	if course_id is None:
 		questions = Question.objects.filter(course__in=courses)
-		context['course_id'] = None
+		context['curr_course'] = None
 	else:
 		questions = Question.objects.filter(course__id=course_id)
-		context['course_id'] = int(course_id)
+		context['curr_course'] = Course.objects.get(id=course_id)
 	context['questions'] = questions
 
 	return render(request, "forum/user/home.html", context)
