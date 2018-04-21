@@ -83,22 +83,25 @@ def user(request):
 	return render(request, "forum/user.html")
 
 def home(request):
-	context = {}
-	user_id = request.user.id
-	courses = []
-	for obj in Take.objects.filter(user__id=user_id):
-		courses.append(obj.course)
-	context['courses'] = courses
-	course_id = request.GET.get('course_id')
-	if course_id is None:
-		questions = Question.objects.filter(course__in=courses)
-		context['curr_course'] = None
+	if not request.user.is_authenticated: 
+		return HttpResponseRedirect("/")
 	else:
-		questions = Question.objects.filter(course__id=course_id)
-		context['curr_course'] = Course.objects.get(id=course_id)
-	context['questions'] = questions
+		context = {}
+		user_id = request.user.id
+		courses = []
+		for obj in Take.objects.filter(user__id=user_id):
+			courses.append(obj.course)
+		context['courses'] = courses
+		course_id = request.GET.get('course_id')
+		if course_id is None:
+			questions = Question.objects.filter(course__in=courses)
+			context['curr_course'] = None
+		else:
+			questions = Question.objects.filter(course__id=course_id)
+			context['curr_course'] = Course.objects.get(id=course_id)
+		context['questions'] = questions
 
-	return render(request, "forum/user/home.html", context)
+		return render(request, "forum/user/home.html", context)
 
 def question(request, question_id):
 	context = {}
