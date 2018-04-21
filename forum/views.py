@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
 import datetime
@@ -83,22 +85,25 @@ def user(request):
 	return render(request, "forum/user.html")
 
 def home(request):
-	context = {}
-	user_id = request.user.id
-	courses = []
-	for obj in Take.objects.filter(user__id=user_id):
-		courses.append(obj.course)
-	context['courses'] = courses
-	course_id = request.GET.get('course_id')
-	if course_id is None:
-		questions = Question.objects.filter(course__in=courses)
-		context['curr_course'] = None
+	if not request.user.is_authenticated: 
+		return HttpResponseRedirect("/")
 	else:
-		questions = Question.objects.filter(course__id=course_id)
-		context['curr_course'] = Course.objects.get(id=course_id)
-	context['questions'] = questions
+		context = {}
+		user_id = request.user.id
+		courses = []
+		for obj in Take.objects.filter(user__id=user_id):
+			courses.append(obj.course)
+		context['courses'] = courses
+		course_id = request.GET.get('course_id')
+		if course_id is None:
+			questions = Question.objects.filter(course__in=courses)
+			context['curr_course'] = None
+		else:
+			questions = Question.objects.filter(course__id=course_id)
+			context['curr_course'] = Course.objects.get(id=course_id)
+		context['questions'] = questions
 
-	return render(request, "forum/user/home.html", context)
+		return render(request, "forum/user/home.html", context)
 
 def question(request, question_id):
 	context = {}
@@ -295,3 +300,23 @@ def template_test(request):
 	var_test = [1, 2, 3, 4, 5];
 	context = {'var_test': var_test}
 	return render(request, "forum/template_test.html", context)
+
+
+def fuzzy_search(term, choices):
+	result = process.extract(term, choices, limit = 6)
+	return [i[0] for i in result] #no need the point
+
+def search(request):
+	context={}  
+    searchtype = request.POST.get("searchtype")  
+    keyword = request.POST.get("keyword") 
+
+   if searchtype == "course":    
+ 		result= Course.objects.all()
+		search = fuzzy_search(keyword, result) 
+    elif searchtype == "question":  
+       result= Course.objects.all()
+		search = fuzzy_search(keyword, result) 
+
+    context['search'] = search
+	return render(request, "search.html")
