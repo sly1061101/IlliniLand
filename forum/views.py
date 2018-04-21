@@ -75,11 +75,14 @@ def addCourse(request):
 			result = cursor.fetchall()
 			if result:
 				course_id = result[0][0]
-				cursor.execute("SELECT id FROM auth_user WHERE username = '%s';"%(request.user))
-				result = cursor.fetchall()
-				user_id = result[0][0]
-				cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
-				status = 'success'
+				user_id = request.user.id
+				cursor.execute("SELECT * FROM forum_take WHERE course_id = %s AND user_id = %s;"%(course_id, user_id))
+				result2 = cursor.fetchall();
+				if not result2 :
+					cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
+					status = 'success'
+				else:
+					status = 'already-exist'
 			else:
 				status = 'not-exist'
 	current_user = request.user

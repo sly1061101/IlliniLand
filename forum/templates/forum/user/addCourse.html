@@ -97,6 +97,8 @@
                     <h2>{{course_add}} Not exist!</h1>
                   {% elif status == "success" %}
                     <h2>{{course_add}} Add success!</h1>
+                  {% elif status == "already-exist" %}
+                    <h2>{{course_add}} already added by you!</h1>
                   {% endif %}
 
               </form>
