@@ -4,8 +4,6 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 import datetime
 import json
 
@@ -85,22 +83,25 @@ def user(request):
 	return render(request, "forum/user.html")
 
 def home(request):
-	context = {}
-	user_id = request.user.id
-	courses = []
-	for obj in Take.objects.filter(user__id=user_id):
-		courses.append(obj.course)
-	context['courses'] = courses
-	course_id = request.GET.get('course_id')
-	if course_id is None:
-		questions = Question.objects.filter(course__in=courses)
-		context['curr_course'] = None
+	if not request.user.is_authenticated: 
+		return HttpResponseRedirect("/")
 	else:
-		questions = Question.objects.filter(course__id=course_id)
-		context['curr_course'] = Course.objects.get(id=course_id)
-	context['questions'] = questions
+		context = {}
+		user_id = request.user.id
+		courses = []
+		for obj in Take.objects.filter(user__id=user_id):
+			courses.append(obj.course)
+		context['courses'] = courses
+		course_id = request.GET.get('course_id')
+		if course_id is None:
+			questions = Question.objects.filter(course__in=courses)
+			context['curr_course'] = None
+		else:
+			questions = Question.objects.filter(course__id=course_id)
+			context['curr_course'] = Course.objects.get(id=course_id)
+		context['questions'] = questions
 
-	return render(request, "forum/user/home.html", context)
+		return render(request, "forum/user/home.html", context)
 
 def question(request, question_id):
 	context = {}
@@ -170,9 +171,9 @@ def addCourse(request):
 	return render(request, "forum/user/addCourse.html", context)
 
 def square(request):
-    context = {}
-    questions = Question.objects.all()
-    context['questions'] = questions
+	context = {}
+	questions = Question.objects.all()
+	context['questions'] = questions
 	return render(request, "forum/square.html",context)
 
 #view for initial demo
