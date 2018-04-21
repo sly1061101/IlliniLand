@@ -68,6 +68,11 @@ def question(request, question_id):
 	context["answer_set"] = answer_set
 	return render(request, "forum/question.html", context)
 
+def new_answer(request, question_id):
+	new_answer = Answer(content = request.POST["new_answer"], question = Question.objects.get(id = question_id), user = request.user)
+	new_answer.save()
+	return HttpResponseRedirect("/question/" + str(question_id) + "/")
+
 def profile(request):
 	return render(request, "forum/user/profile.html")
 
