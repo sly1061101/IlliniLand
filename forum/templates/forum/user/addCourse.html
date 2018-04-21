@@ -47,9 +47,9 @@
 			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <!-- left course menu -->
         <div class="list-group course-list float-left">
-          <a href="#" class="list-group-item list-group-item-action active">Your Courses</a>
+          <div class="list-group-item list-group-item-action active">Your Courses</div>
           {% for course in course_taken %}
-            <a href="#" class="list-group-item list-group-item-action">{{ course }}</a>
+            <div class="list-group-item list-group-item-action">{{ course }}</div>
           {% endfor %}
         </div>
         <!-- right all course questions -->
