@@ -1,0 +1,277 @@
+/*
+template_styles.css
+
+
+
+Patrick Frenett 2017
+github.com/wantpinow
+
+*/
+
+@import '../bootstrap_4/css/bootstrap.min.css';
+@import '../css/fontawesome.min.css';
+
+/*//// Global Styles ////*/
+
+body {
+	font-size: 1.13rem;
+	height: 100vh;
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+.navbar {
+	font-size: 1rem;
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 0%, #f2f2f2 100%);
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f2f2f2 100%);
+	background: linear-gradient(to bottom, #ffffff 0%,#f2f2f2 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 );
+}
+
+.bg-ac {
+	position: relative;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../uiucbg.jpeg');
+    background-color: rgb(40,40,40);
+    min-height: 100%;
+}
+
+.amherst {
+	color: #674ea7;
+}
+
+
+
+
+/*//// Header Styles ////*/
+
+h1, h2, h3, h4, h5 {
+	letter-spacing: 3px;
+	word-spacing: 4px;
+	text-align: center;
+}
+
+h1, h2, h3 {
+	margin-bottom: 1.5rem;
+}
+h4 {
+	margin-bottom: 1.25rem;
+}
+h5 {
+	margin-bottom: 1rem;
+}
+
+.roc-subheader {
+	font-weight: 400;
+	color: rgb(150,150,150);
+}
+
+/* removes default styling */
+.roc-header-0 {
+	letter-spacing: 3px;
+	word-spacing: 5px;
+}
+
+/* thin header classes */
+.roc-header-thin {
+	font-weight: 400 !important;
+}
+.roc-header-thinner {
+	font-weight: 300 !important;
+}
+.roc-header-thinnest {
+	font-weight: 200 !important;
+}
+
+/* recolor thin subheader - more readable */
+.roc-subheader.roc-header-thinner {
+	color: rgb(120,120,120);
+}
+.roc-subheader.roc-header-thinnest {
+	color: rgb(0,0,0);
+}
+
+
+
+
+
+
+
+/*//// HR Styles ////*/
+
+hr {
+	border: 0;
+  	height: 1px;
+	background-color: #AAA;
+  	width: 80%;
+}
+
+hr.roc-hr-fade {
+  	background-image: -webkit-linear-gradient(left, #ffffff, #8c8b8b, #ffffff);
+  	background-image: -moz-linear-gradient(left, #ffffff, #8c8b8b, #ffffff);
+ 	background-image: -ms-linear-gradient(left, #ffffff, #8c8b8b, #ffffff);
+  	background-image: -o-linear-gradient(left, #ffffff, #8c8b8b, #ffffff);
+}
+
+
+
+
+
+
+/*//// Box Styles ////*/
+
+.roc-box {
+	border: 1px solid rgb(0,0,0);
+	padding: 1.5rem;
+	text-align: justify;
+}
+.roc-box-gray {
+	border: 1px solid rgb(150,150,150);
+	padding: 1.5rem;
+	text-align: justify;
+}
+.roc-box-lightgray {
+	border: 1px solid rgb(200,200,200);
+	padding: 1.5rem;
+	text-align: justify;
+}
+
+/*//// Text Styles ////*/
+
+.roc-text-gray {
+	color: rgb(120,120,120);
+}
+.roc-text-lightgray {
+	color: rgb(150,150,150);
+}
+
+
+
+
+
+/*//// Button Styles ////*/
+
+.roc-btn {
+	/* Bootstrap inspired buttons */
+	display: inline-block;
+	font-weight: normal;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+	border: 1px solid transparent;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+
+	cursor: pointer;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1.2rem;
+
+	background-color: rgb(225,225,225);
+	border: 1px solid rgb(170,170,170);
+	color: rgb(0,0,0);
+}
+
+button:focus, button:hover ,.roc-btn:focus, .roc-btn:hover{
+  	outline: 0;
+ 	-webkit-box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.25);
+          box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.25);
+    background-color: rgb(200,200,200);
+	text-decoration: none;
+	color: rgb(0,0,0);
+}
+
+.roc-btn {
+
+}
+
+.roc-btn-lg{
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	border-radius: 0.25rem;
+}
+
+.roc-btn-full {
+	margin-left: 0;
+	margin-right: 0;
+	width: 100%;
+}
+
+.roc-btn-outline {
+	background-color: transparent;
+	border: 2px solid rgb(200,200,200);
+}
+.roc-btn-outline:focus, .roc-btn-outline:hover {
+  	outline: 0;
+  z-indexwebkit-box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.15);
+          box-shadow: 0 0 0 2px rgba(2, 117, 216, 0.15);
+    background-color: rgb(245,245,245);
+}
+
+.roc-footer-min {
+	padding-top: 2.5rem;
+	padding-bottom: 5rem;
+	background-color: rgb(230,230,230);
+}
+
+/*//// Other Styles ////*/
+
+.roc-see-through {
+	background-color: rgba(255,255,255,0.9);
+}
+
+.slideanim {
+	visibility:hidden;
+}
+
+.slide {
+    animation-name: slide;
+    -webkit-animation-name: slide;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    visibility: visible;
+}
+
+/* Go from 0% to 100% opacity (see-through) and specify the percentage from when to slide in the element along the Y-axis */
+@keyframes slide {
+    0% {
+        opacity: 0;
+        transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+@-webkit-keyframes slide {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(70%);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0%);
+    }
+}
+
+
+
+
+@media (max-width: 768px) {
+	.roc-h1-smallify {
+		font-size: 2rem;
+		margin-bottom: 10px;
+	}
+}
