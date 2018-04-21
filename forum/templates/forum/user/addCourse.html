@@ -57,6 +57,19 @@
           <div class="card-columns" style="column-count: 1;">
             <div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
     					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Add Course</h1>
+                        {% if status == "not-exist" %}
+                        <div class="alert alert-danger" role="alert">
+                          {{course_add}} not exist!
+                        </div>
+                        {% elif status == "success" %}
+                        <div class="alert alert-success" role="alert">
+                            {{course_add}} add success!
+                        </div>
+                        {% elif status == "already-exist" %}
+                        <div class="alert alert-danger" role="alert">
+                          {{course_add}} already added!
+                        </div>
+                        {% endif %}
     					<form action="/user/addCourse/" method="POST">
                 {% csrf_token %}
     						<div class="form-group row">
@@ -77,13 +90,7 @@
     							</div>
     						</div>
                   <button type="submit" class="btn btn-info" role="button">Add</button>
-                  {% if status == "not-exist" %}
-                    <h2>{{course_add}} Not exist!</h1>
-                  {% elif status == "success" %}
-                    <h2>{{course_add}} Add success!</h1>
-                  {% elif status == "already-exist" %}
-                    <h2>{{course_add}} already added by you!</h1>
-                  {% endif %}
+
 
               </form>
               <br>
