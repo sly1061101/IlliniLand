@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from forum.models import Department, Course
+from forum.models import Department, Course, Take, Question
 from django.db.models import F
 import json
 
@@ -12,7 +12,7 @@ from django.db import connection
 
 def index(request):
 	if request.user.is_authenticated: 
-		return render(request, "forum/user/home.html")
+		return HttpResponseRedirect("/user/home/")
 	else:
 		return render(request, "forum/main.html")
 
@@ -37,15 +37,19 @@ def user(request):
 	return render(request, "forum/user.html")
 
 def home(request):
-    user_id = request.user.id
-    courses = Course.objects.filter(id__in = Take.objects.filter(user__id=user_id))
-    context['courses'] = courses
-    course_id = request.GET.get('course_id')
-    if course_id is None:
-        questions = Question.objects.filter(course__in=courses)
-    else questions = Question.objects.filter(course__id=course_id)
-    context['questions'] = questions
-    return render(request, "forum/user/home.html", context)
+	context = {}
+	user_id = request.user.id
+	courses = []
+	for obj in Take.objects.filter(user__id=user_id):
+		courses.append(obj.course)
+	context['courses'] = courses
+	course_id = request.GET.get('course_id')
+	if course_id is None:
+		questions = Question.objects.filter(course__in=courses)
+	else:
+		questions = Question.objects.filter(course__id=course_id)
+	context['questions'] = questions
+	return render(request, "forum/user/home.html", context)
 
 def profile(request):
 	return render(request, "forum/user/profile.html")

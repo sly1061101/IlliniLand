@@ -51,9 +51,6 @@
           {% for course in courses %}
             <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
           {% endfor %}
-          <a href="#" class="list-group-item list-group-item-action">CS 225</a>
-          <a href="#" class="list-group-item list-group-item-action">CS 474</a>
-          <a href="#" class="list-group-item list-group-item-action">CS 411</a>
           <a href="/user/addCourse/" class="list-group-item list-group-item-action">Add Course</a>
         </div>
         <!-- right all course questions -->
@@ -69,18 +66,18 @@
               <div class="card-body">
                   <a class="card-link" href="#">
                 <h5 class="card-title">{{ question.title }}</h5>
-                <p class="card-text">{{ question.content }}}</p>
+                <p class="card-text">{{ question.content }}</p>
               </a></div>
               <div class="row card-footer text-muted">
                 <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
-                  <a href="#">{{ question.user.username }}}</a>
+                  <a href="#">{{ question.user.username }}</a>
                 </small>
                 <small class="text-info col-md-6 text-right">{{ question.get_number_ansers }} Answers</small>
               </div>
             </div>
             <br>
 
-            <% endfor%>
+            {% endfor %}
 
           </div> <!--end of card column-->
         </div>
