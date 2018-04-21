@@ -48,6 +48,7 @@
 				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
 					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Create an Account</h1>
 					<form action="" method="POST">
+            {% csrf_token %}
 						<div class="form-group row">
 							<label for="email" class="col-sm-4 col-form-label">Illinois Email : </label>
 							<div class="col-sm-8">
@@ -71,7 +72,11 @@
 						</div>
 
 						<button type="submit" name="register_submit" class="btn btn-primary mb-3">Create Account</button>
-
+            {% if status == "already-exist" %}
+              <p><label>Username exist! Please try again.</label></p>
+            {% elif status == "password-different" %}
+              <p><label>Password and Confirm Password not identical! Please try again.</label></p>
+            {% endif %}
 						<div class="pb-3">
 							<hr>
 							Already have an account? Sign in <a href="/login/">here!</a>

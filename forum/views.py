@@ -17,18 +17,22 @@ def index(request):
 		return render(request, "forum/main.html")
 
 def register(request):
+	status = "normal"
 	if request.method == 'POST':
 		username = request.POST['register_email']
 		password = request.POST['register_password']
-		if not (User.objects.filter(username=username).exists()):
-			user = User.objects.create_user(username = username, password = password)
-			user = authenticate(username = username, password = password)
-			login(request, user)
-			return HttpResponseRedirect("/")
+		password_confirm = request.POST['register_password_confirm']
+		if password == password_confirm :
+			if not (User.objects.filter(username=username).exists()):
+				user = User.objects.create_user(username = username, password = password)
+				user = authenticate(username = username, password = password)
+				login(request, user)
+				return HttpResponseRedirect("/")
+			else:
+				status = "already-exist"
 		else:
-			return HttpResponse("User: " + username + " already exist!")
-	else:
-		return render(request, "forum/register.html")
+			status = "password-different"
+	return render(request, "forum/register.html", {'status' : status})
 
 def course(request):
 	return render(request, "forum/course.html")
