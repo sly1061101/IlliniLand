@@ -47,9 +47,17 @@
 			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <!-- left course menu -->
         <div class="list-group course-list float-left">
-          <a href="" class="list-group-item list-group-item-action active">All</a>
+          {% if course_id == None %}
+            <a href="/user/home/" class="list-group-item list-group-item-action active">All</a>
+          {% else %}
+            <a href="/user/home/" class="list-group-item list-group-item-action">All</a>
+          {% endif %}
           {% for course in courses %}
-            <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+            {% if course.id == course_id %}
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">{{ course.department.name }} {{ course.number }}</a>
+            {% else %}
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+            {% endif %}
           {% endfor %}
           <a href="/user/addCourse/" class="list-group-item list-group-item-action">Add Course</a>
         </div>

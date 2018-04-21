@@ -46,9 +46,12 @@ def home(request):
 	course_id = request.GET.get('course_id')
 	if course_id is None:
 		questions = Question.objects.filter(course__in=courses)
+		context['course_id'] = None
 	else:
 		questions = Question.objects.filter(course__id=course_id)
+		context['course_id'] = int(course_id)
 	context['questions'] = questions
+
 	return render(request, "forum/user/home.html", context)
 
 def profile(request):
@@ -94,7 +97,7 @@ def addCourse(request):
 							WHERE c.id = '%s'
 								AND c.department_id = d.id;"""%(course_id))
 			result2 = cursor.fetchall()
-			course_taken.append(result2[0][0] + str(result2[0][1]))
+			course_taken.append(result2[0][0] + " " + str(result2[0][1]))
 	context['course_taken'] = course_taken
 	context['status'] =  status
 	return render(request, "forum/user/addCourse.html", context)
