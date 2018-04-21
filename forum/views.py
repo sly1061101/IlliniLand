@@ -11,7 +11,7 @@ from django.db import connection
 
 def index(request):
 	if request.user.is_authenticated: 
-		return render(request, "forum/home.html")
+		return render(request, "forum/user/home.html")
 	else:
 		return render(request, "forum/main.html")
 
@@ -29,17 +29,23 @@ def register(request):
 	else:
 		return render(request, "forum/register.html")
 
+def course(request):
+	return render(request, "forum/course.html")
+
 def user(request):
 	return render(request, "forum/user.html")
 
 def profile(request):
-	return render(request, "forum/profile.html")
+	return render(request, "forum/user/profile.html")
 
 def edit_profile(request):
-	return render(request, "forum/edit_profile.html")
+	return render(request, "forum/user/edit_profile.html")
 
-def course(request):
-	return render(request, "forum/course.html")
+def addCourse(request):
+	return render(request, "forum/user/addCourse.html")
+
+def square(request):
+	return render(request, "forum/square.html")
 
 #view for initial demo
 def initial_demo(request):

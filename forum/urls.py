@@ -19,14 +19,17 @@ from . import views
 
 urlpatterns = [
 	path('', views.index),
+    path('user/home/', views.index),
 	path('login/', auth_views.login),
 	path('logout/', auth_views.logout),
 	path('register/', views.register),
-    path('user/', views.user),
-    path('profile/', views.profile),
-    path('edit_profile/', views.edit_profile),
-    path('import_data/', views.import_data),
     path('course/', views.course),
+    path('square/', views.square),
+    path('user/', views.user),
+    path('user/profile/', views.profile),
+    path('user/edit_profile/', views.edit_profile),
+    path('user/addCourse/', views.addCourse),
+    path('import_data/', views.import_data),
     path('initial_demo/', views.initial_demo),
     path('template_test/', views.template_test),
 ]
