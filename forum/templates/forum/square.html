@@ -50,50 +50,26 @@
         <div class="question-card-container" style="margin: auto;" id="question_cards">
           <!-- all answers -->
           <div class="card-columns" style="column-count: 1;">
-            <div class="card">
-              <a class="card-link" href="#"></a>
-              <h5 class="card-header">CS 225</h5>
-              <div class="card-body">
-                <h5 class="card-title">Tutor wanted</h5>
-                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
-              </div>
-              <div class="row card-footer text-muted">
-                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
-                  <a href="#">username</a>
-                </small>
-                <small class="text-info col-md-6 text-right">3 Answers</small>
-              </div>
-            </div>
+              {% for question in questions %}
+              <div class="card">
+                <a href="/course/{{question.id}}/">
+                  <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
+                </a>
 
-            <div class="card">
-              <a class="card-link" href="#"></a>
-              <h5 class="card-header">CS 225</h5>
-              <div class="card-body">
-                <h5 class="card-title">Tutor wanted</h5>
-                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
+                <div class="card-body">
+                    <a class="card-link" href="/question/{{ question.id }}">
+                  <h5 class="card-title">{{ question.title }}</h5>
+                  <p class="card-text">{{ question.content }}</p>
+                </a></div>
+                <div class="row card-footer text-muted">
+                  <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
+                    <a href="#">{{ question.user.username }}</a>
+                  </small>
+                  <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
+                </div>
               </div>
-              <div class="row card-footer text-muted">
-                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
-                  <a href="#">username</a>
-                </small>
-                <small class="text-info col-md-6 text-right">3 Answers</small>
-              </div>
-            </div>
-
-            <div class="card">
-              <a class="card-link" href="#"></a>
-              <h5 class="card-header">CS 225</h5>
-              <div class="card-body">
-                <h5 class="card-title">Tutor wanted</h5>
-                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
-              </div>
-              <div class="row card-footer text-muted">
-                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
-                  <a href="#">username</a>
-                </small>
-                <small class="text-info col-md-6 text-right">3 Answers</small>
-              </div>
-            </div>
+              <br>
+            {% endfor %}
 
           </div> <!-- end of card column -->
         </div>

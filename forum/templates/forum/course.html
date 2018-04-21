@@ -106,13 +106,12 @@
                 <div class="card-columns" style="column-count: 1;">
                   {% for question in questions %}
                   <div class="card">
-                    <a class="card-link" href="#"></a>
                     <h5 class="card-header">  <i class="fa fa-question-circle" aria-hidden="true"></i>
                       Question</h5>
                     <div class="card-body">
                       <a href="/question/{{question.id}}/">
                        <h5 class="card-title">{{ question.title }}</h5>
-                        <p class="card-text">{{ question.content }}</p>                        
+                        <p class="card-text">{{ question.content }}</p>
                       </a>
                     </div>
                     <div class="row card-footer text-muted">
