@@ -26,6 +26,7 @@ urlpatterns = [
     path('course/', views.course),
     path('square/', views.square),
     path('user/', views.user),
+    path('user/home/',view.home),
     path('user/profile/', views.profile),
     path('user/edit_profile/', views.edit_profile),
     path('user/addCourse/', views.addCourse),

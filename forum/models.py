@@ -39,6 +39,8 @@ class Question(models.Model):
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	time = models.DateTimeField(auto_now=True)
+    def get_number_answers(self):
+        return len(Answer.objects.filter(question.id=self.id))
 
 class Answer(models.Model):
 	content = models.TextField()
