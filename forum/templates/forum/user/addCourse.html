@@ -93,6 +93,11 @@
                   </div>
                 </div>
                   <button type="submit" class="btn btn-info" role="button">Add</button>
+                  {% if status == "not-exist" %}
+                    <h2>{{course_add}} Not exist!</h1>
+                  {% elif status == "success" %}
+                    <h2>{{course_add}} Add success!</h1>
+                  {% endif %}
 
               </form>
               <br>

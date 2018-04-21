@@ -42,9 +42,12 @@ def edit_profile(request):
 	return render(request, "forum/user/edit_profile.html")
 
 def addCourse(request):
+	context = {}
+	status = 'normal'
 	if request.method == 'POST':
 		department_name = request.POST['subject']
 		course_number = request.POST['course_number']
+		context['course_add'] = department_name + str(course_number)
 		with connection.cursor() as cursor:
 			cursor.execute("""SELECT id 
 								FROM forum_course 
@@ -57,27 +60,28 @@ def addCourse(request):
 				result = cursor.fetchall()
 				user_id = result[0][0]
 				cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
-				return HttpResponse(department_name + course_number + " successfully added!")	
+				status = 'success'
 			else:
-				return HttpResponse(department_name + course_number + " not exist!")
-	else:
-		current_user = request.user
-		with connection.cursor() as cursor:
-			cursor.execute("SELECT id FROM auth_user WHERE username = '%s';"%(current_user))
-			result = cursor.fetchall()
-			user_id = result[0][0]
-			cursor.execute("SELECT course_id FROM forum_take WHERE user_id = '%s';"%(user_id))
-			result = cursor.fetchall()
-			course_taken = []
-			for r in result:
-				course_id = r[0]
-				cursor.execute("""SELECT name, number 
-								FROM forum_department d,forum_course c
-								WHERE c.id = '%s'
-									AND c.department_id = d.id;"""%(course_id))
-				result2 = cursor.fetchall()
-				course_taken.append(result2[0][0] + str(result2[0][1]))
-		return render(request, "forum/user/addCourse.html", {'current_user' : request.user, 'course_taken' : course_taken})
+				status = 'not-exist'
+	current_user = request.user
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT id FROM auth_user WHERE username = '%s';"%(current_user))
+		result = cursor.fetchall()
+		user_id = result[0][0]
+		cursor.execute("SELECT course_id FROM forum_take WHERE user_id = '%s';"%(user_id))
+		result = cursor.fetchall()
+		course_taken = []
+		for r in result:
+			course_id = r[0]
+			cursor.execute("""SELECT name, number 
+							FROM forum_department d,forum_course c
+							WHERE c.id = '%s'
+								AND c.department_id = d.id;"""%(course_id))
+			result2 = cursor.fetchall()
+			course_taken.append(result2[0][0] + str(result2[0][1]))
+	context['course_taken'] = course_taken
+	context['status'] =  status
+	return render(request, "forum/user/addCourse.html", context)
 
 def square(request):
 	return render(request, "forum/square.html")
