@@ -60,11 +60,9 @@ def home(request):
 
 def question(request, question_id):
 	context = {}
-	asker = question.user.username
 	question = Question.objects.get(id = question_id)
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
-	context["asker"] = asker
 	context["answer_set"] = answer_set
 	return render(request, "forum/question.html", context)
 
