@@ -34,7 +34,7 @@ def profile(request):
 def edit_profile(request):
 	return render(request, "forum/edit_profile.html")
 
-def home(request):
+def search(request):
 	queryset_list =Post.objects.active()
 	query = request.GET.get("p")
 	if query:
