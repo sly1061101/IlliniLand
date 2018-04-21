@@ -64,7 +64,7 @@
         <!-- right all course questions -->
         <div class="question-card-container float-right" id="question_cards">
           <div class="card-columns" style="column-count: 1;">
-            {% if questions|is_empty and curr_course.id not None %}
+            {% if questions|length == 0 and curr_course.id is not None %}
                 <div class="card">
                   <a class="card-link" href="/course/{{ curr_course.id }}/">
                     <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
@@ -83,7 +83,7 @@
             {% for question in questions %}
 
             <div class="card">
-
+              <a href="/course/{{question.id}}/">
                 <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
               </a>
 

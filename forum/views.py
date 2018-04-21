@@ -38,7 +38,7 @@ def register(request):
 def course(request,course_id): # course?course_id=1
 	context = {}
 	curr_course = Course.objects.get(id=course_id)
-	context['course'] = course
+	context['course'] = curr_course
 	print(curr_course.get_avg_scores)
 
 	res = curr_course.get_avg_scores()
