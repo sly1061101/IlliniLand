@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from forum.models import Department, Course, Take, Question
 from django.db.models import F
+import datetime
 import json
 
 from django.db import connection
@@ -30,8 +31,42 @@ def register(request):
 	else:
 		return render(request, "forum/register.html")
 
-def course(request):
-	return render(request, "forum/course.html")
+def course(request,course_id): # course?course_id=1
+    context = {}
+    curr_course = Course.objects.get(id=course_id)
+    context['course'] = curr_course
+    overall_score, difficulty_score, workload_score, professor_score = curr_course.get_avg_scores
+    context['overall_score'] = overall_score
+    context['difficulty_score'] = difficulty_score
+    context['workload_score'] = workload_score
+    context['professor_score'] = professor_score
+    
+    questions = Question.objects.filter(course__id=course_id)
+    context['questions'] = questions
+        
+    comments = Comment.objects.filter(course__id=course_id)
+    context['comments'] = comments
+        
+	return render(request, "forum/course.html",context)
+
+def add_question(request,course_id):
+    if request.method == 'POST':
+        question_title = request.POST['question_title']
+        question_content = request.POST['question_content']
+        new_question = Question(title=question_title, content=question_content, course=Course.objects.get(id=course_id),user=request.user,time= datetime.datetime.now())
+        new_question.save()
+    return HttpResponseRedirect("forum/course/"+course_id)
+
+def add_comment(request,course_id):
+    if request.method == 'POST':
+        content = request.POST['review_text']
+        difficulty = request.POST['difficulty']
+        workload = request.POST['workload']
+        professor = request.POST['professor']
+        overall = request.POST['overall']
+        new_comment = Comment(user=request.user, content=review_text, overall_score=overall, difficulty_score=difficulty, workload_score=workload, professor_score=professor, course=Course.objects.get(id=course_id),time= datetime.datetime.now())
+        new_comment.save()
+    return HttpResponseRedirect("forum/course/"+course_id)
 
 def user(request):
 	return render(request, "forum/user.html")

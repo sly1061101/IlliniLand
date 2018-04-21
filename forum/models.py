@@ -18,6 +18,24 @@ class Course(models.Model):
 	title = models.CharField(max_length=100)
 	department = models.ForeignKey(Department, on_delete=models.CASCADE)
 	description = models.TextField()
+    def get_number_comments(self):
+        all_comments = Comment.objects.filter(course_id=self.id)
+        return len(all_comments)
+    
+    def get_avg_scores(self):
+        all_comments = Comment.objects.filter(course_id=self.id)
+        n_comments = len(all_comments)
+        total_overall = 0
+        total_difficulty = 0
+        total_workload = 0
+        total_professor = 0
+        for comment in all_comments:
+            total_overall += comment.overall_score
+            total_difficulty += comment.difficulty_score
+            total_workload += comment.workload_score
+            total_professor += coment.professor_score
+        return total_overall/n_comments, total_difficulty/n_comments, total_workload/n_comments, total_professor/n_comments
+
 
 class Take(models.Model):
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
