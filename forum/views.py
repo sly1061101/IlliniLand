@@ -165,6 +165,9 @@ def addCourse(request):
 	return render(request, "forum/user/addCourse.html", context)
 
 def square(request):
+    context = {}
+    questions = Question.objects.all()
+    context['questions'] = questions
 	return render(request, "forum/square.html")
 
 #view for initial demo
