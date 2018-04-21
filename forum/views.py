@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 import datetime
 import json
 
@@ -168,7 +170,10 @@ def addCourse(request):
 	return render(request, "forum/user/addCourse.html", context)
 
 def square(request):
-	return render(request, "forum/square.html")
+    context = {}
+    questions = Question.objects.all()
+    context['questions'] = questions
+	return render(request, "forum/square.html",context)
 
 #view for initial demo
 def initial_demo(request):
