@@ -72,7 +72,7 @@
               </a>
 
               <div class="card-body">
-                  <a class="card-link" href="#">
+                  <a class="card-link" href="/question/?question_id={{ question.id }}">
                 <h5 class="card-title">{{ question.title }}</h5>
                 <p class="card-text">{{ question.content }}</p>
               </a></div>
@@ -80,7 +80,7 @@
                 <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
                   <a href="#">{{ question.user.username }}</a>
                 </small>
-                <small class="text-info col-md-6 text-right">{{ question.get_number_ansers }} Answers</small>
+                <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
               </div>
             </div>
             <br>
