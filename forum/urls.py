@@ -21,7 +21,7 @@ urlpatterns = [
 	path('', views.index),
     path('user/home/', views.index),
 	path('login/', auth_views.login),
-	path('logout/', auth_views.logout),
+	path('logout/', auth_views.logout, {'next_page': '/'}),
 	path('register/', views.register),
     path('course/', views.course),
     path('square/', views.square),
