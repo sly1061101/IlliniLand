@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IlliniLand Initial Demo</title>
+</head>
+<body>
+  <form method="POST">
+  {% csrf_token %}
+  <p>Instruction:</p>
+  <p>When inserting tuple, filling all four boxes. Department must exist, for example "CS".</p>
+  <p>When querying or deleting, only fill in department and number, for example "CS" "411"</p>
+  <p>When updating, fill in the department and number as well as the title and description you want to change to.</p>
+  <p>For Advanced Query, not need to input anything.</p>
+  <br>
+  <p>Please select what to demo and input necessary information as instruction:</p>
+  <div>
+    <label>Department:</label>
+    <input type="text" name="department">
+    <label>Number:</label>
+    <input type="text" name="number">
+    <label>Title:</label>
+    <input type="text" name="title">
+    <label>Description:</label>
+    <input type="text" name="description">
+  </div>
+  <br>
+  <div>
+    <input type="radio" id="insert"
+     name="choice" value="insert">
+    <label for="contactChoice1">Insert</label>
+
+    <input type="radio" id="query"
+     name="choice" value="query">
+    <label for="contactChoice2">Query</label>
+
+    <input type="radio" id="update"
+     name="choice" value="update">
+    <label for="contactChoice3">Update</label>
+
+    <input type="radio" id="delete"
+     name="choice" value="delete">
+    <label for="contactChoice3">Delete</label>
+
+
+    <input type="radio" id="advanced1"
+     name="choice" value="advanced1">
+    <label for="contactChoice3">Advanced1</label>
+
+
+    <input type="radio" id="advanced2"
+     name="choice" value="advanced2">
+    <label for="contactChoice3">Advanced2</label>
+  </div>
+  <br>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+  </form>
+</body>
+</html>

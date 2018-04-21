@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+   <head>
+
+      <title>IlliniLand - Home</title>
+      <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
+   </head>
+
+   <body class="bg-ac">
+
+     <!-- NAVBAR -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/"><b class=illini>Illini</b><b class=land>land</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/square/">Square </a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/user/home/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout/">Logout</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+          </form>
+        </div>
+      </nav>
+
+      <!-- body -->
+      <div style="min-height: 100%;">
+			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+        <!-- left course menu -->
+        <div class="list-group course-list float-left">
+          {% if curr_course.id == None %}
+            <a href="/user/home/" class="list-group-item list-group-item-action active">All</a>
+          {% else %}
+            <a href="/user/home/" class="list-group-item list-group-item-action">All</a>
+          {% endif %}
+          {% for course in courses %}
+            {% if course.id == curr_course.id %}
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">{{ course.department.name }} {{ course.number }}</a>
+            {% else %}
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+            {% endif %}
+          {% endfor %}
+          <a href="/user/addCourse/" class="list-group-item list-group-item-action">Add Course</a>
+        </div>
+        <!-- right all course questions -->
+        <div class="question-card-container float-right" id="question_cards">
+          <div class="card-columns" style="column-count: 1;">
+            {% if questions|length == 0 and curr_course.id is not None %}
+                <div class="card">
+                  <a class="card-link" href="/course/{{ curr_course.id }}/">
+                    <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
+                  </a>
+
+                  <div class="card-body">
+                      <a class="card-link" href="/course/{{ curr_course.id }}/">
+                    <h5 class="card-title">Empty Forum</h5>
+                    <p class="card-text">The course you subscribed has no question yet. Go to course website and add one!</p>
+                  </a></div>
+
+                </div>
+                <br>
+            {% endif %}
+
+            {% for question in questions %}
+
+            <div class="card">
+              <a href="/course/{{question.id}}/">
+                <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
+              </a>
+
+              <div class="card-body">
+                  <a class="card-link" href="/question/{{ question.id }}">
+                <h5 class="card-title">{{ question.title }}</h5>
+                <p class="card-text">{{ question.content }}</p>
+              </a></div>
+              <div class="row card-footer text-muted">
+                <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
+                  <a href="#">{{ question.user.username }}</a>
+                </small>
+                <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
+              </div>
+            </div>
+            <br>
+
+            {% endfor %}
+
+          </div> <!--end of card column-->
+        </div>
+			</div>
+		</div>
+
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+   </body>
+
+
+<script type="text/javascript">
+function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+}
+</script>
+
+
+</html>

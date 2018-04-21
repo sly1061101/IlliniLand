@@ -4,11 +4,13 @@
 
    <head>
 
-      <title>IlliniLand - Register</title>
+      <title>IlliniLand - Square</title>
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
+      <script src="https://use.fontawesome.com/72ce767f24.js"></script>
+      <link>
    </head>
 
    <body class="bg-ac">
@@ -25,11 +27,14 @@
             <li class="nav-item active">
               <a class="nav-link" href="/square/">Square <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item ">
               <a class="nav-link" href="/user/home/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Sign In / Register</a>
+              <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -42,51 +47,56 @@
       <!-- body -->
       <div style="min-height: 100%;">
 			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+        <div class="question-card-container" style="margin: auto;" id="question_cards">
+          <!-- all answers -->
+          <div class="card-columns" style="column-count: 1;">
+            <div class="card">
+              <a class="card-link" href="#"></a>
+              <h5 class="card-header">CS 225</h5>
+              <div class="card-body">
+                <h5 class="card-title">Tutor wanted</h5>
+                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
+              </div>
+              <div class="row card-footer text-muted">
+                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
+                  <a href="#">username</a>
+                </small>
+                <small class="text-info col-md-6 text-right">3 Answers</small>
+              </div>
+            </div>
 
+            <div class="card">
+              <a class="card-link" href="#"></a>
+              <h5 class="card-header">CS 225</h5>
+              <div class="card-body">
+                <h5 class="card-title">Tutor wanted</h5>
+                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
+              </div>
+              <div class="row card-footer text-muted">
+                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
+                  <a href="#">username</a>
+                </small>
+                <small class="text-info col-md-6 text-right">3 Answers</small>
+              </div>
+            </div>
 
+            <div class="card">
+              <a class="card-link" href="#"></a>
+              <h5 class="card-header">CS 225</h5>
+              <div class="card-body">
+                <h5 class="card-title">Tutor wanted</h5>
+                <p class="card-text">I'm looking for a tutor for this course. About 3-4 hrs/week and I'm willing to pay $20/hr.</p>
+              </div>
+              <div class="row card-footer text-muted">
+                <small class="col-md-6 text-left">Asked 2018/3/10 19:00 by
+                  <a href="#">username</a>
+                </small>
+                <small class="text-info col-md-6 text-right">3 Answers</small>
+              </div>
+            </div>
 
-				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
-					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Create an Account</h1>
-					<form action="" method="POST">
-            {% csrf_token %}
-						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">Illinois Email : </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<input type="text" class="form-control" name="register_email" placeholder="Email..." requdired="">
-									<div class="input-group-addon">@illinois.edu</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="password" class="col-sm-4 col-form-label">Password : </label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" name="register_password" placeholder="Password..." reqduired="">
-							</div>
-						</div>
-						<div class="form-group row mb-5">
-							<label for="password" class="col-sm-4 col-form-label">Confirm Password : </label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" name="register_password_confirm" placeholder="Password..." requdired="">
-							</div>
-						</div>
-
-						<button type="submit" name="register_submit" class="btn btn-primary mb-3">Create Account</button>
-            {% if status == "already-exist" %}
-              <p><label>Username exist! Please try again.</label></p>
-            {% elif status == "password-different" %}
-              <p><label>Password and Confirm Password not identical! Please try again.</label></p>
-            {% endif %}
-						<div class="pb-3">
-							<hr>
-							Already have an account? Sign in <a href="/login/">here!</a>
-						</div>
-
-					</form>
-
-
-
-				</div>
+          </div> <!-- end of card column -->
+        </div>
 			</div>
 		</div>
 
