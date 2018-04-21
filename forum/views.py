@@ -39,6 +39,7 @@ def home(request):
 	query = request.GET.get("p")
 	if query:
 		queryset_list=queryset_list.filter(title_icontains= query)
+		
 
 	return render(request, "forum/home.html")
 
