@@ -110,8 +110,10 @@
                     <h5 class="card-header">  <i class="fa fa-question-circle" aria-hidden="true"></i>
                       Question</h5>
                     <div class="card-body">
-                      <h5 class="card-title">{{ question.title }}</h5>
-                      <p class="card-text">{{ question.content }}</p>
+                      <a href="/question/{{question.id}}/">
+                       <h5 class="card-title">{{ question.title }}</h5>
+                        <p class="card-text">{{ question.content }}</p>                        
+                      </a>
                     </div>
                     <div class="row card-footer text-muted">
                       <small class="col-md-6 text-left">Asked {{question.time }} by
