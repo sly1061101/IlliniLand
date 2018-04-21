@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from forum.models import Department, Course, Take, Question, Answer, Comment
+from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
 import datetime
 import json
@@ -114,7 +114,10 @@ def new_answer(request, question_id):
 	return HttpResponseRedirect("/question/" + str(question_id) + "/")
 
 def profile(request):
-	return render(request, "forum/user/profile.html")
+	student = Student.objects.filter(user = request.user)
+	context = {"user":request.user, "student":student}
+	print(context)
+	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
 	return render(request, "forum/user/edit_profile.html")
