@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from forum.models import Department, Course, Take, Question
+from forum.models import Department, Course, Take, Question, Answer
 from django.db.models import F
 import json
 
@@ -57,6 +57,16 @@ def home(request):
 	context['questions'] = questions
 
 	return render(request, "forum/user/home.html", context)
+
+def question(request):
+	context = {}
+	question = Question.objects.get(id = request.GET['question_id'])
+	asker = question.user.username
+	answer_set = Answer.objects.filter(question__id = request.GET['question_id'])
+	context["question"] = question
+	context["asker"] = asker
+	context["answer_set"] = answer_set
+	return render(request, "forum/question.html", context)
 
 def profile(request):
 	return render(request, "forum/user/profile.html")

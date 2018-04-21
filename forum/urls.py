@@ -29,6 +29,7 @@ urlpatterns = [
     path('user/profile/', views.profile),
     path('user/edit_profile/', views.edit_profile),
     path('user/addCourse/', views.addCourse),
+    path('question/', views.question),
     path('import_data/', views.import_data),
     path('initial_demo/', views.initial_demo),
     path('template_test/', views.template_test),
