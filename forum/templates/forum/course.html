@@ -88,6 +88,7 @@
                 <div class="container">
                   <br>
                   <form action="/course/{{ course.id }}/add_question/" method="POST">
+                    {% csrf_token %}
                     <div class="col-sm-8" style="margin: auto;">
       								<textarea class="form-control" name="question_title" placeholder="your question title" rows="1"></textarea>
       							</div>
@@ -116,7 +117,7 @@
                       <small class="col-md-6 text-left">Asked {{question.time }} by
                         <a href="#">{{ question.user.username }}</a>
                       </small>
-                      <small class="text-info col-md-6 text-right">{{ question.get_number_ansers }} Answers</small>
+                      <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
                     </div>
                   </div>
                   {% endfor%}
@@ -127,6 +128,7 @@
                 <br>
                 <div class="container">
                 <form  action="/course/{{ course.id }}/add_comment/" method="POST">
+                  {% csrf_token %}
                   <div class="container card-text text-center">
                     <div class="row">
                       <div class="col form-group">
