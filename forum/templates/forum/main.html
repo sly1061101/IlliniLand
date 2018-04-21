@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -7,7 +8,7 @@
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <link rel="stylesheet" href="../css/main.css">
+      <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
    </head>
 
    <body class="bg-ac">
@@ -28,7 +29,7 @@
               <a class="nav-link" href="#">Square</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Sign In / Register</a>
+              <a class="nav-link" href="/login/">Sign In / Register</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
