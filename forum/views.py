@@ -119,11 +119,15 @@ def new_answer(request, question_id):
 def profile(request):
 	student = Student.objects.filter(user = request.user)
 	context = {"user":request.user, "student":student}
+	print(student)
 	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-	print("haha")
-	print(request)
+	if request.method == 'POST':
+		student = Student.objects.filter(user = request.user)
+		student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = request.POST['start_date'], end_data = request.POST['end_date'], bio = request.POST['bio'])
+		student.save()
+		print(student)
 	student = Student.objects.filter(user = request.user)
 	context = {"user":request.user, "student":student}
 	return render(request, "forum/user/edit_profile.html", context)
