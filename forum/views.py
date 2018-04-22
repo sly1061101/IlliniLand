@@ -128,7 +128,7 @@ def question(request, question_id):
 	f.close()
 
 	#save current question title to file
-	s_query = question.title + " " + q.content
+	s_query = question.title
 	s_query = s_query.replace('\r', ' ').replace('\n', '')
 	f = open('s_query.txt','w')
 	f.write(s_query)
