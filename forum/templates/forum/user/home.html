@@ -65,7 +65,7 @@
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">
 				  {{ course.department.name }} {{ course.number }}
 				  <span class="pull-right">
-					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete this course </button>
+					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete </button>
 				  </span>
 			  </a>
 
@@ -73,7 +73,7 @@
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">
 				  {{ course.department.name }} {{ course.number }}
 				  <span class="pull-right">
-					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete this course </button>
+					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete </button>
 				  </span>
 			  </a>
             {% endif %}
