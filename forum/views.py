@@ -137,6 +137,12 @@ def edit_profile(request):
 			student = Student.objects.filter(user = request.user)
 			student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
 		student.save()
+		if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
+			user = request.user
+			request.user.set_password(request.POST['register_password'])
+			request.user.save()
+			login(request, user)
+		return HttpResponseRedirect("/user/profile/")
 	context = {"user":request.user}
 	student = Student.objects.filter(user = request.user)
 	if student:
