@@ -62,11 +62,22 @@
           {% endif %}
           {% for course in courses %}
             {% if course.id == curr_course.id %}
-              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">{{ course.department.name }} {{ course.number }}</a>
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">
+				  {{ course.department.name }} {{ course.number }}
+				  <span class="pull-right">
+					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete this course </button>
+				  </span>
+			  </a>
+
             {% else %}
-              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">
+				  {{ course.department.name }} {{ course.number }}
+				  <span class="pull-right">
+					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete this course </button>
+				  </span>
+			  </a>
             {% endif %}
-            <a href="/user/delete_course/{{ course.id }}/">delete this course</a>
+
           {% endfor %}
           <a href="/user/addCourse/" class="list-group-item list-group-item-action">Add Course</a>
         </div>
