@@ -55,7 +55,7 @@
             {% for course in courses%}
             <div class="card">
                 <a href="course/{{ course.id }}">
-                    <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+                    <h5 class="card-header">{{ course }} {{ course.number }}: {{ course.title }}</h5>
                 </a>
               <div class="card-body" style="max-width=100%">
                 <p class="card-text">Credit Hour: 3</p>

@@ -314,11 +314,12 @@ def search(request):
 	questions = []
 	if searchtype == "course":
 		with connection.cursor() as cursor:
-			cursor.execute("""SELECT CONCAT(course_number, department_name)
-				FROM forum_course,forum_department
+			cursor.execute("""SELECT CONCAT(name, number)
+				FROM forum_course c,forum_department d
+				WHERE c.department_id = d.id
 				""")
 			result = cursor.fetchall()
-			course = fuzzy_search(keyword,result)
+			courses = fuzzy_search(keyword,result)
 		# """str_course_dictionary = {}
 		# course_str_list = []
 		# all_courses = Course.objects.all()
@@ -335,7 +336,7 @@ def search(request):
 	elif searchtype == "question":
 		result= Question.objects.all()
 		questions = fuzzy_search(keyword, result)
-
+	print(courses)
 	context['courses'] = courses
 	context['questions'] = questions
 	return render(request, "forum/search.html", context)
