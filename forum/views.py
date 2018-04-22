@@ -339,7 +339,7 @@ def search(request):
 		question_str_list = []
 		all_questions = Question.objects.all()
 		for question in all_questions:
-			question_str = question.to_string()
+			question_str = question.title
 			question_str_list.append(question_str)
 			str_question_dictionary[question_str]=question
 		question_str = process.extract(keyword, question_str_list, limit = 6)
