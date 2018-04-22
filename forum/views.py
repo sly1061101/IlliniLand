@@ -119,11 +119,14 @@ def new_answer(request, question_id):
 def profile(request):
 	student = Student.objects.filter(user = request.user)
 	context = {"user":request.user, "student":student}
-	print(context)
 	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-	return render(request, "forum/user/edit_profile.html")
+	print("haha")
+	print(request)
+	student = Student.objects.filter(user = request.user)
+	context = {"user":request.user, "student":student}
+	return render(request, "forum/user/edit_profile.html", context)
 
 def addCourse(request):
 	context = {}
