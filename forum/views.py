@@ -7,6 +7,8 @@ from django.db.models import F
 import datetime
 import json
 
+import metapy
+
 from django.db import connection
 
 # Create your views here.
@@ -109,6 +111,18 @@ def question(request, question_id):
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
 	context["answer_set"] = answer_set
+	question_all = Question.objects.all()
+	docs = []
+	for q in question_all:
+		doc = metapy.index.Document()
+		doc.content(q.title + " " + q.content)
+		docs.append(doc)
+	for doc in docs:
+		tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+		tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+		tok.set_content(doc.content())
+		tokens = [token for token in tok]
+		print(tokens)
 	return render(request, "forum/question.html", context)
 
 def new_answer(request, question_id):
