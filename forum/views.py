@@ -10,6 +10,11 @@ import datetime
 import json
 import random
 
+import metapy
+from PL2 import PL2Ranker
+from subprocess import call
+import os
+
 from django.db import connection
 
 # Create your views here.
@@ -215,6 +220,41 @@ def question(request, question_id):
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
 	context["answer_set"] = answer_set
+
+	question_all = Question.objects.all()
+
+	#Find related questions
+
+	#save all questions to file
+	f = open('./cranfield/cranfield.dat','w')
+	for q in question_all:
+		s = q.title + " " + q.content
+		s = s.replace('\r', ' ').replace('\n', '')
+		f.write(s + '\n')
+	f.close()
+
+	#save current question title to file
+	s_query = question.title
+	s_query = s_query.replace('\r', ' ').replace('\n', '')
+	f = open('s_query.txt','w')
+	f.write(s_query)
+	f.close()
+
+	#call external program to search
+	cwd = os.getcwd()
+	call(["python", cwd + "/PL2.py"])
+
+	#read search results and pass to front end
+	related = []
+	with open("result.txt") as fp:  
+		for cnt, line in enumerate(fp):
+			related.append(int(line))
+	related_questions = []
+	for num in related:
+		related_questions.append(question_all[num])
+
+	context["related_questions"] = related_questions
+
 	return render(request, "forum/question.html", context)
 
 def new_answer(request, question_id):
