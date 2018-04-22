@@ -56,7 +56,12 @@
       <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
       <div class="question-card-container" id="question_cards">
         <div class="card">
-          <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+			<div class="card-header">
+				<div class="row">
+          			<h5>{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+					<span class="btn btn-primary "> + Subscribe</span>
+				</div>
+			</div>
           <div class="card-body" style="max-width=100%">
             <p class="card-text">{{ course.description }}</p>
             <div class="container card-text text-center">
