@@ -109,7 +109,7 @@ if __name__ == '__main__':
 
 	distance = []
 	for i in range(0, len(all_questions_title)):
-		distance.append(levenshtein(s_query_title + " " + s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
+		# print( all_questions_title[i] + " " + all_questions_content[i])
 		# print(levenshtein(s_query_title + " " + s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
 		dis_t = levenshtein(s_query_title, all_questions_title[i])
 		dis_c = levenshtein(s_query_content, all_questions_content[i])
