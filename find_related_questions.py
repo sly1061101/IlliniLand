@@ -72,7 +72,7 @@ if __name__ == '__main__':
  
 	q = Q.PriorityQueue()
 
-	distance_title = []
+	all_questions_title = []
 	with open("all_questions_title.txt") as fp:  
 		for cnt, line in enumerate(fp):
 			doc = metapy.index.Document()
@@ -87,9 +87,10 @@ if __name__ == '__main__':
 			line = ""	
 			for t in tokens:	
 				line += t + " "
-			distance_title.append(levenshtein(s_query_title, line))
+			all_questions_title.append(line)
 
-	distance_content = []
+
+	all_questions_content = []
 	with open("all_questions_content.txt") as fp:  
 		for cnt, line in enumerate(fp):
 			doc = metapy.index.Document()
@@ -104,20 +105,27 @@ if __name__ == '__main__':
 			line = ""	
 			for t in tokens:	
 				line += t + " "
-			distance_content.append(levenshtein(s_query_content, line))
+			all_questions_content.append(line)
+
+	distance_title = []
+	distance_content = []
+	for i in range(0, len(all_questions_title)):
+		distance_title.append(levenshtein(s_query_title, all_questions_title[i] + " " + all_questions_content[i]))
+		distance_content.append(levenshtein(s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
 
 	for i in range(0, len(distance_title)):
-		if distance_content[i] > 20*distance_title[i]:
-			q.put((distance_title[i] + distance_content[i]/10, i))
-		else:
-			q.put((distance_title[i], i))
+		q.put((distance_title[i], i))
+		# if distance_content[i] > 20*distance_title[i]:
+		# 	q.put((distance_title[i] + distance_content[i]/10, i))
+		# else:
+		# 	q.put((distance_title[i], i))
 
 	file = open("result.txt", "w")
 	cnt = 0
 	score = q.get()
-	while cnt < 5 and not q.empty():
+	while cnt < 3 and not q.empty():
 		print(score)
-		if score[0] > 0 and score[0] < 15:
+		if score[0] > 0 and score[0] < 20:
 			file.write(str(score[1]) + "\n")
 		cnt += 1
 		score = q.get()
