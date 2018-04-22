@@ -342,6 +342,12 @@ def addCourse(request):
 	context['status'] =  status
 	return render(request, "forum/user/addCourse.html", context)
 
+def delete_course(request, course_id):
+	user_id = request.user.id
+	with connection.cursor() as cursor:
+		cursor.execute("DELETE FROM forum_take WHERE user_id = %s AND course_id = %s;"%(user_id, course_id))	
+	return HttpResponseRedirect("/user/home/")
+
 def square(request):
 	context = {}
 	questions = Question.objects.all()
