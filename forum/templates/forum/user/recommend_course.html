@@ -35,7 +35,7 @@
               <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
-		  <form action="/search" method="POST" class="form-inline my-2 my-lg-0" >
+		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
             {% csrf_token %}
             <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS125" aria-label= "Search">
             <select class ="form-control" name="search_type">
