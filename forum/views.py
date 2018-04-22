@@ -124,7 +124,7 @@ def recommend_course(request):
 
 def index(request):
 	if request.user.is_authenticated:
-		return HttpResponseRedirect("/user/home/")
+		return HttpResponseRedirect("/square/")
 	else:
 		return render(request, "forum/main.html")
 
