@@ -321,14 +321,9 @@ def search(request):
 			course_str_list.append(course_str)
 			str_course_dictionary[course_str]=course
 		courses_str = process.extract(keyword, course_str_list, limit = 6)
-<<<<<<< HEAD
         for str in courses_str:
             print("score: "+str(str[1]))
             courses.append(str_course_dictionary[str[0]])
-=======
-		for str in courses_str:
-			courses.append(str_course_dictionary[str[0]])
->>>>>>> 5472fa19d992eaecf117c2537d1c819c1e9bcb6f
 
 	elif searchtype == "question":
 		result= Question.objects.all()
