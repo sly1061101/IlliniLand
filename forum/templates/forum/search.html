@@ -35,6 +35,7 @@
             </li>
           </sul>
           <form method="POST" class="form-inline my-2 my-lg-0" >
+            {% csrf_token %}
             <input class="form-control mr-sm-2" name ="search_string" type="search" placeholder="Course Name" aria-label= "Search">
                 <select name="search_type">
                     <option value="course">course</option>
