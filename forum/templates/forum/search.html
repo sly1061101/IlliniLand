@@ -73,7 +73,7 @@
         <div class="question-card-container" id="question_cards">
             {% for question in questions %}
             <div class="card">
-              <a href="/course/{{question.id}}/">
+              <a href="/course/{{question.course.id}}/">
                 <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
               </a>
 
