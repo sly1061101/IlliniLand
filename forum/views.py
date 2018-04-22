@@ -313,8 +313,16 @@ def search(request):
 	courses = []
 	questions = []
 	if searchtype == "course":
-		result= Course.objects.all()
-		courses = fuzzy_search(keyword, result)
+        str_course_dictionary = {}
+        course_str_list = []
+		all_courses = Course.objects.all()
+        for course in all_courses:
+            course_str = course.to_string
+            course_str_list.append(course_str)
+            str_course_dictionary[course_str]=course
+		courses_str = process.extract(keyword, course_str_list, limit = 6)
+        for str in courses_str:
+            courses.append(str_course_dictionary[str[0]])
 
 	elif searchtype == "question":
 		result= Question.objects.all()

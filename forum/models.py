@@ -38,6 +38,15 @@ class Course(models.Model):
 			n_comments = 1
 		return (total_overall/n_comments, total_difficulty/n_comments, total_workload/n_comments, total_professor/n_comments)
 
+    def to_string(self):
+        str = ""
+        str += self.department.name
+        str += str(self.number)
+        str += self.description
+        return str
+
+
+
 
 class Take(models.Model):
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
