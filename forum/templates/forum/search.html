@@ -53,7 +53,15 @@
         {% if courses|length > 0 %}
         <div class="list-group course-list">
             {% for course in courses%}
-            <a href="course/{{ course.id }}" class="list-group-item list-group-item-action">{{course.department.name}} {{ course.number}}</a>
+            <div class="card">
+                <a href="course/{{ course.id }}">
+                    <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+                </a>
+              <div class="card-body" style="max-width=100%">
+                <p class="card-text">Credit Hour: 3</p>
+                <p class="card-text">{{ course.description }}</p>
+              </div>
+          </div>
             {% endfor %}
         </div>
         {% endif %}
