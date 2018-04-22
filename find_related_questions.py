@@ -36,12 +36,12 @@ def levenshtein(seq1, seq2):
 
 if __name__ == '__main__':
 	cwd = os.getcwd()
-	file = open("s_query.txt", "r")
-	s_query = file.read()
+	file = open("s_query_title.txt", "r")
+	s_query_title = file.read()
 	file.close()
 
 	doc = metapy.index.Document()
-	doc.content(s_query)
+	doc.content(s_query_title)
 	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
 	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
 	tok = metapy.analyzers.LowercaseFilter(tok)	
@@ -49,14 +49,31 @@ if __name__ == '__main__':
 	tok = metapy.analyzers.Porter2Filter(tok)	
 	tok.set_content(doc.content())	
 	tokens = [token for token in tok]	
-	s_query = ""	
+	s_query_title = ""	
 	for t in tokens:	
-		s_query += t + " "
+		s_query_title += t + " "
 
+	file = open("s_query_content.txt", "r")
+	s_query_content = file.read()
+	file.close()
+
+	doc = metapy.index.Document()
+	doc.content(s_query_content)
+	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	tok = metapy.analyzers.LowercaseFilter(tok)	
+	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	tok = metapy.analyzers.Porter2Filter(tok)	
+	tok.set_content(doc.content())	
+	tokens = [token for token in tok]	
+	s_query_content = ""	
+	for t in tokens:	
+		s_query_content += t + " "
+ 
 	q = Q.PriorityQueue()
 
-	questions = []
-	with open("all_questions.txt") as fp:  
+	distance_title = []
+	with open("all_questions_title.txt") as fp:  
 		for cnt, line in enumerate(fp):
 			doc = metapy.index.Document()
 			doc.content(line)
@@ -70,9 +87,29 @@ if __name__ == '__main__':
 			line = ""	
 			for t in tokens:	
 				line += t + " "
-			print(line)
-			q.put((levenshtein(s_query, line),cnt))
-	
+			distance_title.append(levenshtein(s_query_title, line))
+
+	distance_content = []
+	with open("all_questions_content.txt") as fp:  
+		for cnt, line in enumerate(fp):
+			doc = metapy.index.Document()
+			doc.content(line)
+			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+			tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+			tok = metapy.analyzers.LowercaseFilter(tok)	
+			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			tok = metapy.analyzers.Porter2Filter(tok)	
+			tok.set_content(doc.content())	
+			tokens = [token for token in tok]	
+			line = ""	
+			for t in tokens:	
+				line += t + " "
+			distance_content.append(levenshtein(s_query_content, line))
+
+	for i in range(0, len(distance_title)):
+		print((distance_title[i],distance_content[i],i))
+		q.put((10*distance_title[i] + distance_content[i], i))
+
 	file = open("result.txt", "w")
 	cnt = 0
 	q.get()
