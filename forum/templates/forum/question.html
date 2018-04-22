@@ -63,11 +63,13 @@
               <h5 class="card-title">{{question.title}}</h5>
               <p class="card-text"><label style="white-space: pre-wrap">{{question.content}}</label></p>
             </div>
-            <div class="row card-footer text-muted">
+            <div class="card-footer text-muted">
+				<div class="row">
               <small class="col-md-6 text-left">Asked {{question.time}} by
                 <a href="#">{{question.user.username}}</a>
               </small>
               <small class="text-info col-md-6 text-right">{{answer_set|length}} Answers</small>
+		  </div>
             </div>
 
           </div>

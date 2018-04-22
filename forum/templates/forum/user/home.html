@@ -92,7 +92,7 @@
 
                     <h5 class="card-title">Empty Forum</h5>
                     <p class="card-text">The course you subscribed has no question yet. Go to
-						<a class="card-link" href="/course/{{ curr_course.id }}/">course website and add one!</a></p>
+						<a class="card-link" href="/course/{{ curr_course.id }}/">course website</a> and add one!</p>
                   </div>
 
                 </div>
@@ -124,12 +124,13 @@
                 <h5 class="card-title">{{ question.title }}</h5>
                 <p class="card-text">{{ question.content }}</p>
               </a></div>
-              <div class="row card-footer text-muted">
+              <div class=" card-footer text-muted">
+				  <div class="row">
                 <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
                   <a href="#">{{ question.user.username }}</a>
                 </small>
                 <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
-              </div>
+			</div></div>
             </div>
             <br>
 
