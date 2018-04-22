@@ -313,7 +313,13 @@ def search(request):
 	courses = []
 	questions = []
 	if searchtype == "course":
-		str_course_dictionary = {}
+		with connection.cursor() as cursor:
+			cursor.execute("""SELECT course_number, department_name
+				FROM forum_course,forum department
+				WHERE department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
+			result = cursor.fetchall()
+			course = fuzzy_search(keyword,result)
+		"""str_course_dictionary = {}
 		course_str_list = []
 		all_courses = Course.objects.all()
 		for course in all_courses:
@@ -323,7 +329,8 @@ def search(request):
 		courses_str = process.extract(keyword, course_str_list, limit = 6)
 		for str in courses_str:
 			print("score: "+str(str[1]))
-			courses.append(str_course_dictionary[str[0]])
+			courses.append(str_course_dictionary[str[0]])"""
+
 
 	elif searchtype == "question":
 		result= Question.objects.all()
