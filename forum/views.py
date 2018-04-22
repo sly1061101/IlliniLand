@@ -313,22 +313,39 @@ def search(request):
 	courses = []
 	questions = []
 	if searchtype == "course":
+		# with connection.cursor() as cursor:
+		# 	cursor.execute("""SELECT CONCAT(name, number)
+		# 		FROM forum_course c,forum_department d
+		# 		WHERE c.department_id = d.id
+		# 		""")
+		# 	result = cursor.fetchall()
+		# 	course = fuzzy_search(keyword,result)
+
 		str_course_dictionary = {}
 		course_str_list = []
 		all_courses = Course.objects.all()
 		for course in all_courses:
-			course_str = course.to_string
+			course_str = course.to_string()
 			course_str_list.append(course_str)
 			str_course_dictionary[course_str]=course
 		courses_str = process.extract(keyword, course_str_list, limit = 6)
-		for str in courses_str:
-			print("score: "+str(str[1]))
-			courses.append(str_course_dictionary[str[0]])
+		for s in courses_str:
+			# print("score: "+str(s[1]))
+			courses.append(str_course_dictionary[s[0]])
+
 
 	elif searchtype == "question":
-		result= Question.objects.all()
-		questions = fuzzy_search(keyword, result)
-
+		str_question_dictionary = {}
+		question_str_list = []
+		all_questions = Question.objects.all()
+		for question in all_questions:
+			question_str = question.to_string()
+			question_str_list.append(question_str)
+			str_question_dictionary[question_str]=question
+		question_str = process.extract(keyword, question_str_list, limit = 6)
+		for s in question_str:
+			# print("score: "+str(s[1]))
+			questions.append(str_question_dictionary[s[0]])
 	context['courses'] = courses
 	context['questions'] = questions
 	return render(request, "forum/search.html", context)

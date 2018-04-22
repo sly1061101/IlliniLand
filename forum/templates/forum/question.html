@@ -48,7 +48,7 @@
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+      <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <div class="question-card-container" id="question_cards">
 
           <!-- question -->
@@ -78,8 +78,8 @@
               <form action="/question/{{question.id}}/new_answer/" method="POST">
                 {% csrf_token %}
                 <div class="col-sm-8" style="margin: auto;">
-  								<textarea class="form-control" name = "new_answer" id="my_answer" placeholder="add your answer to the question..." rows="3"></textarea>
-  							</div>
+                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="add your answer to the question..." rows="3"></textarea>
+                </div>
                 <br>
                 <div class="text-center">
                   <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
@@ -87,6 +87,26 @@
               </form>
             </div>
           </div>
+
+
+        <div class="card">
+            <h7 class="card-header">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+              Recommend Questions
+            </h7>
+            <div class="card-body">
+              <form action="/question/{{question.id}}/new_answer/" method="POST">
+                {% csrf_token %}
+                <div class="col-sm-8" style="margin: auto;">
+                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This question is related to the CS125." rows="3"></textarea>
+                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This course is related to the CS125" rows="3"></textarea>
+                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This is the last recommendation question" rows="3"></textarea>
+                </div>
+                <br>
+              </form>
+            </div>
+          </div>
+
 
           <!-- all answers -->
           <br>
@@ -109,8 +129,11 @@
           {% endfor %}
           </div> <!-- end of card column -->
         </div>
-			</div>
-		</div>
+      </div>
+    </div>
+
+
+
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
