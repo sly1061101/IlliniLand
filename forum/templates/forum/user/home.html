@@ -73,7 +73,9 @@
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">
 				  {{ course.department.name }} {{ course.number }}
 				  <span class="float-right">
-					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete </button>
+					  <a href="/user/delete_course/{{ course.id }}/">
+					  	<button  class="btn btn-xs btn-warning"> delete </button>
+				  	</a>
 				  </span>
 			  </a>
             {% endif %}
