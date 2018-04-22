@@ -225,19 +225,30 @@ def question(request, question_id):
 	#Find related questions
 
 	#save all questions to file
-	f = open('all_questions.txt','w')
+	f_t = open('all_questions_title.txt','w')
+	f_c = open('all_questions_content.txt','w')
 	for q in question_all:
-		s = q.title + " " + q.content
+		s = q.title
 		s = s.replace('\r', ' ').replace('\n', '')
-		f.write(s + '\n')
-	f.close()
+		f_t.write(s + '\n')
+		s = q.content
+		s = s.replace('\r', ' ').replace('\n', '')
+		f_c.write(s + '\n')
+	f_t.close()
+	f_c.close()
 
 	#save current question title to file
-	s_query = question.title + " " + question.content
+	s_query = question.title
 	s_query = s_query.replace('\r', ' ').replace('\n', '')
-	f = open('s_query.txt','w')
-	f.write(s_query)
-	f.close()
+	f_t = open('s_query_title.txt','w')
+	f_t.write(s_query)
+	f_t.close()
+
+	s_query = question.content
+	s_query = s_query.replace('\r', ' ').replace('\n', '')
+	f_c = open('s_query_content.txt','w')
+	f_c.write(s_query)
+	f_c.close()
 
 	#call external program to search
 	cwd = os.getcwd()
