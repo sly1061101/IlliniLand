@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+   <head>
+
+      <title>IlliniLand - Question 78</title>
+      <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
+      <script src="https://use.fontawesome.com/72ce767f24.js"></script>
+      <link>
+   </head>
+
+   <body class="bg-ac">
+
+     <!-- NAVBAR -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/"><b class=illini>Illini</b><b class=land>land</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/square/">Square <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/user/home/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+          </form>
+        </div>
+      </nav>
+
+      <!-- body -->
+      <div style="min-height: 100%;">
+			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+        <div class="question-card-container" id="question_cards">
+
+          <!-- question -->
+          <div class="card">
+            <h5 class="card-header">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+              Question</h5>
+            <div class="card-body" style="max-width=100%">
+              <h5 class="card-title">{{question.title}}</h5>
+              <p class="card-text">{{question.content}}</p>
+            </div>
+            <div class="row card-footer text-muted">
+              <small class="col-md-6 text-left">Asked {{question.time}} by
+                <a href="#">{{question.user.username}}</a>
+              </small>
+              <small class="text-info col-md-6 text-right">{{answer_set|length}} Answers</small>
+            </div>
+
+          </div>
+          <!-- add answer -->
+          <div class="card">
+            <h7 class="card-header">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+              Add Answer
+            </h7>
+            <div class="card-body">
+              <form action="/question/{{question.id}}/new_answer/" method="POST">
+                {% csrf_token %}
+                <div class="col-sm-8" style="margin: auto;">
+  								<textarea class="form-control" name = "new_answer" id="my_answer" placeholder="add your answer to the question..." rows="3"></textarea>
+  							</div>
+                <br>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- all answers -->
+          <br>
+          <div class="card-columns" style="column-count: 1;">
+          {% for answer in answer_set %}
+            <div class="card">
+              <a class="card-link" href="#"></a>
+              <h5 class="card-header">
+                <i class="fa fa-check-square" aria-hidden="true"></i>
+                Answer</h5>
+              <div class="card-body">
+                <p class="card-text">{{answer.content}}</p>
+              </div>
+              <div class="row card-footer text-muted">
+                <small class="col-md-6 text-left">Answered {{answer.time}} by
+                  <a href="#">{{answer.user.username}}</a>
+                </small>
+              </div>
+            </div>
+          {% endfor %}
+          </div> <!-- end of card column -->
+        </div>
+			</div>
+		</div>
+
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+   </body>
+
+
+<script type="text/javascript">
+function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+}
+</script>
+
+
+</html>

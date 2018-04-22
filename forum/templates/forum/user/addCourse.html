@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+   <head>
+
+      <title>IlliniLand - Add Course</title>
+      <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
+   </head>
+
+   <body class="bg-ac">
+
+     <!-- NAVBAR -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/"><b class=illini>Illini</b><b class=land>land</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/square/">Square<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/home/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout/">Logout</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+          </form>
+        </div>
+      </nav>
+
+      <!-- body -->
+      <div style="min-height: 100%;">
+			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+        <!-- left course menu -->
+        <div class="list-group course-list float-left">
+          <div class="list-group-item list-group-item-action active">Your Courses</div>
+          {% for course in course_taken %}
+            <div class="list-group-item list-group-item-action">{{ course }}</div>
+          {% endfor %}
+        </div>
+        <!-- right all course questions -->
+        <div class="question-card-container float-right" id="question_cards">
+          <div class="card-columns" style="column-count: 1;">
+            <div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
+    					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Add Course</h1>
+                        {% if status == "not-exist" %}
+                        <div class="alert alert-danger" role="alert">
+                          {{course_add}} not exist!
+                        </div>
+                        {% elif status == "success" %}
+                        <div class="alert alert-success" role="alert">
+                            {{course_add}} add success!
+                        </div>
+                        {% elif status == "already-exist" %}
+                        <div class="alert alert-danger" role="alert">
+                          {{course_add}} already added!
+                        </div>
+                        {% endif %}
+    					<form action="/user/addCourse/" method="POST">
+                {% csrf_token %}
+    						<div class="form-group row">
+    							<label for="subject" class="col-sm-4 col-form-label">Subject: </label>
+    							<div class="col-sm-8">
+    								<div class="input-group">
+    									<input type="text" class="form-control" name="subject" placeholder="CS, ECE, ...">
+    								</div>
+    							</div>
+    						</div>
+
+                <div class="form-group row">
+    							<label for="course_number" class="col-sm-4 col-form-label">Course Number: </label>
+    							<div class="col-sm-8">
+    								<div class="input-group">
+    									<input type="text" class="form-control" name="course_number" placeholder="101, 125, ...">
+    								</div>
+    							</div>
+    						</div>
+                  <button type="submit" class="btn btn-info" role="button">Add</button>
+
+
+              </form>
+              <br>
+            </div>
+          </div> <!--end of card column-->
+        </div>
+			</div>
+		</div>
+
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+   </body>
+
+
+<script type="text/javascript">
+function myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "topnav") {
+        x.className += " responsive";
+    } else {
+        x.className = "topnav";
+    }
+}
+</script>
+
+
+</html>

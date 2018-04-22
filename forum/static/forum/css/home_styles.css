@@ -1,0 +1,266 @@
+/* home_styles.css */
+
+html, body {
+	height: 100%;
+}
+
+/* Cover */
+
+#cover {
+	/* background: #222 url('../images/mountain_night_2.jpg') center center no-repeat; */
+	background: rgb(40,40,40) url('../uiucbg.jpeg') center center no-repeat;
+	background-size: cover;
+	color: #FFF;
+	min-height: 100%;
+	text-align: center;
+	display: flex;
+	align-items: center;
+  background-attachment: fixed;
+}
+
+#cover1 {
+  background: #222;
+  background-size: cover;
+  color: #FFF;
+  min-height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  filter: none;
+	background-image: url('../uiucbg.jpeg');
+  transition: -webkit-filter 0s 0.3s linear, filter 0s 0.3s linear;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-ac {
+	/* background: #222 url('../images/mountain_night_2.jpg') center center no-repeat; */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('../uiucbg.jpeg');
+    background-color: rgb(40,40,40);
+    min-height: 100%;
+}
+
+#cover-caption {
+	width: 100%;
+	margin-bottom: 7%;
+}
+
+/* Amherst - color text purple */
+
+.amherst {
+	color: #674ea7;
+}
+.amherst-hover-icon:hover > i{
+	color: #674ea7;
+}
+/* Styling HR elements */
+
+hr.hr_home {
+  border: 0;
+  height: 1px;
+	color: #AAA;
+  background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  width: 70%;
+}
+
+/* Title */
+
+#title {
+	letter-spacing: 5px;
+	word-spacing: 10px;
+  font-weight: 400;
+}
+
+/* Main Navbar */
+
+#main_nav {
+	letter-spacing: 5px;
+	word-spacing: 10px;
+}
+
+/* Spaced out Text */
+
+.letter-spaced-1 {
+	letter-spacing: 1px;
+}
+.letter-spaced-2 {
+	letter-spacing: 2px;
+}
+.letter-spaced-3 {
+	letter-spacing: 3px;
+}
+
+
+#page_content {
+	text-align: center;
+}
+
+
+
+
+
+.bg-pale-green {
+	background-color: #ccffcc;
+}
+.bg-pale-red {
+	background-color: #ffccff;
+}
+.bg-pale-yellow {
+	background-color: #ffff99;
+}
+
+
+.bg-yellow-1 {
+	background-color: #fff59d;
+}
+.bg-yellow-2 {
+	background-color: #fff176;
+}
+.bg-yellow-3 {
+	background-color: #ffee58;
+}
+
+
+
+@media (max-width: 575px) {
+	.nav_container {
+		margin:0px;
+	}
+}
+
+.featurette-heading {
+  font-weight: 300;
+  letter-spacing: -.05rem;
+}
+
+.featurette-subheading {
+  font-weight: 300;
+  font-size: 1.2rem;
+  letter-spacing: -.05rem;
+}
+
+
+
+.featurette-main {
+	display: flex;
+	align-items: center;
+}
+
+
+.content-heading {
+  font-weight: 300;
+  font-size: 3rem;
+  line-height: 1.1;
+  letter-spacing: 0px;
+  word-spacing: 5px;
+  padding: 0px;
+  margin: 0px;
+}
+@media (max-width: 575px) {
+	.content-heading {
+		font-size: 2.5rem;
+	}
+}
+
+.content-text {
+  font-weight: 200;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  padding: 0px;
+  margin: 0px;
+}
+@media (max-width: 575px) {
+	.content-text {
+		font-size: 1.2rem;
+	}
+}
+
+
+
+.cover-title {
+  font-weight: 300;
+  font-size: 5.5rem;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  word-spacing: 5px;
+  padding: 0px;
+  margin: 0px;
+}
+@media (max-width: 991px) {
+	.cover-title {
+		font-size: 4.5rem;
+	}
+}
+@media (max-width: 450px) {
+	.cover-title {
+		font-weight: 400;
+		font-size: 2.9rem;
+	}
+}
+
+
+
+
+
+.pill-heading {
+  font-weight: 400;
+  font-size: 2rem;
+  padding-bottom: 2px;
+  margin: 0px;
+  color: #585858;
+}
+@media (max-width: 991px) {
+	.pill-heading {
+		font-size: 1.5rem;
+	}
+}
+
+
+
+
+
+.badge-turq {
+  background-color: #e6e6e6;
+  color: #333333;
+  cursor: default;
+  width: 300px;
+  box-shadow: 1px 2px 7px #bababa;
+}
+
+.badge-turq:hover {
+  background-color: #cccccc;
+}
+
+
+
+.list-group-item {
+	padding: 3px 10px 3px 10px;
+}
+
+
+.badge-pill-new {
+	background-color: #546e7a;
+	color: white;
+	border-radius: 1px;
+	width: 300px;
+}
+
+
+
+.big-logo {
+	font-size: 100px;
+	color: #674ea7;
+}
+.big-logo-smaller {
+	font-size: 80px;
+	color: #674ea7;
+}

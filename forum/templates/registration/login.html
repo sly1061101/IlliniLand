@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -8,7 +8,7 @@
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <link rel="stylesheet" href="{% static 'forum/main.css' %}">
+      <link rel="stylesheet" href="{% static 'forum/css/main.css' %}">
    </head>
 
    <body class="bg-ac">
@@ -25,11 +25,11 @@
             <li class="nav-item active">
               <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
+<!--             <li class="nav-item">
+              <a class="nav-link" href="/square/">Square</a>
+            </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">Show All</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Sign In / Register</a>
+              <a class="nav-link" href="/login/">Sign In / Register</a>
             </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -40,17 +40,14 @@
       </nav>
 
       <!-- body -->
-      {% if user.is_authenticated %}
-        <p>You have already logged in!</p>
-      {% else %}
       <div style="min-height: 100%;">
 			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
 				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center pr-sm-5 pl-sm-5">
 					<h1 class="mt-4 mb-sm-5 mb-4 content-heading">Sign in</h1>
-					<form method="POST">
+					<form action="" method="POST">
             {% csrf_token %}
 						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">Email : </label>
+							<label for="username" class="col-sm-4 col-form-label">Email : </label>
 							<div class="col-sm-8">
 								<input type="text" class="form-control" name="username" placeholder="Email..." required="">
 							</div>
@@ -65,12 +62,12 @@
 							<hr>
 							Don't have an account? Register <a href="/register/">here!</a>
 						</div>
-						<button type="submit" class="btn btn-primary mb-4">Submit</button>
+						<button type="submit" name="login_submit" class="btn btn-primary mb-4">Submit</button>
 					</form>
 				</div>
 			</div>
 		</div>
-    {% endif %}
+
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

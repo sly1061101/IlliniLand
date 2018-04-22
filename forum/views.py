@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
-from forum.models import Department, Course
+from forum.models import Department, Course, Take, Question, Answer, Comment, Student
+from django.db.models import F
+import datetime
 import json
 
 from django.db import connection
@@ -11,35 +13,194 @@ from django.db import connection
 
 def index(request):
 	if request.user.is_authenticated: 
-		return render(request, "forum/home.html")
+		return HttpResponseRedirect("/user/home/")
 	else:
 		return render(request, "forum/main.html")
 
 def register(request):
+	status = "normal"
 	if request.method == 'POST':
 		username = request.POST['register_email']
 		password = request.POST['register_password']
-		if not (User.objects.filter(username=username).exists()):
-			user = User.objects.create_user(username = username, password = password)
-			user = authenticate(username = username, password = password)
-			login(request, user)
-			return HttpResponseRedirect("/")
+		password_confirm = request.POST['register_password_confirm']
+		if password == password_confirm :
+			if not (User.objects.filter(username=username).exists()):
+				user = User.objects.create_user(username = username, password = password)
+				user = authenticate(username = username, password = password)
+				login(request, user)
+				return HttpResponseRedirect("/")
+			else:
+				status = "already-exist"
 		else:
-			return HttpResponse("User: " + username + " already exist!")
-	else:
-		return render(request, "forum/register.html")
+			status = "password-different"
+	return render(request, "forum/register.html", {'status' : status})
+
+def course(request,course_id): # course?course_id=1
+	context = {}
+	curr_course = Course.objects.get(id=course_id)
+	context['course'] = curr_course
+	print(curr_course.get_avg_scores)
+
+	res = curr_course.get_avg_scores()
+	overall_score = res[0]
+	difficulty_score = res[1]
+	workload_score = res[2]
+	professor_score = res[3]
+
+	context['overall_score'] = overall_score
+	context['difficulty_score'] = difficulty_score
+	context['workload_score'] = workload_score
+	context['professor_score'] = professor_score
+	
+	questions = Question.objects.filter(course__id=course_id)
+	context['questions'] = questions
+		
+	comments = Comment.objects.filter(course__id=course_id)
+	context['comments'] = comments
+		
+	return render(request, "forum/course.html",context)
+
+def add_question(request,course_id):
+	if request.method == 'POST':
+		question_title = request.POST['question_title']
+		question_content = request.POST['question_content']
+		new_question = Question(title=question_title, content=question_content, course=Course.objects.get(id=course_id),user=request.user,time= datetime.datetime.now())
+		new_question.save()
+	return HttpResponseRedirect("/course/" + str(course_id))
+
+def add_comment(request,course_id):
+	if request.method == 'POST':
+		content = request.POST['review_text']
+		difficulty = request.POST['difficulty']
+		workload = request.POST['workload']
+		professor = request.POST['professor']
+		overall = request.POST['overall']
+		new_comment = Comment(user=request.user, content=content, overall_score=overall, difficulty_score=difficulty, workload_score=workload, professor_score=professor, course=Course.objects.get(id=course_id),time= datetime.datetime.now())
+		new_comment.save()
+	return HttpResponseRedirect("/course/" + str(course_id))
 
 def user(request):
 	return render(request, "forum/user.html")
 
+def home(request):
+	if not request.user.is_authenticated: 
+		return HttpResponseRedirect("/")
+	else:
+		context = {}
+		user_id = request.user.id
+		courses = []
+		for obj in Take.objects.filter(user__id=user_id):
+			courses.append(obj.course)
+		context['courses'] = courses
+		course_id = request.GET.get('course_id')
+		if course_id is None:
+			questions = Question.objects.filter(course__in=courses)
+			context['curr_course'] = None
+		else:
+			questions = Question.objects.filter(course__id=course_id)
+			context['curr_course'] = Course.objects.get(id=course_id)
+		context['questions'] = questions
+
+		return render(request, "forum/user/home.html", context)
+
+def question(request, question_id):
+	context = {}
+	question = Question.objects.get(id = question_id)
+	answer_set = Answer.objects.filter(question__id = question_id)
+	context["question"] = question
+	context["answer_set"] = answer_set
+	return render(request, "forum/question.html", context)
+
+def new_answer(request, question_id):
+	new_answer = Answer(content = request.POST["new_answer"], question = Question.objects.get(id = question_id), user = request.user)
+	new_answer.save()
+	return HttpResponseRedirect("/question/" + str(question_id) + "/")
+
 def profile(request):
-	return render(request, "forum/profile.html")
+	context = {"user":request.user}
+	student = Student.objects.filter(user = request.user)
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
+	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-	return render(request, "forum/edit_profile.html")
+	if request.method == 'POST':
+		student = Student.objects.filter(user = request.user)
+		if student:
+			student = Student.objects.get(user = request.user)
+			student.department = Department.objects.get(name = request.POST['major'])
+			student.name = request.POST['name']
+			student.bio = request.POST['bio']
+		else:
+			student = Student.objects.filter(user = request.user)
+			student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
+		student.save()
+		if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
+			user = request.user
+			request.user.set_password(request.POST['register_password'])
+			request.user.save()
+			login(request, user)
+		return HttpResponseRedirect("/user/profile/")
+	context = {"user":request.user}
+	student = Student.objects.filter(user = request.user)
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
+	return render(request, "forum/user/edit_profile.html", context)
 
-def course(request):
-	return render(request, "forum/course.html")
+def addCourse(request):
+	context = {}
+	status = 'normal'
+	if request.method == 'POST':
+		department_name = request.POST['subject']
+		course_number = request.POST['course_number']
+		context['course_add'] = department_name + str(course_number)
+		with connection.cursor() as cursor:
+			cursor.execute("""SELECT id 
+								FROM forum_course 
+								WHERE number = '%s'
+									AND department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
+			result = cursor.fetchall()
+			if result:
+				course_id = result[0][0]
+				user_id = request.user.id
+				cursor.execute("SELECT * FROM forum_take WHERE course_id = %s AND user_id = %s;"%(course_id, user_id))
+				result2 = cursor.fetchall();
+				if not result2 :
+					cursor.execute("INSERT INTO forum_take(course_id, user_id) VALUES (%s, %s);"%(course_id, user_id))
+					status = 'success'
+				else:
+					status = 'already-exist'
+			else:
+				status = 'not-exist'
+	current_user = request.user
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT id FROM auth_user WHERE username = '%s';"%(current_user))
+		result = cursor.fetchall()
+		user_id = result[0][0]
+		cursor.execute("SELECT course_id FROM forum_take WHERE user_id = '%s';"%(user_id))
+		result = cursor.fetchall()
+		course_taken = []
+		for r in result:
+			course_id = r[0]
+			cursor.execute("""SELECT name, number 
+							FROM forum_department d,forum_course c
+							WHERE c.id = '%s'
+								AND c.department_id = d.id;"""%(course_id))
+			result2 = cursor.fetchall()
+			course_taken.append(result2[0][0] + " " + str(result2[0][1]))
+	context['course_taken'] = course_taken
+	context['status'] =  status
+	return render(request, "forum/user/addCourse.html", context)
+
+def square(request):
+	context = {}
+	questions = Question.objects.all()
+	context['questions'] = questions
+	return render(request, "forum/square.html",context)
 
 #view for initial demo
 def initial_demo(request):
@@ -157,3 +318,9 @@ def import_data(request):
 			return HttpResponse("Invalid command!")
 	else:
 		return render(request, "forum/import_data.html")
+
+# view for testing template system
+def template_test(request):
+	var_test = [1, 2, 3, 4, 5];
+	context = {'var_test': var_test}
+	return render(request, "forum/template_test.html", context)
