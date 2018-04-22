@@ -163,11 +163,11 @@ def course(request,course_id): # course?course_id=1
 	context['professor_score'] = professor_score
 
 	questions = Question.objects.filter(course__id=course_id)
-    questions.reverse()
+	questions.reverse()
 	context['questions'] = questions
 
 	comments = Comment.objects.filter(course__id=course_id)
-    comments.reverse()
+	comments.reverse()
 	context['comments'] = comments
 
 	return render(request, "forum/course.html",context)
@@ -203,7 +203,7 @@ def home(request):
 		courses = []
 		for obj in Take.objects.filter(user__id=user_id):
 			courses.append(obj.course)
-        courses.reverse()
+		courses.reverse()
 		context['courses'] = courses
 		course_id = request.GET.get('course_id')
 		if course_id is None:
@@ -212,7 +212,7 @@ def home(request):
 		else:
 			questions = Question.objects.filter(course__id=course_id)
 			context['curr_course'] = Course.objects.get(id=course_id)
-        questions.reverse()
+		questions.reverse()
 		context['questions'] = questions
 
 		return render(request, "forum/user/home.html", context)
@@ -222,7 +222,7 @@ def question(request, question_id):
 	question = Question.objects.get(id = question_id)
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
-    answer_set.reverse()
+	answer_set.reverse()
 	context["answer_set"] = answer_set
 
 	question_all = Question.objects.all()
@@ -278,39 +278,39 @@ def new_answer(request, question_id):
 	return HttpResponseRedirect("/question/" + str(question_id) + "/")
 
 def profile(request):
-    context = {"user":request.user}
-    student = Student.objects.filter(user = request.user)
-    if student:
-        context['student'] = student[0]
-    else:
-        context['student'] = None
-    return render(request, "forum/user/profile.html", context)
+	context = {"user":request.user}
+	student = Student.objects.filter(user = request.user)
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
+	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-    if request.method == 'POST':
-        student = Student.objects.filter(user = request.user)
-        if student:
-            student = Student.objects.get(user = request.user)
-            student.department = Department.objects.get(name = request.POST['major'])
-            student.name = request.POST['name']
-            student.bio = request.POST['bio']
-        else:
-            student = Student.objects.filter(user = request.user)
-            student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
-        student.save()
-        if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
-            user = request.user
-            request.user.set_password(request.POST['register_password'])
-            request.user.save()
-            login(request, user)
-        return HttpResponseRedirect("/user/profile/")
-    context = {"user":request.user}
-    student = Student.objects.filter(user = request.user)
-    if student:
-        context['student'] = student[0]
-    else:
-        context['student'] = None
-    return render(request, "forum/user/edit_profile.html", context)
+	if request.method == 'POST':
+		student = Student.objects.filter(user = request.user)
+		if student:
+			student = Student.objects.get(user = request.user)
+			student.department = Department.objects.get(name = request.POST['major'])
+			student.name = request.POST['name']
+			student.bio = request.POST['bio']
+		else:
+			student = Student.objects.filter(user = request.user)
+			student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
+		student.save()
+		if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
+			user = request.user
+			request.user.set_password(request.POST['register_password'])
+			request.user.save()
+			login(request, user)
+		return HttpResponseRedirect("/user/profile/")
+	context = {"user":request.user}
+	student = Student.objects.filter(user = request.user)
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
+	return render(request, "forum/user/edit_profile.html", context)
 
 def addCourse(request):
 	context = {}
@@ -366,7 +366,7 @@ def delete_course(request, course_id):
 def square(request):
 	context = {}
 	questions = Question.objects.all()
-    questions.reverse()
+	questions.reverse()
 	context['questions'] = questions
 	return render(request, "forum/square.html",context)
 
