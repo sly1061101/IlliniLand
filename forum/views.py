@@ -322,6 +322,7 @@ def search(request):
             str_course_dictionary[course_str]=course
 		courses_str = process.extract(keyword, course_str_list, limit = 6)
         for str in courses_str:
+            print("score: "+str(str[1]))
             courses.append(str_course_dictionary[str[0]])
 
 	elif searchtype == "question":
