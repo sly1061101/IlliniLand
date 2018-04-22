@@ -335,8 +335,17 @@ def search(request):
 
 
 	elif searchtype == "question":
-		result= Question.objects.all()
-		questions = fuzzy_search(keyword, result)
+		str_question_dictionary = {}
+		question_str_list = []
+		all_questions = Question.objects.all()
+		for question in all_questions:
+			question_str = question.to_string()
+			question_str_list.append(question_str)
+			str_question_dictionary[question_str]=question
+		question_str = process.extract(keyword, question_str_list, limit = 6)
+		for s in question_str:
+			# print("score: "+str(s[1]))
+			questions.append(str_question_dictionary[s[0]])
 	context['courses'] = courses
 	context['questions'] = questions
 	return render(request, "forum/search.html", context)
