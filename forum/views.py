@@ -314,9 +314,9 @@ def search(request):
 	questions = []
 	if searchtype == "course":
 		with connection.cursor() as cursor:
-			cursor.execute("""SELECT course_number, department_name
-				FROM forum_course,forum department
-				WHERE department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
+			cursor.execute("""SELECT CONCAT(course_number, department_name)
+				FROM forum_course,forum_department
+				""")
 			result = cursor.fetchall()
 			course = fuzzy_search(keyword,result)
 		"""str_course_dictionary = {}
