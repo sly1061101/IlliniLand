@@ -76,18 +76,44 @@ def levenshtein(seq1, seq2):
 	#print (matrix)
 	return (matrix[size_x - 1, size_y - 1])
 
+
 if __name__ == '__main__':
 	cwd = os.getcwd()
 	file = open("s_query.txt", "r")
 	s_query = file.read()
 	file.close()
 
+	doc = metapy.index.Document()
+	doc.content(s_query)
+	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	tok = metapy.analyzers.LowercaseFilter(tok)	
+	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	tok = metapy.analyzers.Porter2Filter(tok)	
+	tok.set_content(doc.content())	
+	tokens = [token for token in tok]	
+	s_query = ""	
+	for t in tokens:	
+		s_query += t + " "
+
 	q = Q.PriorityQueue()
 
 	questions = []
 	with open("./cranfield/cranfield.dat") as fp:  
 		for cnt, line in enumerate(fp):
-			questions.append(line)
+			doc = metapy.index.Document()
+			doc.content(line)
+			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+			tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+			tok = metapy.analyzers.LowercaseFilter(tok)	
+			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			tok = metapy.analyzers.Porter2Filter(tok)	
+			tok.set_content(doc.content())	
+			tokens = [token for token in tok]	
+			line = ""	
+			for t in tokens:	
+				line += t + " "
+			print(line)
 			q.put((levenshtein(s_query, line),cnt))
 	
 	file = open("result.txt", "w")
