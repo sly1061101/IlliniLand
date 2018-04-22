@@ -314,22 +314,27 @@ def search(request):
 	questions = []
 	if searchtype == "course":
 		with connection.cursor() as cursor:
+<<<<<<< HEAD
 			cursor.execute("""SELECT CONCAT(course_number, department_name)
 				FROM forum_course,forum_department
 				""")
+=======
+			cursor.execute("""SELECT course_number, department_name
+				FROM forum_course,forum_department;""")
+>>>>>>> b67f0c47df9360f16ae5230b197bd271d094ab43
 			result = cursor.fetchall()
 			course = fuzzy_search(keyword,result)
-		"""str_course_dictionary = {}
-		course_str_list = []
-		all_courses = Course.objects.all()
-		for course in all_courses:
-			course_str = course.to_string
-			course_str_list.append(course_str)
-			str_course_dictionary[course_str]=course
-		courses_str = process.extract(keyword, course_str_list, limit = 6)
-		for str in courses_str:
-			print("score: "+str(str[1]))
-			courses.append(str_course_dictionary[str[0]])"""
+		# """str_course_dictionary = {}
+		# course_str_list = []
+		# all_courses = Course.objects.all()
+		# for course in all_courses:
+		# 	course_str = course.to_string
+		# 	course_str_list.append(course_str)
+		# 	str_course_dictionary[course_str]=course
+		# courses_str = process.extract(keyword, course_str_list, limit = 6)
+		# for str in courses_str:
+		# 	print("score: "+str(str[1]))
+		# 	courses.append(str_course_dictionary[str[0]])"""
 
 
 	elif searchtype == "question":
