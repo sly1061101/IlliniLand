@@ -114,8 +114,11 @@ if __name__ == '__main__':
 
 	file = open("result.txt", "w")
 	cnt = 0
-	q.get()
-	while cnt < 3 and not q.empty():
-		file.write(str(q.get()[1]) + "\n")
+	score = q.get()
+	while cnt < 5 and not q.empty():
+		print(score)
+		if score[0] > 0 and score[0] < 15:
+			file.write(str(score[1]) + "\n")
 		cnt += 1
+		score = q.get()
 	file.close()
