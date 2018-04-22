@@ -107,6 +107,7 @@ if __name__ == '__main__':
 			distance_content.append(levenshtein(s_query_content, line))
 
 	for i in range(0, len(distance_title)):
+		print((distance_title[i],distance_content[i],i))
 		q.put((10*distance_title[i] + distance_content[i], i))
 
 	file = open("result.txt", "w")
