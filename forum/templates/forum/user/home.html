@@ -64,7 +64,7 @@
             {% if course.id == curr_course.id %}
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">
 				  {{ course.department.name }} {{ course.number }}
-				  <span class="pull-right">
+				  <span class="float-right">
 					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete </button>
 				  </span>
 			  </a>
@@ -72,7 +72,7 @@
             {% else %}
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">
 				  {{ course.department.name }} {{ course.number }}
-				  <span class="pull-right">
+				  <span class="float-right">
 					  <button href="/user/delete_course/{{ course.id }}/" class="btn btn-xs btn-warning"> delete </button>
 				  </span>
 			  </a>
