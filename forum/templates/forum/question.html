@@ -63,6 +63,19 @@
             </div>
 
           </div>
+
+        <div class="card">
+            <h7 class="card-header">
+              <i class="fa fa-pencil-square" aria-hidden="true"></i>
+              Related Questions
+            </h7>
+            <div class="card-body">
+             {% for q in related_questions %}
+              <p><a href="/question/{{q.id}}/">{{q.title}}</a></p>
+              {% endfor %}
+            </div>
+          </div>
+
           <!-- add answer -->
           <div class="card">
             <h7 class="card-header">

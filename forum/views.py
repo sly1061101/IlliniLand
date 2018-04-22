@@ -8,6 +8,9 @@ import datetime
 import json
 
 import metapy
+from PL2 import PL2Ranker
+from subprocess import call
+import os
 
 from django.db import connection
 
@@ -111,18 +114,60 @@ def question(request, question_id):
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
 	context["answer_set"] = answer_set
+
 	question_all = Question.objects.all()
-	docs = []
+
+	#Find related questions
+	f = open('./cranfield/cranfield.dat','w')
 	for q in question_all:
-		doc = metapy.index.Document()
-		doc.content(q.title + " " + q.content)
-		docs.append(doc)
-	for doc in docs:
-		tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
-		tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
-		tok.set_content(doc.content())
-		tokens = [token for token in tok]
-		print(tokens)
+		# doc = metapy.index.Document()
+		# doc.content(q.title + " " + q.content)
+		# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+		# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+		# tok = metapy.analyzers.LowercaseFilter(tok)
+		# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)
+		# tok = metapy.analyzers.Porter2Filter(tok)
+		# tok.set_content(doc.content())
+		# tokens = [token for token in tok]
+		# s = ""
+		# for t in tokens:
+		#   s += t + " "
+		s = q.title + " " + q.content
+		s = s.replace('\r', ' ').replace('\n', '')
+		f.write(s + '\n')
+	f.close()
+
+	# doc = metapy.index.Document()
+	# doc.content(question.title + " " + question.content)
+	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+	# tok = metapy.analyzers.LowercaseFilter(tok)
+	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)
+	# tok = metapy.analyzers.Porter2Filter(tok)
+	# tok.set_content(doc.content())
+	# tokens = [token for token in tok]
+	# s_query = ""
+	# for t in tokens:
+	#   s_query += t + " "
+	s_query = question.title
+	s_query = s_query.replace('\r', ' ').replace('\n', '')
+	f = open('s_query.txt','w')
+	f.write(s_query)
+	f.close()
+
+	cwd = os.getcwd()
+	call(["python", cwd + "/PL2.py"])
+
+	related = []
+	with open("result.txt") as fp:  
+		for cnt, line in enumerate(fp):
+			related.append(int(line))
+	related_questions = []
+	for num in related:
+		related_questions.append(question_all[num])
+
+	context["related_questions"] = related_questions
+
 	return render(request, "forum/question.html", context)
 
 def new_answer(request, question_id):
@@ -327,7 +372,7 @@ def import_data(request):
 						department = Department.objects.get(name=subject)
 						course = Course(number=number, title=title, department=department, description=description)
 						course.save()
-			return HttpResponse("Finish!")	
+			return HttpResponse("Finish!")  
 		else:
 			return HttpResponse("Invalid command!")
 	else:
