@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process
 from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
 import datetime
@@ -12,7 +14,7 @@ from django.db import connection
 # Create your views here.
 
 def index(request):
-	if request.user.is_authenticated: 
+	if request.user.is_authenticated:
 		return HttpResponseRedirect("/user/home/")
 	else:
 		return render(request, "forum/main.html")
@@ -51,13 +53,13 @@ def course(request,course_id): # course?course_id=1
 	context['difficulty_score'] = difficulty_score
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
-	
+
 	questions = Question.objects.filter(course__id=course_id)
 	context['questions'] = questions
-		
+
 	comments = Comment.objects.filter(course__id=course_id)
 	context['comments'] = comments
-		
+
 	return render(request, "forum/course.html",context)
 
 def add_question(request,course_id):
@@ -83,7 +85,7 @@ def user(request):
 	return render(request, "forum/user.html")
 
 def home(request):
-	if not request.user.is_authenticated: 
+	if not request.user.is_authenticated:
 		return HttpResponseRedirect("/")
 	else:
 		context = {}
@@ -117,39 +119,13 @@ def new_answer(request, question_id):
 	return HttpResponseRedirect("/question/" + str(question_id) + "/")
 
 def profile(request):
-	context = {"user":request.user}
 	student = Student.objects.filter(user = request.user)
-	if student:
-		context['student'] = student[0]
-	else:
-		context['student'] = None
+	context = {"user":request.user, "student":student}
+	print(context)
 	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-	if request.method == 'POST':
-		student = Student.objects.filter(user = request.user)
-		if student:
-			student = Student.objects.get(user = request.user)
-			student.department = Department.objects.get(name = request.POST['major'])
-			student.name = request.POST['name']
-			student.bio = request.POST['bio']
-		else:
-			student = Student.objects.filter(user = request.user)
-			student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
-		student.save()
-		if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
-			user = request.user
-			request.user.set_password(request.POST['register_password'])
-			request.user.save()
-			login(request, user)
-		return HttpResponseRedirect("/user/profile/")
-	context = {"user":request.user}
-	student = Student.objects.filter(user = request.user)
-	if student:
-		context['student'] = student[0]
-	else:
-		context['student'] = None
-	return render(request, "forum/user/edit_profile.html", context)
+	return render(request, "forum/user/edit_profile.html")
 
 def addCourse(request):
 	context = {}
@@ -159,10 +135,10 @@ def addCourse(request):
 		course_number = request.POST['course_number']
 		context['course_add'] = department_name + str(course_number)
 		with connection.cursor() as cursor:
-			cursor.execute("""SELECT id 
-								FROM forum_course 
-								WHERE number = '%s'
-									AND department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
+			cursor.execute("""SELECT id
+				FROM forum_course
+				WHERE number = '%s'
+				AND department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
 			result = cursor.fetchall()
 			if result:
 				course_id = result[0][0]
@@ -186,10 +162,10 @@ def addCourse(request):
 		course_taken = []
 		for r in result:
 			course_id = r[0]
-			cursor.execute("""SELECT name, number 
-							FROM forum_department d,forum_course c
-							WHERE c.id = '%s'
-								AND c.department_id = d.id;"""%(course_id))
+			cursor.execute("""SELECT name, number
+				FROM forum_department d,forum_course c
+				WHERE c.id = '%s'
+				AND c.department_id = d.id;"""%(course_id))
 			result2 = cursor.fetchall()
 			course_taken.append(result2[0][0] + " " + str(result2[0][1]))
 	context['course_taken'] = course_taken
@@ -231,7 +207,7 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'update':
 			with connection.cursor() as cursor:
 				cursor.execute("UPDATE forum_course SET title = %s, description = %s WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (title_, description_, number_, department_))
-				
+
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
@@ -241,7 +217,7 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'delete':
 			with connection.cursor() as cursor:
 				cursor.execute("DELETE FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (number_, department_))
-				
+
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
@@ -250,10 +226,10 @@ def initial_demo(request):
 				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'advanced1':
 			with connection.cursor() as cursor:
-				sql = """SELECT forum_department.name, COUNT(forum_course.id) 
-							FROM forum_course, forum_department 
-							WHERE forum_course.department_id = forum_department.id 
-							GROUP BY forum_department.name"""
+				sql = """SELECT forum_department.name, COUNT(forum_course.id)
+					FROM forum_course, forum_department
+					WHERE forum_course.department_id = forum_department.id
+					GROUP BY forum_department.name"""
 				cursor.execute(sql)
 
 				result = cursor.fetchall()
@@ -264,34 +240,34 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'advanced2':
 			with connection.cursor() as cursor:
 				sql = """SELECT d1.name
-						FROM
-						(SELECT forum_department.name
-						FROM forum_course, forum_department
-						WHERE (forum_course.department_id = forum_department.id)
-						  AND (forum_course.number >= 400)
-						  AND (forum_course.number < 500)
-						GROUP BY forum_department.name
-						HAVING COUNT(forum_course.id) > 15) AS d1
-						,
-						(SELECT forum_department.name
-						FROM forum_course, forum_department
-						WHERE (forum_course.department_id = forum_department.id)
-						  AND (forum_course.number >= 500)
-						  AND (forum_course.number < 600)
-						GROUP BY forum_department.name
-						HAVING COUNT(forum_course.id) > 15) AS d2
-						WHERE d1.name = d2.name"""
+					FROM
+					(SELECT forum_department.name
+					FROM forum_course, forum_department
+					WHERE (forum_course.department_id = forum_department.id)
+					AND (forum_course.number >= 400)
+					AND (forum_course.number < 500)
+					GROUP BY forum_department.name
+					HAVING COUNT(forum_course.id) > 15) AS d1
+					,
+					(SELECT forum_department.name
+					FROM forum_course, forum_department
+					WHERE (forum_course.department_id = forum_department.id)
+					AND (forum_course.number >= 500)
+					AND (forum_course.number < 600)
+					GROUP BY forum_department.name
+					HAVING COUNT(forum_course.id) > 15) AS d2
+					WHERE d1.name = d2.name"""
 
 				cursor.execute(sql)
 
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Advanced SQL Query 2:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 2 (Departments which provide both more than 15 400-level courses and 15 500-level courses): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 
-	else:
-		return render(request, "forum/initial_demo.html")
+		else:
+			return render(request, "forum/initial_demo.html")
 
 # A special view for importing data into database. Only used for developing.
 def import_data(request):
@@ -313,7 +289,7 @@ def import_data(request):
 						department = Department.objects.get(name=subject)
 						course = Course(number=number, title=title, department=department, description=description)
 						course.save()
-			return HttpResponse("Finish!")	
+			return HttpResponse("Finish!")
 		else:
 			return HttpResponse("Invalid command!")
 	else:
@@ -324,3 +300,52 @@ def template_test(request):
 	var_test = [1, 2, 3, 4, 5];
 	context = {'var_test': var_test}
 	return render(request, "forum/template_test.html", context)
+
+
+def fuzzy_search(term, choices):
+	result = process.extract(term, choices, limit = 6)
+	return [i[0] for i in result] #no need the point
+
+def search(request):
+	context={}
+	searchtype = request.POST.get("search_type")
+	keyword = request.POST.get("search_string")
+	courses = []
+	questions = []
+	if searchtype == "course":
+		# with connection.cursor() as cursor:
+		# 	cursor.execute("""SELECT CONCAT(name, number)
+		# 		FROM forum_course c,forum_department d
+		# 		WHERE c.department_id = d.id
+		# 		""")
+		# 	result = cursor.fetchall()
+		# 	course = fuzzy_search(keyword,result)
+
+		str_course_dictionary = {}
+		course_str_list = []
+		all_courses = Course.objects.all()
+		for course in all_courses:
+			course_str = course.to_string()
+			course_str_list.append(course_str)
+			str_course_dictionary[course_str]=course
+		courses_str = process.extract(keyword, course_str_list, limit = 6)
+		for s in courses_str:
+			# print("score: "+str(s[1]))
+			courses.append(str_course_dictionary[s[0]])
+
+
+	elif searchtype == "question":
+		str_question_dictionary = {}
+		question_str_list = []
+		all_questions = Question.objects.all()
+		for question in all_questions:
+			question_str = question.to_string()
+			question_str_list.append(question_str)
+			str_question_dictionary[question_str]=question
+		question_str = process.extract(keyword, question_str_list, limit = 6)
+		for s in question_str:
+			# print("score: "+str(s[1]))
+			questions.append(str_question_dictionary[s[0]])
+	context['courses'] = courses
+	context['questions'] = questions
+	return render(request, "forum/search.html", context)
