@@ -42,24 +42,24 @@ def course(request,course_id): # course?course_id=1
 	curr_course = Course.objects.get(id=course_id)
 	context['course'] = curr_course
 	print(curr_course.get_avg_scores)
-	
+
 	res = curr_course.get_avg_scores()
 	overall_score = res[0]
 	difficulty_score = res[1]
 	workload_score = res[2]
 	professor_score = res[3]
-	
+
 	context['overall_score'] = overall_score
 	context['difficulty_score'] = difficulty_score
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
-	
+
 	questions = Question.objects.filter(course__id=course_id)
 	context['questions'] = questions
-	
+
 	comments = Comment.objects.filter(course__id=course_id)
 	context['comments'] = comments
-	
+
 	return render(request, "forum/course.html",context)
 
 def add_question(request,course_id):
@@ -186,16 +186,16 @@ def initial_demo(request):
 		number_ = request.POST['number']
 		title_ = "'"+request.POST['title']+"'"
 		description_ = "'"+request.POST['description']+"'"
-		
+
 		if request.POST['choice'] == 'insert':
 			with connection.cursor() as cursor:
 				cursor.execute("INSERT INTO forum_course(number, title, description, department_id) VALUES (%s, %s, %s, (SELECT id FROM forum_department WHERE name = %s));" % (number_, title_, description_, department_))
-				
+
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Successfully inserted tuple into DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'query':
 			with connection.cursor() as cursor:
@@ -207,22 +207,22 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'update':
 			with connection.cursor() as cursor:
 				cursor.execute("UPDATE forum_course SET title = %s, description = %s WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (title_, description_, number_, department_))
-				
+
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'delete':
 			with connection.cursor() as cursor:
 				cursor.execute("DELETE FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (number_, department_))
-				
+
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'advanced1':
 			with connection.cursor() as cursor:
@@ -231,11 +231,11 @@ def initial_demo(request):
 					WHERE forum_course.department_id = forum_department.id
 					GROUP BY forum_department.name"""
 				cursor.execute(sql)
-				
+
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Advanced SQL Query 1:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 1 (Number of courses provided by every department): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'advanced2':
 			with connection.cursor() as cursor:
@@ -257,13 +257,13 @@ def initial_demo(request):
 					GROUP BY forum_department.name
 					HAVING COUNT(forum_course.id) > 15) AS d2
 					WHERE d1.name = d2.name"""
-						
+
 				cursor.execute(sql)
-				
+
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-				
+
 				return HttpResponse("Advanced SQL Query 2:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 2 (Departments which provide both more than 15 400-level courses and 15 500-level courses): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 
 		else:
@@ -321,15 +321,14 @@ def search(request):
 			course_str_list.append(course_str)
 			str_course_dictionary[course_str]=course
 		courses_str = process.extract(keyword, course_str_list, limit = 6)
-        for str in courses_str:
-            print("score: "+str(str[1]))
-            courses.append(str_course_dictionary[str[0]])
+		for str in courses_str:
+			print("score: "+str(str[1]))
+			courses.append(str_course_dictionary[str[0]])
 
 	elif searchtype == "question":
 		result= Question.objects.all()
 		questions = fuzzy_search(keyword, result)
-	
+
 	context['courses'] = courses
 	context['questions'] = questions
 	return render(request, "forum/search.html", context)
-
