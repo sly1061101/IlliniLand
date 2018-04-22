@@ -11,7 +11,6 @@ import json
 import random
 
 import metapy
-from PL2 import PL2Ranker
 from subprocess import call
 import os
 
@@ -234,7 +233,7 @@ def question(request, question_id):
 	f.close()
 
 	#save current question title to file
-	s_query = question.title
+	s_query = question.title + " " + question.content
 	s_query = s_query.replace('\r', ' ').replace('\n', '')
 	f = open('s_query.txt','w')
 	f.write(s_query)
@@ -242,7 +241,7 @@ def question(request, question_id):
 
 	#call external program to search
 	cwd = os.getcwd()
-	call(["python", cwd + "/PL2.py"])
+	call(["python", cwd + "/find_related_questions.py"])
 
 	#read search results and pass to front end
 	related = []
