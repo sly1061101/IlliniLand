@@ -118,46 +118,27 @@ def question(request, question_id):
 	question_all = Question.objects.all()
 
 	#Find related questions
+
+	#save all questions to file
 	f = open('./cranfield/cranfield.dat','w')
 	for q in question_all:
-		# doc = metapy.index.Document()
-		# doc.content(q.title + " " + q.content)
-		# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
-		# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
-		# tok = metapy.analyzers.LowercaseFilter(tok)
-		# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)
-		# tok = metapy.analyzers.Porter2Filter(tok)
-		# tok.set_content(doc.content())
-		# tokens = [token for token in tok]
-		# s = ""
-		# for t in tokens:
-		#   s += t + " "
 		s = q.title + " " + q.content
 		s = s.replace('\r', ' ').replace('\n', '')
 		f.write(s + '\n')
 	f.close()
 
-	# doc = metapy.index.Document()
-	# doc.content(question.title + " " + question.content)
-	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
-	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
-	# tok = metapy.analyzers.LowercaseFilter(tok)
-	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)
-	# tok = metapy.analyzers.Porter2Filter(tok)
-	# tok.set_content(doc.content())
-	# tokens = [token for token in tok]
-	# s_query = ""
-	# for t in tokens:
-	#   s_query += t + " "
-	s_query = question.title
+	#save current question title to file
+	s_query = question.title + " " + q.content
 	s_query = s_query.replace('\r', ' ').replace('\n', '')
 	f = open('s_query.txt','w')
 	f.write(s_query)
 	f.close()
 
+	#call external program to search
 	cwd = os.getcwd()
 	call(["python", cwd + "/PL2.py"])
 
+	#read search results and pass to front end
 	related = []
 	with open("result.txt") as fp:  
 		for cnt, line in enumerate(fp):
