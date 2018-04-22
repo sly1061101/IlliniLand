@@ -104,26 +104,6 @@
             </div>
           </div>
 
-
-        <div class="card">
-            <h7 class="card-header">
-              <i class="fa fa-pencil-square" aria-hidden="true"></i>
-              Recommend Questions
-            </h7>
-            <div class="card-body">
-              <form action="/question/{{question.id}}/new_answer/" method="POST">
-                {% csrf_token %}
-                <div class="col-sm-8" style="margin: auto;">
-                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This question is related to the CS125." rows="3"></textarea>
-                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This course is related to the CS125" rows="3"></textarea>
-                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="This is the last recommendation question" rows="3"></textarea>
-                </div>
-                <br>
-              </form>
-            </div>
-          </div>
-
-
           <!-- all answers -->
           <br>
           <div class="card-columns" style="column-count: 1;">
