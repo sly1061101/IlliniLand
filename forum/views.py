@@ -90,13 +90,7 @@ def recommend_course(request):
 					LIMIT 10) as s1, forum_course, forum_department \
 				WHERE s1.course_id = forum_course.id AND forum_course.department_id = forum_department.id;""");
 
-			result = cursor.fetchmany(5)
-			courses = []
-			for curr_id in result:
-				courses.append(Course.objects.get(id=curr_id[0]))
-			context = {}
-			context['courses'] = courses
-			return render(request, "forum/user/recommend_course.html", context)
+			
 			result = cursor.fetchall()
 			courses = []
 			for curr_id in result:
