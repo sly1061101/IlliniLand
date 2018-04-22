@@ -116,6 +116,7 @@ if __name__ == '__main__':
 
 	file = open("result.txt", "w")
 	cnt = 0
+	q.get()
 	while cnt < 3 and not q.empty():
 		file.write(str(q.get()[1]) + "\n")
 		cnt += 1
