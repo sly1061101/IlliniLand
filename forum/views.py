@@ -225,7 +225,7 @@ def question(request, question_id):
 	#Find related questions
 
 	#save all questions to file
-	f = open('./cranfield/cranfield.dat','w')
+	f = open('all_questions.txt','w')
 	for q in question_all:
 		s = q.title + " " + q.content
 		s = s.replace('\r', ' ').replace('\n', '')

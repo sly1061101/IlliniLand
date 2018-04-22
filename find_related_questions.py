@@ -99,7 +99,7 @@ if __name__ == '__main__':
 	q = Q.PriorityQueue()
 
 	questions = []
-	with open("./cranfield/cranfield.dat") as fp:  
+	with open("all_questions.txt") as fp:  
 		for cnt, line in enumerate(fp):
 			doc = metapy.index.Document()
 			doc.content(line)
