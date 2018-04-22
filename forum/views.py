@@ -337,7 +337,7 @@ def addCourse(request):
 				WHERE c.id = '%s'
 				AND c.department_id = d.id;"""%(course_id))
 			result2 = cursor.fetchall()
-			course_taken.append(result2[0][0] + " " + str(result2[0][1]))
+			course_taken.append((result2[0][0] + " " + str(result2[0][1]),course_id))
 	context['course_taken'] = course_taken
 	context['status'] =  status
 	return render(request, "forum/user/addCourse.html", context)

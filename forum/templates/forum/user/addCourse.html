@@ -57,7 +57,7 @@
         <div class="list-group course-list float-left">
           <div class="list-group-item list-group-item-action active">Your Courses</div>
           {% for course in course_taken %}
-            <div class="list-group-item list-group-item-action">{{ course }}</div>
+          <div class="list-group-item list-group-item-action"><a href="/course/{{course.1}}/"> {{ course.0 }}</a></div> 
           {% endfor %}
         </div>
         <!-- right all course questions -->
