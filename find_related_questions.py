@@ -75,56 +75,48 @@ if __name__ == '__main__':
 	all_questions_title = []
 	with open("all_questions_title.txt") as fp:  
 		for cnt, line in enumerate(fp):
-			# doc = metapy.index.Document()
-			# doc.content(line)
-			# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-			# tok = metapy.analyzers.LowercaseFilter(tok)	
-			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-			# tok = metapy.analyzers.Porter2Filter(tok)	
-			# tok.set_content(doc.content())	
-			# tokens = [token for token in tok]	
-			# line = ""	
-			# for t in tokens:	
-			# 	line += t + " "
+			doc = metapy.index.Document()
+			doc.content(line)
+			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+			tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+			tok = metapy.analyzers.LowercaseFilter(tok)	
+			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			tok = metapy.analyzers.Porter2Filter(tok)	
+			tok.set_content(doc.content())	
+			tokens = [token for token in tok]	
+			line = ""	
+			for t in tokens:	
+				line += t + " "
 			all_questions_title.append(line)
 
 
 	all_questions_content = []
 	with open("all_questions_content.txt") as fp:  
 		for cnt, line in enumerate(fp):
-			# doc = metapy.index.Document()
-			# doc.content(line)
-			# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-			# tok = metapy.analyzers.LowercaseFilter(tok)	
-			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-			# tok = metapy.analyzers.Porter2Filter(tok)	
-			# tok.set_content(doc.content())	
-			# tokens = [token for token in tok]	
-			# line = ""	
-			# for t in tokens:	
-			# 	line += t + " "
+			doc = metapy.index.Document()
+			doc.content(line)
+			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+			tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+			tok = metapy.analyzers.LowercaseFilter(tok)	
+			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			tok = metapy.analyzers.Porter2Filter(tok)	
+			tok.set_content(doc.content())	
+			tokens = [token for token in tok]	
+			line = ""	
+			for t in tokens:	
+				line += t + " "
 			all_questions_content.append(line)
 
-	distance_title = []
-	distance_content = []
+	distance = []
 	for i in range(0, len(all_questions_title)):
-		distance_title.append(levenshtein(s_query_title, all_questions_title[i] + " " + all_questions_content[i]))
-		distance_content.append(levenshtein(s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
+		distance.append(levenshtein(s_query_title + " " + s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
 
-	for i in range(0, len(distance_title)):
-		q.put((distance_title[i], i))
-		# if distance_content[i] > 20*distance_title[i]:
-		# 	q.put((distance_title[i] + distance_content[i]/10, i))
-		# else:
-		# 	q.put((distance_title[i], i))
+	for i in range(0, len(distance)):
+		q.put((distance[i], i))
 
 	file = open("result.txt", "w")
 	cnt = 0
-	score = q.get()
 	while cnt < 3 and not q.empty():
-		file.write(str(score[1]) + "\n")
+		file.write(str(q.get()[1]) + "\n")
 		cnt += 1
-		score = q.get()
 	file.close()
