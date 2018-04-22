@@ -315,21 +315,20 @@ def search(request):
 	if searchtype == "course":
 		with connection.cursor() as cursor:
 			cursor.execute("""SELECT course_number, department_name
-				FROM forum_course,forum department
-				WHERE department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
+				FROM forum_course,forum_department;""")
 			result = cursor.fetchall()
 			course = fuzzy_search(keyword,result)
-		"""str_course_dictionary = {}
-		course_str_list = []
-		all_courses = Course.objects.all()
-		for course in all_courses:
-			course_str = course.to_string
-			course_str_list.append(course_str)
-			str_course_dictionary[course_str]=course
-		courses_str = process.extract(keyword, course_str_list, limit = 6)
-		for str in courses_str:
-			print("score: "+str(str[1]))
-			courses.append(str_course_dictionary[str[0]])"""
+		# """str_course_dictionary = {}
+		# course_str_list = []
+		# all_courses = Course.objects.all()
+		# for course in all_courses:
+		# 	course_str = course.to_string
+		# 	course_str_list.append(course_str)
+		# 	str_course_dictionary[course_str]=course
+		# courses_str = process.extract(keyword, course_str_list, limit = 6)
+		# for str in courses_str:
+		# 	print("score: "+str(str[1]))
+		# 	courses.append(str_course_dictionary[str[0]])"""
 
 
 	elif searchtype == "question":
