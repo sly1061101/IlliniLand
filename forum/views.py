@@ -163,10 +163,10 @@ def course(request,course_id): # course?course_id=1
 	context['professor_score'] = professor_score
 
 	questions = Question.objects.filter(course__id=course_id)
-	context['questions'] = questions
+	context['questions'] = reversed(questions)
 
 	comments = Comment.objects.filter(course__id=course_id)
-	context['comments'] = comments
+	context['comments'] = reversed(comments)
 
 	return render(request, "forum/course.html",context)
 
@@ -201,7 +201,7 @@ def home(request):
 		courses = []
 		for obj in Take.objects.filter(user__id=user_id):
 			courses.append(obj.course)
-		context['courses'] = courses
+		context['courses'] = reversed(courses)
 		course_id = request.GET.get('course_id')
 		if course_id is None:
 			questions = Question.objects.filter(course__in=courses)
@@ -209,7 +209,7 @@ def home(request):
 		else:
 			questions = Question.objects.filter(course__id=course_id)
 			context['curr_course'] = Course.objects.get(id=course_id)
-		context['questions'] = questions
+		context['questions'] = reversed(questions)
 
 		return render(request, "forum/user/home.html", context)
 
@@ -218,7 +218,7 @@ def question(request, question_id):
 	question = Question.objects.get(id = question_id)
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
-	context["answer_set"] = answer_set
+	context["answer_set"] = reversed(answer_set)
 
 	question_all = Question.objects.all()
 
@@ -361,7 +361,7 @@ def delete_course(request, course_id):
 def square(request):
 	context = {}
 	questions = Question.objects.all()
-	context['questions'] = questions
+	context['questions'] = reversed(questions)
 	return render(request, "forum/square.html",context)
 
 #view for initial demo
