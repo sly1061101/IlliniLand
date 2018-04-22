@@ -162,12 +162,10 @@ def course(request,course_id): # course?course_id=1
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
 
-	questions = Question.objects.filter(course__id=course_id)
-    questions.reverse()
+	questions = Question.objects.filter(course__id=course_id).order_by('-time')
 	context['questions'] = questions
 
-	comments = Comment.objects.filter(course__id=course_id)
-    comments.reverse()
+	comments = Comment.objects.filter(course__id=course_id).order_by('-time')
 	context['comments'] = comments
 
 	return render(request, "forum/course.html",context)
@@ -203,7 +201,6 @@ def home(request):
 		courses = []
 		for obj in Take.objects.filter(user__id=user_id):
 			courses.append(obj.course)
-        courses.reverse()
 		context['courses'] = courses
 		course_id = request.GET.get('course_id')
 		if course_id is None:
@@ -212,8 +209,7 @@ def home(request):
 		else:
 			questions = Question.objects.filter(course__id=course_id)
 			context['curr_course'] = Course.objects.get(id=course_id)
-        questions.reverse()
-		context['questions'] = questions
+		context['questions'] = questions.order_by('-time')
 
 		return render(request, "forum/user/home.html", context)
 
@@ -222,8 +218,7 @@ def question(request, question_id):
 	question = Question.objects.get(id = question_id)
 	answer_set = Answer.objects.filter(question__id = question_id)
 	context["question"] = question
-    answer_set.reverse()
-	context["answer_set"] = answer_set
+	context["answer_set"] = answer_set.order_by('-time')
 
 	question_all = Question.objects.all()
 
@@ -365,8 +360,7 @@ def delete_course(request, course_id):
 
 def square(request):
 	context = {}
-	questions = Question.objects.all()
-    questions.reverse()
+	questions = Question.objects.all().order_by('-time')
 	context['questions'] = questions
 	return render(request, "forum/square.html",context)
 
