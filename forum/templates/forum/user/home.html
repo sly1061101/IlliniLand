@@ -35,9 +35,14 @@
               <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+		  <form action="/search" method="POST" class="form-inline my-2 my-lg-0" >
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" name ="search_string" type="search" placeholder="CS125" aria-label= "Search">
+            <select class ="form-control" name="search_type">
+                <option value="course">course</option>
+                <option value="question">question</option>
+            </select> &nbsp;&nbsp;
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>
@@ -66,19 +71,31 @@
           <div class="card-columns" style="column-count: 1;">
             {% if questions|length == 0 and curr_course.id is not None %}
                 <div class="card">
-                  <a class="card-link" href="/course/{{ curr_course.id }}/">
                     <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
-                  </a>
 
                   <div class="card-body">
-                      <a class="card-link" href="/course/{{ curr_course.id }}/">
+
                     <h5 class="card-title">Empty Forum</h5>
-                    <p class="card-text">The course you subscribed has no question yet. Go to course website and add one!</p>
-                  </a></div>
+                    <p class="card-text">The course you subscribed has no question yet. Go to
+						<a class="card-link" href="/course/{{ curr_course.id }}/">course website and add one!</a></p>
+                  </div>
 
                 </div>
                 <br>
             {% endif %}
+
+			{% if courses|length == 0 %}
+                <div class="card">
+                    <h5 class="card-header">Welcome to Illiniland!</h5>
+                  <div class="card-body">
+                    <h5 class="card-title">You haven't subscribe any course yet!</h5>
+                    <p class="card-text">Go <a href="/user/addCourse/">add course</a> now!</p>
+	              </div>
+
+                </div>
+                <br>
+            {% endif %}
+
 
             {% for question in questions %}
 
