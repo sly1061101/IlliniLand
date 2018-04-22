@@ -117,19 +117,32 @@ def new_answer(request, question_id):
 	return HttpResponseRedirect("/question/" + str(question_id) + "/")
 
 def profile(request):
+	context = {"user":request.user}
 	student = Student.objects.filter(user = request.user)
-	context = {"user":request.user, "student":student}
-	print(student)
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
 	return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
 	if request.method == 'POST':
 		student = Student.objects.filter(user = request.user)
-		student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = request.POST['start_date'], end_data = request.POST['end_date'], bio = request.POST['bio'])
+		if student:
+			student = Student.objects.get(user = request.user)
+			student.department = Department.objects.get(name = request.POST['major'])
+			student.name = request.POST['name']
+			student.bio = request.POST['bio']
+		else:
+			student = Student.objects.filter(user = request.user)
+			student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
 		student.save()
-		print(student)
+	context = {"user":request.user}
 	student = Student.objects.filter(user = request.user)
-	context = {"user":request.user, "student":student}
+	if student:
+		context['student'] = student[0]
+	else:
+		context['student'] = None
 	return render(request, "forum/user/edit_profile.html", context)
 
 def addCourse(request):
