@@ -8,6 +8,7 @@ from forum.models import Department, Course, Take, Question, Answer, Comment, St
 from django.db.models import F
 import datetime
 import json
+import random
 
 from django.db import connection
 
