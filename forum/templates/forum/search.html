@@ -57,7 +57,7 @@
         <div class="list-group course-list">
             {% for course in courses%}
             <div class="card">
-                <a href="course/{{ course.id }}">
+                <a href="/course/{{ course.id }}/">
                     <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
                 </a>
               <div class="card-body" style="max-width=100%">
