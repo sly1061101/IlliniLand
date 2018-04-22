@@ -4,7 +4,7 @@
 
    <head>
 
-      <title>IlliniLand - Login</title>
+      <title>Course Recommendation</title>
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -22,14 +22,17 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/square/">Square <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+              <a class="nav-link" href="/square/">Square<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/user/home/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
 		  <form action="/search" method="POST" class="form-inline my-2 my-lg-0" >
@@ -46,31 +49,39 @@
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
-				<div class="card col-md-8 offset-md-2 col-lg-6 offset-lg-3 text-center pr-sm-5 pl-sm-5">
-					<h1 class="mt-4 mb-sm-5 mb-4 content-heading">Sign in</h1>
-					<form action="" method="POST">
-						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">Email : </label>
-							<div class="col-sm-8">
-								<input type="text" class="form-control" name="login_email" placeholder="Email..." required="">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="password" class="col-sm-4 col-form-label">Password : </label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" name="login_password" placeholder="Password..." required="">
-							</div>
-						</div>
-						<div class="mt-5 pb-3">
-							<hr>
-							Don't have an account? Register <a href="/register/">here!</a>
-						</div>
-						<button type="submit" name="login_submit" class="btn btn-primary mb-4">Submit</button>
-					</form>
-				</div>
+  			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+          <!-- left course menu -->
+          <form method="GET">
+            {% csrf_token %}
+            <div class="list-group course-list float-left">
+              <div class="list-group-item list-group-item-action active">Recommended courses</div>
+              {% for course in courses %}
+                <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+              {% endfor %}
+            </div>
+          </form>
+        </div>
+
+        <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group row">
+              <label for="subject" class="col-sm-4 col-form-label">Is this recommendation good? </label>
+              <div class="col-sm-8">
+                <div class="input-group" >
+                  <button type="submit" name="good" class="btn btn-info" role="button">good</button>
+                  &nbsp;&nbsp;
+                  <button type="submit" name="bad" class="btn btn-info" role="button">bad</button>
+                </div>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+
+
 			</div>
-		</div>
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

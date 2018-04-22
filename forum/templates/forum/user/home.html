@@ -71,6 +71,7 @@
           <div class="card-columns" style="column-count: 1;">
             {% if questions|length == 0 and curr_course.id is not None %}
                 <div class="card">
+<<<<<<< HEAD
                     <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
 
                   <div class="card-body">
@@ -79,11 +80,23 @@
                     <p class="card-text">The course you subscribed has no question yet. Go to
 						<a class="card-link" href="/course/{{ curr_course.id }}/">course website and add one!</a></p>
                   </div>
+=======
+                  <a class="card-link" href="/course/{{ curr_course.id }}/">
+                    <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
+                  </a>
+
+                  <div class="card-body">
+                      <a class="card-link" href="/course/{{ curr_course.id }}/">
+                    <h5 class="card-title">Empty Forum</h5>
+                    <p class="card-text">The course you subscribed has no question yet. Go to course website and add one!</p>
+                  </a></div>
+>>>>>>> wxg
 
                 </div>
                 <br>
             {% endif %}
 
+<<<<<<< HEAD
 			{% if courses|length == 0 %}
                 <div class="card">
                     <h5 class="card-header">Welcome to Illiniland!</h5>
@@ -97,6 +110,8 @@
             {% endif %}
 
 
+=======
+>>>>>>> wxg
             {% for question in questions %}
 
             <div class="card">
