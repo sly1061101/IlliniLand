@@ -229,13 +229,39 @@ def new_answer(request, question_id):
 	return HttpResponseRedirect("/question/" + str(question_id) + "/")
 
 def profile(request):
-	student = Student.objects.filter(user = request.user)
-	context = {"user":request.user, "student":student}
-	print(context)
-	return render(request, "forum/user/profile.html", context)
+    context = {"user":request.user}
+    student = Student.objects.filter(user = request.user)
+    if student:
+        context['student'] = student[0]
+    else:
+        context['student'] = None
+    return render(request, "forum/user/profile.html", context)
 
 def edit_profile(request):
-	return render(request, "forum/user/edit_profile.html")
+    if request.method == 'POST':
+        student = Student.objects.filter(user = request.user)
+        if student:
+            student = Student.objects.get(user = request.user)
+            student.department = Department.objects.get(name = request.POST['major'])
+            student.name = request.POST['name']
+            student.bio = request.POST['bio']
+        else:
+            student = Student.objects.filter(user = request.user)
+            student = Student(department = Department.objects.get(name = request.POST['major']), user = request.user, name = request.POST['name'], start_date = "2000-01-01", end_data = "2000-01-01", bio = request.POST['bio'])
+        student.save()
+        if request.POST['register_password'] == request.POST['register_password_confirm'] and request.POST['register_password']:
+            user = request.user
+            request.user.set_password(request.POST['register_password'])
+            request.user.save()
+            login(request, user)
+        return HttpResponseRedirect("/user/profile/")
+    context = {"user":request.user}
+    student = Student.objects.filter(user = request.user)
+    if student:
+        context['student'] = student[0]
+    else:
+        context['student'] = None
+    return render(request, "forum/user/edit_profile.html", context)
 
 def addCourse(request):
 	context = {}
