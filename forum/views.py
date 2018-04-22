@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
+<<<<<<< HEAD
+=======
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
+>>>>>>> wxg
 from forum.models import Department, Course, Take, Question, Answer, Comment, Student
 from django.db.models import F
 import datetime
@@ -15,7 +18,7 @@ from django.db import connection
 
 def index(request):
 <<<<<<< HEAD
-	if request.user.is_authenticated:
+	if request.user.is_authenticated: 
 =======
 	if request.user.is_authenticated:
 >>>>>>> wxg
@@ -58,13 +61,13 @@ def course(request,course_id): # course?course_id=1
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
 <<<<<<< HEAD
-
+	
 	questions = Question.objects.filter(course__id=course_id)
 	context['questions'] = questions
-
+		
 	comments = Comment.objects.filter(course__id=course_id)
 	context['comments'] = comments
-
+		
 =======
 
 	questions = Question.objects.filter(course__id=course_id)
@@ -100,7 +103,7 @@ def user(request):
 
 def home(request):
 <<<<<<< HEAD
-	if not request.user.is_authenticated:
+	if not request.user.is_authenticated: 
 =======
 	if not request.user.is_authenticated:
 >>>>>>> wxg
@@ -184,8 +187,8 @@ def addCourse(request):
 		course_number = request.POST['course_number']
 		context['course_add'] = department_name + str(course_number)
 		with connection.cursor() as cursor:
-			cursor.execute("""SELECT id
-								FROM forum_course
+			cursor.execute("""SELECT id 
+								FROM forum_course 
 								WHERE number = '%s'
 									AND department_id = (SELECT id FROM forum_department WHERE name = '%s');"""%(course_number, department_name))
 			result = cursor.fetchall()
@@ -211,7 +214,7 @@ def addCourse(request):
 		course_taken = []
 		for r in result:
 			course_id = r[0]
-			cursor.execute("""SELECT name, number
+			cursor.execute("""SELECT name, number 
 							FROM forum_department d,forum_course c
 							WHERE c.id = '%s'
 								AND c.department_id = d.id;"""%(course_id))
@@ -256,7 +259,7 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'update':
 			with connection.cursor() as cursor:
 				cursor.execute("UPDATE forum_course SET title = %s, description = %s WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (title_, description_, number_, department_))
-
+				
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
@@ -266,7 +269,7 @@ def initial_demo(request):
 		elif request.POST['choice'] == 'delete':
 			with connection.cursor() as cursor:
 				cursor.execute("DELETE FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);" % (number_, department_))
-
+				
 				cursor.execute("SELECT * FROM forum_course WHERE number=%s AND department_id =  (SELECT id FROM forum_department WHERE name = %s);"%(number_, department_))
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
@@ -275,9 +278,9 @@ def initial_demo(request):
 				return HttpResponse("Successfully updated tuple in DB!" + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 		elif request.POST['choice'] == 'advanced1':
 			with connection.cursor() as cursor:
-				sql = """SELECT forum_department.name, COUNT(forum_course.id)
-							FROM forum_course, forum_department
-							WHERE forum_course.department_id = forum_department.id
+				sql = """SELECT forum_department.name, COUNT(forum_course.id) 
+							FROM forum_course, forum_department 
+							WHERE forum_course.department_id = forum_department.id 
 							GROUP BY forum_department.name"""
 				cursor.execute(sql)
 
@@ -312,7 +315,7 @@ def initial_demo(request):
 				result = cursor.fetchall()
 				ret = '<br/>'.join(str(v) for v in result)
 				ret = '<p>' + ret + '</p>'
-
+				
 				return HttpResponse("Advanced SQL Query 2:<br/><br/>" + sql + "<br/><br/>Result of Advanced Query 2 (Departments which provide both more than 15 400-level courses and 15 500-level courses): " + "<p><a href = '\initial_demo'>Go Back</a></p>" + ret)
 
 	else:
@@ -338,7 +341,7 @@ def import_data(request):
 						department = Department.objects.get(name=subject)
 						course = Course(number=number, title=title, department=department, description=description)
 						course.save()
-			return HttpResponse("Finish!")
+			return HttpResponse("Finish!")	
 		else:
 			return HttpResponse("Invalid command!")
 	else:
