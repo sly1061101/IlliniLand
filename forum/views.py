@@ -227,13 +227,13 @@ def question(request, question_id):
 	#save all questions to file
 	f = open('./cranfield/cranfield.dat','w')
 	for q in question_all:
-		s = q.title + " " + q.content
+		s = q.title #+ " " + q.content
 		s = s.replace('\r', ' ').replace('\n', '')
 		f.write(s + '\n')
 	f.close()
 
 	#save current question title to file
-	s_query = question.title + " " + question.content
+	s_query = question.title #+ " " + question.content
 	s_query = s_query.replace('\r', ' ').replace('\n', '')
 	f = open('s_query.txt','w')
 	f.write(s_query)
