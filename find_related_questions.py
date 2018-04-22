@@ -124,9 +124,7 @@ if __name__ == '__main__':
 	cnt = 0
 	score = q.get()
 	while cnt < 3 and not q.empty():
-		print(score)
-		if score[0] > 0 and score[0] < 20:
-			file.write(str(score[1]) + "\n")
+		file.write(str(score[1]) + "\n")
 		cnt += 1
 		score = q.get()
 	file.close()
