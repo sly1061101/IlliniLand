@@ -13,6 +13,115 @@ from django.db import connection
 
 # Create your views here.
 
+# weights for course recommendation
+prof_w = 1
+overall_w = 1
+diff_w = 1
+work_w = 1
+major_w = 1
+rand_w = 1
+
+
+def recommend_course(request):
+	global prof_w
+	global overall_w
+	global diff_w
+	global work_w
+	global major_w
+	global rand_w
+
+	rand_w = random.uniform(0.6, 1.4)
+
+	rand_prof_w = prof_w * rand_w
+	rand_overall_w = overall_w * rand_w
+	rand_diff_w = diff_w * rand_w
+	rand_work_w = work_w * rand_w
+	rand_major_w = major_w * rand_w
+
+	this_user_id = request.user.id
+
+	if request.method == 'GET':
+		with connection.cursor() as cursor:
+			# find the 10 courses that have the highest score
+			cursor.execute("""DROP VIEW  IF EXISTS score_table;""");
+			cursor.execute(
+				"""CREATE VIEW score_table AS \
+					(SELECT course_id, (%s * AVG(professor_score) + %s * AVG(overall_score) \
+										+ %s * AVG(difficulty_score) + %s * AVG(workload_score) + %s) AS score \
+					FROM forum_comment \
+					WHERE (SELECT DISTINCT department_id \
+							FROM forum_student \
+							WHERE user_id = %s) \
+						= \
+							(SELECT DISTINCT department_id \
+							FROM forum_course, forum_department \
+							WHERE forum_comment.course_id = forum_course.id AND forum_course.department_id = forum_department.id) \
+					GROUP BY course_id) \
+					UNION \
+					(SELECT course_id, (%s * AVG(professor_score) + %s * AVG(overall_score) \
+										+ %s * AVG(difficulty_score) + %s * AVG(workload_score)) AS score \
+					FROM forum_comment \
+					WHERE (SELECT COUNT(*) \
+							FROM forum_student \
+							WHERE user_id = %s) < 1 \
+						OR \
+							(SELECT DISTINCT department_id \
+							FROM forum_student \
+							WHERE user_id = %s) \
+						<> \
+							(SELECT DISTINCT department_id \
+							FROM forum_course, forum_department \
+							WHERE forum_comment.course_id = forum_course.id AND forum_course.department_id = forum_department.id) \
+					GROUP BY course_id)
+					UNION
+					(SELECT forum_course.id, %s AS score
+					FROM forum_course, forum_student
+					WHERE forum_student.user_id = %s AND forum_student.department_id = forum_course.department_id AND forum_course.id <> ALL(SELECT course_id FROM forum_comment));"""
+					%(rand_prof_w, rand_overall_w, rand_diff_w, rand_work_w, rand_major_w, this_user_id,
+					rand_prof_w, rand_overall_w, rand_diff_w, rand_work_w, this_user_id, this_user_id, rand_major_w, this_user_id));
+
+			cursor.execute(
+				"""SELECT forum_course.id \
+				FROM \
+					(SELECT score_table.course_id \
+					FROM score_table \
+					ORDER BY score DESC \
+					LIMIT 10) as s1, forum_course, forum_department \
+				WHERE s1.course_id = forum_course.id AND forum_course.department_id = forum_department.id;""");
+
+			result = cursor.fetchmany(5)
+			courses = []
+			for curr_id in result:
+				courses.append(Course.objects.get(id=curr_id[0]))
+			context = {}
+			context['courses'] = courses
+			return render(request, "forum/user/recommend_course.html", context)
+			result = cursor.fetchall()
+			courses = []
+			for curr_id in result:
+				courses.append(Course.objects.get(id=curr_id[0]))
+			context = {}
+			context['courses'] = courses
+			return render(request, "forum/user/recommend_course.html", context)
+
+	elif request.method == "POST":
+		if request.POST.get('good'):
+			modify_factor = (1 + rand_w) / 2 + 1
+			prof_w = prof_w * modify_factor
+			overall_w = overall_w * modify_factor
+			diff_w = diff_w * modify_factor
+			work_w = work_w * modify_factor
+			major_w = major_w * modify_factor
+		else:
+			modify_factor = (1 - rand_w) / 2 + 1
+			prof_w = prof_w * modify_factor
+			overall_w = overall_w * modify_factor
+			diff_w = diff_w * modify_factor
+			work_w = work_w * modify_factor
+			major_w = major_w * modify_factor
+		rand_w = 1
+		return HttpResponse("OK")
+
 def index(request):
 	if request.user.is_authenticated:
 		return HttpResponseRedirect("/user/home/")
