@@ -90,7 +90,7 @@ def recommend_course(request):
 				(SELECT score_table.course_id \
 				FROM score_table \
 				ORDER BY score DESC \
-				LIMIT 10) as s1, forum_course, forum_department \
+				LIMIT 9) as s1, forum_course, forum_department \
 			WHERE s1.course_id = forum_course.id AND forum_course.department_id = forum_department.id;""");
 
 
