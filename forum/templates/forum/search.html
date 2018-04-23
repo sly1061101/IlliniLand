@@ -54,7 +54,7 @@
       <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <!-- left course menu -->
         {% if courses|length > 0 %}
-        <div class="list-group course-list">
+        <div class="question-card-container">
             {% for course in courses%}
             <div class="card">
                 <a href="/course/{{ course.id }}/">
