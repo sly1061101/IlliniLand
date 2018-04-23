@@ -127,11 +127,11 @@ if __name__ == '__main__':
 
 	file = open("result.txt", "w")
 	cnt = 0
-	q.get()
 	while cnt < 3 and not q.empty():
 		temp = q.get()
-		file.write(str(temp[1]) + "\n")
-		cnt += 1
+		if all_questions_title[temp[1]] != s_query_title:
+			file.write(str(temp[1]) + "\n")
+			cnt += 1
 		# print(s_query_title)
 		# print(all_questions_title[temp[1]])
 		# print(temp[0])
