@@ -62,12 +62,12 @@
 					<form action="/user/subscribe/{{course.id}}/" method="GET" >
 						{% csrf_token %}
 						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-minus"></i> Unsubscribe</button>
-					<form>
+					</form>
 					{% else %}
 					<form action="/user/subscribe/{{course.id}}/" method="POST" >
 						{% csrf_token %}
 						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-plus"></i> Subscribe</button>
-					<form>
+					</form>
 					{% endif %}
 			</div>
           <div class="card-body" style="max-width=100%">
