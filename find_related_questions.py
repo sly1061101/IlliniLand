@@ -107,8 +107,8 @@ if __name__ == '__main__':
 				line += t + " "
 			all_questions_content.append(line)
 
-	print(all_questions_title)
-	print(all_questions_content)
+	# print(all_questions_title)
+	# print(all_questions_content)
 
 	dis_t = []
 	dis_c = []
@@ -118,9 +118,9 @@ if __name__ == '__main__':
 		dis_c.append(similarity(s_query_title + " " + s_query_content, all_questions_content[i]))
 		distance.append(5*dis_t[i] + dis_c[i]/10)
 
-	print(dis_t)
-	print(dis_c)
-	print(distance)
+	# print(dis_t)
+	# print(dis_c)
+	# print(distance)
 
 	for i in range(0, len(distance)):
 		q.put((distance[i], i))
