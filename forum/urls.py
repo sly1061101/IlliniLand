@@ -31,7 +31,7 @@ urlpatterns = [
                path('user/profile/', views.profile),
                path('user/edit_profile/', views.edit_profile),
                path('user/addCourse/', views.addCourse),
-               path('user/delete_course/<int:course_id>/', views.delete_course),
+               path('user/subscribe/<int:course_id>/', views.subscribe_course),
                path('question/', views.question),
                path('question/<int:question_id>/', views.question),
                path('question/<int:question_id>/new_answer/', views.new_answer),

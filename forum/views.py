@@ -94,7 +94,7 @@ def recommend_course(request):
 					LIMIT 10) as s1, forum_course, forum_department \
 				WHERE s1.course_id = forum_course.id AND forum_course.department_id = forum_department.id;""");
 
-			
+
 			result = cursor.fetchall()
 			courses = []
 			for curr_id in result:
@@ -161,6 +161,7 @@ def course(request,course_id): # course?course_id=1
 	context['difficulty_score'] = difficulty_score
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
+    context['take'] = Take.objects.filter(course=curr_course,user=request.user).count() > 0
 
 	questions = Question.objects.filter(course__id=course_id).order_by('-time')
 	context['questions'] = questions
@@ -256,7 +257,7 @@ def question(request, question_id):
 
 	#read search results and pass to front end
 	related = []
-	with open("result.txt") as fp:  
+	with open("result.txt") as fp:
 		for cnt, line in enumerate(fp):
 			related.append(int(line))
 	related_questions = []
@@ -352,11 +353,17 @@ def addCourse(request):
 	context['status'] =  status
 	return render(request, "forum/user/addCourse.html", context)
 
-def delete_course(request, course_id):
-	user_id = request.user.id
-	with connection.cursor() as cursor:
-		cursor.execute("DELETE FROM forum_take WHERE user_id = %s AND course_id = %s;"%(user_id, course_id))	
-	return HttpResponseRedirect("/user/home/")
+def subscribe_course(request, course_id):
+	if request.method = 'DELETE':
+		n_row = Take.objects.get(user=request.user,course=Course.objects.get(id=course_id)).delete()
+		if n_row > 0:
+			return HttpResponse(status=201)
+		else:
+			return HttpResponse(status=400)
+	elif request.method = 'POST':
+		Take(user=request.user,course=Course.objects.get(id=course_id)).save()
+		return HttpResponse(status=201)
+
 
 def square(request):
 	context = {}
