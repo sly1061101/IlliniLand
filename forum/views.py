@@ -224,17 +224,17 @@ def question(request, question_id):
 	#Find related questions
 
 	#save all questions to file
-	f_t = open('all_questions_title.txt','w')
-	f_c = open('all_questions_content.txt','w')
-	for q in question_all:
-		s = q.title
-		s = s.replace('\r', ' ').replace('\n', '')
-		f_t.write(s + '\n')
-		s = q.content
-		s = s.replace('\r', ' ').replace('\n', '')
-		f_c.write(s + '\n')
-	f_t.close()
-	f_c.close()
+	# f_t = open('all_questions_title.txt','w')
+	# f_c = open('all_questions_content.txt','w')
+	# for q in question_all:
+	# 	s = q.title
+	# 	s = s.replace('\r', ' ').replace('\n', '')
+	# 	f_t.write(s + '\n')
+	# 	s = q.content
+	# 	s = s.replace('\r', ' ').replace('\n', '')
+	# 	f_c.write(s + '\n')
+	# f_t.close()
+	# f_c.close()
 
 	#save current question title to file
 	s_query = question.title
