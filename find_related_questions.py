@@ -43,10 +43,10 @@ if __name__ == '__main__':
 	doc = metapy.index.Document()
 	doc.content(s_query_title)
 	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	tok = metapy.analyzers.LowercaseFilter(tok)	
-	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	tok = metapy.analyzers.Porter2Filter(tok)	
+	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	# tok = metapy.analyzers.LowercaseFilter(tok)	
+	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# tok = metapy.analyzers.Porter2Filter(tok)	
 	tok.set_content(doc.content())	
 	tokens = [token for token in tok]	
 	s_query_title = ""	
@@ -60,10 +60,10 @@ if __name__ == '__main__':
 	doc = metapy.index.Document()
 	doc.content(s_query_content)
 	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	tok = metapy.analyzers.LowercaseFilter(tok)	
-	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	tok = metapy.analyzers.Porter2Filter(tok)	
+	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	# tok = metapy.analyzers.LowercaseFilter(tok)	
+	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# tok = metapy.analyzers.Porter2Filter(tok)	
 	tok.set_content(doc.content())	
 	tokens = [token for token in tok]	
 	s_query_content = ""	
@@ -129,6 +129,10 @@ if __name__ == '__main__':
 	cnt = 0
 	q.get()
 	while cnt < 3 and not q.empty():
-		file.write(str(q.get()[1]) + "\n")
+		temp = q.get()
+		file.write(str(temp[1]) + "\n")
 		cnt += 1
+		print(s_query_title)
+		print(all_questions_title[temp[1]])
+		print(temp[0])
 	file.close()
