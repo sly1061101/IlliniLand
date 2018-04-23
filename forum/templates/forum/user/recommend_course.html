@@ -52,13 +52,12 @@
             {% csrf_token %}
 			<div class="card-deck">
 				{% for course in courses%}
-				<div class="col-sm-2">
+				<div class="col-sm-3">
         		<div class="card">
             		<div class="card-body">
 						<a href="/course/{{ course.id }}/">
 		                    <h5 class="card-title">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
 		                </a>
-                    	<p class="card-text">{{ course.description }}</p>
             		</div>
 					<div class="card-footer">
 				      <small class="text-muted">Subscribed by {{ course.get_number_user }} user(s).</small>
