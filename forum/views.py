@@ -356,14 +356,16 @@ def addCourse(request):
 def subscribe_course(request, course_id):
 	if request.method == 'GET':
 		target = Take.objects.filter(user=request.user,course=Course.objects.get(id=course_id))
-		if target.count() > 0:
-			target[0].delete()
-			return render(request, 'forum/user/home.html', status=201)
-		else:
-			return render(request, 'forum/user/home.html', status=400)
+		target[0].delete()
+		return HttpResponseRedirect("/course/" + str(course_id) + "/")
 	elif request.method == 'POST':
 		Take(user=request.user,course=Course.objects.get(id=course_id)).save()
-		return render(request, 'forum/user/home.html', status=201)
+		return HttpResponseRedirect("/course/" + str(course_id) + "/")
+
+def delete_course(request, course_id):
+	with connection.cursor() as cursor:
+		cursor.execute("DELETE FROM forum_take WHERE user_id = %s AND course_id = %s;"%(request.user.id, course_id))
+	return HttpResponseRedirect("/user/home/")	
 
 
 def square(request):

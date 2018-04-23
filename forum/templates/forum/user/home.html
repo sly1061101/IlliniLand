@@ -64,7 +64,7 @@
             {% if course.id == curr_course.id %}
               <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active clearfix">
 				  {{ course.department.name }} {{ course.number }}
-				  <form class="float-right" action="/user/subscribe/{{course.id}}/" method="GET">
+				  <form class="float-right" action="/user/delete_course/{{course.id}}/" method="GET">
 					  {% csrf_token %}
 					  <button class="btn btn-xs btn-warning" type="submit">Delete</button>
 				  </form>
@@ -73,7 +73,7 @@
             {% else %}
 				<a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action clearfix">
 					{{ course.department.name }} {{ course.number }}
-					<form class="float-right" action="/user/subscribe/{{course.id}}/" method="GET">
+					<form class="float-right" action="/user/delete_course/{{course.id}}/" method="GET">
 						{% csrf_token %}
 						<button class="btn btn-xs btn-warning" type="submit">Delete</button>
 					</form>

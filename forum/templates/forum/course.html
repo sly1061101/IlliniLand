@@ -64,7 +64,7 @@
 						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-minus"></i> Unsubscribe</button>
 					<form>
 					{% else %}
-					<form action="/user/subscribe/{{course.id}}/" method="POSE" >
+					<form action="/user/subscribe/{{course.id}}/" method="POST" >
 						{% csrf_token %}
 						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-plus"></i> Subscribe</button>
 					<form>
