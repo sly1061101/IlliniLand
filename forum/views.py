@@ -119,7 +119,6 @@ def recommend_course(request):
 			work_w = work_w * modify_factor
 			major_w = major_w * modify_factor
 			rand_w = 1
-			return render(request, "forum/user/recommend_course.html", context)
 	return render(request, "forum/user/recommend_course.html", context)
 
 
