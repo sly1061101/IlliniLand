@@ -80,7 +80,7 @@ if __name__ == '__main__':
 			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
 			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
 			tok = metapy.analyzers.LowercaseFilter(tok)	
-			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
 			tok = metapy.analyzers.Porter2Filter(tok)	
 			tok.set_content(doc.content())	
 			tokens = [token for token in tok]	
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
 			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
 			tok = metapy.analyzers.LowercaseFilter(tok)	
-			tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
 			tok = metapy.analyzers.Porter2Filter(tok)	
 			tok.set_content(doc.content())	
 			tokens = [token for token in tok]	
