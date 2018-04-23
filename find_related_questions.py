@@ -132,7 +132,7 @@ if __name__ == '__main__':
 		temp = q.get()
 		file.write(str(temp[1]) + "\n")
 		cnt += 1
-		print(s_query_title)
-		print(all_questions_title[temp[1]])
-		print(temp[0])
+		# print(s_query_title)
+		# print(all_questions_title[temp[1]])
+		# print(temp[0])
 	file.close()
