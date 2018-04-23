@@ -115,8 +115,13 @@ if __name__ == '__main__':
 	distance = []
 	for i in range(0, len(all_questions_title)):
 		dis_t.append(similarity(s_query_title, all_questions_title[i]))
-		dis_c.append(similarity(s_query_title + " " + s_query_content, all_questions_content[i]))
-		distance.append(5*dis_t[i] + dis_c[i]/10)
+		dis_c.append(similarity(s_query_title, all_questions_content[i]))
+		if dis_t[i] < 5:
+			distance.append(dis_t[i])
+		elif dis_c[i] < 10:
+			distance.append(dis_c[i])
+		else:
+			distance.append(dis_t[i] + dis_c[i]/100)
 
 	# print(dis_t)
 	# print(dis_c)
@@ -127,11 +132,11 @@ if __name__ == '__main__':
 
 	file = open("result.txt", "w")
 	cnt = 0
-	q.get()
 	while cnt < 3 and not q.empty():
 		temp = q.get()
-		file.write(str(temp[1]) + "\n")
-		cnt += 1
+		if all_questions_title[temp[1]] != s_query_title and temp[0] < 35:
+			file.write(str(temp[1]) + "\n")
+			cnt += 1
 		# print(s_query_title)
 		# print(all_questions_title[temp[1]])
 		# print(temp[0])
