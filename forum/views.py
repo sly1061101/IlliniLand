@@ -354,13 +354,13 @@ def addCourse(request):
 	return render(request, "forum/user/addCourse.html", context)
 
 def subscribe_course(request, course_id):
-	if request.method = 'DELETE':
+	if request.method == 'DELETE':
 		n_row = Take.objects.get(user=request.user,course=Course.objects.get(id=course_id)).delete()
 		if n_row > 0:
 			return HttpResponse(status=201)
 		else:
 			return HttpResponse(status=400)
-	elif request.method = 'POST':
+	elif request.method == 'POST':
 		Take(user=request.user,course=Course.objects.get(id=course_id)).save()
 		return HttpResponse(status=201)
 
