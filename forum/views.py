@@ -505,6 +505,8 @@ def fuzzy_search(term, choices):
 	return [i[0] for i in result] #no need the point
 
 def search(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect("/login/")
 	context={}
 	searchtype = request.POST.get("search_type")
 	keyword = request.POST.get("search_string")
