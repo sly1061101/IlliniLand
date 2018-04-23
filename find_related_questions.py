@@ -8,7 +8,7 @@ import shutil
 import numpy as np
 import queue as Q
 
-def levenshtein(seq1, seq2):  
+def similarity(seq1, seq2):  
 	size_x = len(seq1) + 1
 	size_y = len(seq2) + 1
 	matrix = np.zeros ((size_x, size_y))
@@ -107,13 +107,20 @@ if __name__ == '__main__':
 				line += t + " "
 			all_questions_content.append(line)
 
+	print(all_questions_title)
+	print(all_questions_content)
+
+	dis_t = []
+	dis_c = []
 	distance = []
 	for i in range(0, len(all_questions_title)):
-		# print( all_questions_title[i] + " " + all_questions_content[i])
-		# print(levenshtein(s_query_title + " " + s_query_content, all_questions_title[i] + " " + all_questions_content[i]))
-		dis_t = levenshtein(s_query_title, all_questions_title[i])
-		dis_c = levenshtein(s_query_content, all_questions_content[i])
-		distance.append(5*dis_t)
+		dis_t.append(similarity(s_query_title, all_questions_title[i]))
+		dis_c.append(similarity(s_query_title + " " + s_query_content, all_questions_content[i]))
+		distance.append(5*dis_t[i] + dis_c[i]/10)
+
+	print(dis_t)
+	print(dis_c)
+	print(distance)
 
 	for i in range(0, len(distance)):
 		q.put((distance[i], i))
