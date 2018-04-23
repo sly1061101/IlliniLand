@@ -362,7 +362,7 @@ def subscribe_course(request, course_id):
 			return render(request, 'forum/user.html', status=400)
 	elif request.method == 'POST':
 		Take(user=request.user,course=Course.objects.get(id=course_id)).save()
-		return return render(request, 'forum/user.html', status=201)
+		return render(request, 'forum/user.html', status=201)
 
 
 def square(request):
