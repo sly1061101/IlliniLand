@@ -57,10 +57,18 @@
       <div class="question-card-container" id="question_cards">
         <div class="card">
 			<div class="card-header">
-				<div class="row">
-          			<h5>{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
-					<span class="btn btn-primary "> + Subscribe</span>
-				</div>
+				<h5 class="float-left" style="display: inline-block; vertical-align: middle; margin: 10px 0;"> {{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+					{% if take %}
+					<form action="/user/subscribe/{{course.id}}/" method="DELETE" >
+						{% csrf_token %}
+						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-minus"></i> Unsubscribe</button>
+					<form>
+					{% else %}
+					<form action="/user/subscribe/{{course.id}}/" method="POST" >
+						{% csrf_token %}
+						<button type="submit" class="btn btn-primary float-right" style="display: inline-block; vertical-align: middle; margin: 10px 0;" > <i class="fa fa-plus"></i> Subscribe</button>
+					<form>
+					{% endif %}
 			</div>
           <div class="card-body" style="max-width=100%">
             <p class="card-text">{{ course.description }}</p>
