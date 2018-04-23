@@ -31,57 +31,55 @@
             <li class="nav-item">
               <a class="nav-link" href="/user/profile/">Profile</a>
             </li>
+			<li class="nav-item">
+              <a class="nav-link" href="/user/recommend_course/">Recommendation</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
-		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
-            {% csrf_token %}
-            <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS411" aria-label= "Search">
-            <select class ="form-control" name="search_type">
-                <option value="course">course</option>
-                <option value="question">question</option>
-            </select> &nbsp;&nbsp;
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
           </form>
         </div>
       </nav>
 
       <!-- body -->
       <div style="min-height: 100%;">
-  			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+  		<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
           <!-- left course menu -->
-          <form method="GET">
             {% csrf_token %}
-            <div class="list-group course-list float-left">
-              <div class="list-group-item list-group-item-action active">Recommended courses</div>
-              {% for course in courses %}
-                <a href="/course/{{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
-              {% endfor %}
-            </div>
-          </form>
-        </div>
-
-        <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
-          <form method="POST">
-            {% csrf_token %}
-            <div class="form-group row">
-              <label for="subject" class="col-sm-4 col-form-label">Is this recommendation good? </label>
-              <div class="col-sm-8">
-                <div class="input-group" >
-                  <button type="submit" name="good" class="btn btn-info" role="button">good</button>
-                  &nbsp;&nbsp;
-                  <button type="submit" name="bad" class="btn btn-info" role="button">bad</button>
-                </div>
-              </div>
-            </div>
+			<div class="question-card-container">
+	            {% for course in courses%}
+	            <div class="card">
+	                <a href="/course/{{ course.id }}/">
+	                    <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+	                </a>
+	              <div class="card-body" style="max-width=100%">
+	                <p class="card-text">{{ course.description }}</p>
+	              </div>
+	          </div><br>
+	            {% endfor %}
+	        </div>
 
 
-          </form>
-        </div>
-
-
+			<div class="form-group">
+			  <label for="subject" class="col-sm-4 col-form-label">Provide your feedback to get a better result! </label>
+			  <div class="col-sm-8">
+				<div class="input-group" >
+					 <form method="POST"> {% csrf_token %}
+				  <button type="submit" name="good" class="btn btn-info" role="button">Perfect!</button>
+				  	&nbsp;&nbsp;
+				  <button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button>
+				  </form>
+				</div>
+			  </div>
 			</div>
+
+
+        </div>
+	</div>
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
