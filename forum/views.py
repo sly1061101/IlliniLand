@@ -161,7 +161,7 @@ def course(request,course_id): # course?course_id=1
 	context['difficulty_score'] = difficulty_score
 	context['workload_score'] = workload_score
 	context['professor_score'] = professor_score
-    context['take'] = Take.objects.filter(course=curr_course,user=request.user).count() > 0
+	context['take'] = Take.objects.filter(course=curr_course,user=request.user).count() > 0
 
 	questions = Question.objects.filter(course__id=course_id).order_by('-time')
 	context['questions'] = questions
