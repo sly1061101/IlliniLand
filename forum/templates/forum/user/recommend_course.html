@@ -73,7 +73,7 @@
 			  <label for="subject" class="col-sm-4 col-form-label">Provide your feedback to get a better result! </label>
 			  <div class="col-sm-8">
 				<div class="input-group" >
-					 <form method="POST"> {% csrf_token %}
+					 <form class="form-inline my-2 my-lg-0" method="POST"> {% csrf_token %}
 				  <button type="submit" name="good" class="btn btn-info" role="button">Perfect!</button>
 				  	&nbsp;&nbsp;
 				  <button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button>
