@@ -355,9 +355,9 @@ def addCourse(request):
 
 def subscribe_course(request, course_id):
 	if request.method == 'GET':
-		target = Take.objects.get(user=request.user,course=Course.objects.get(id=course_id))
+		target = Take.objects.filter(user=request.user,course=Course.objects.get(id=course_id))
 		if target.count() > 0:
-			target.delete()
+			target[0].delete()
 			return render(request, 'forum/user/home.html', status=201)
 		else:
 			return render(request, 'forum/user/home.html', status=400)
