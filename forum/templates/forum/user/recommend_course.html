@@ -50,21 +50,22 @@
   		<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
           <!-- left course menu -->
             {% csrf_token %}
-			<div class="row">
+			<div class="card-deck">
 				{% for course in courses%}
-				<div class="col-sm-3">
-            		<div class="card">
-                		<div class="card-block">
-							<a href="/course/{{ course.id }}/">
-			                    <h5 class="card-title">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
-			                </a>
-	                    	<p class="card-text">{{ course.description }}</p>
-                		</div>
+        		<div class="card">
+            		<div class="card-body">
+						<a href="/course/{{ course.id }}/">
+		                    <h5 class="card-title">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+		                </a>
+                    	<p class="card-text">{{ course.description }}</p>
             		</div>
-				</div>
+					<div class="card-footer">
+				      <small class="text-muted">Subscribed by {{ course.get_number_user() }} user(s).</small>
+				    </div>
+        		</div>
 				{% endfor %}
         	</div>
-	            
+
 	        </div>
 
 

@@ -22,6 +22,10 @@ class Course(models.Model):
 		all_comments = Comment.objects.filter(course_id=self.id)
 		return len(all_comments)
 
+	def get_number_user(self):
+		all_users = Take.objects.filter(course_id=self.id)
+		return len(all_users)
+
 	def get_avg_scores(self):
 		all_comments = Comment.objects.filter(course_id=self.id)
 		n_comments = len(all_comments)
