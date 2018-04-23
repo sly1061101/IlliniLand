@@ -356,7 +356,7 @@ def addCourse(request):
 def subscribe_course(request, course_id):
 	if request.method == 'GET':
 		n_row = Take.objects.get(user=request.user,course=Course.objects.get(id=course_id)).delete()
-		if n_row > 0:
+		if n_row[0] > 0:
 			return render(request, 'forum/user/home.html', status=201)
 		else:
 			return render(request, 'forum/user/home.html', status=400)
