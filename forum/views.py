@@ -102,7 +102,7 @@ def recommend_course(request):
 		context['courses'] = courses
 
 	if request.method == "POST":
-		if request.POST.get('good'):
+		if request.POST.get('good') is not None:
 			modify_factor = (1 + rand_w) / 2 + 1
 			prof_w = prof_w * modify_factor
 			overall_w = overall_w * modify_factor
@@ -110,7 +110,7 @@ def recommend_course(request):
 			work_w = work_w * modify_factor
 			major_w = major_w * modify_factor
 			rand_w = 1
-			return HttpResponseRedirect("user/home.html")
+			return HttpResponseRedirect("/user/home/")
 		else:
 			modify_factor = (1 - rand_w) / 2 + 1
 			prof_w = prof_w * modify_factor
