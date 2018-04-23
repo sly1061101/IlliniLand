@@ -13,6 +13,14 @@ b.illini{
 b.land{
   color: #13294b
 }
+.row {
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.row > div[class*='col-'] {
+  display: flex;
+}
 
 img {
   max-width: 100%;
