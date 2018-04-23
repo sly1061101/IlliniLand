@@ -49,7 +49,6 @@
       <div style="min-height: 100%;">
   		<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
           <!-- left course menu -->
-          <form method="GET">
             {% csrf_token %}
 			<div class="question-card-container">
 	            {% for course in courses%}
@@ -63,20 +62,21 @@
 	          </div><br>
 	            {% endfor %}
 	        </div>
-          </form>
 
-		  <form method="POST"> {% csrf_token %}
-			<div class="form-group row">
+
+			<div class="form-group">
 			  <label for="subject" class="col-sm-4 col-form-label">Provide your feedback to get a better result! </label>
 			  <div class="col-sm-8">
 				<div class="input-group" >
+					 <form method="POST"> {% csrf_token %}
 				  <button type="submit" name="good" class="btn btn-info" role="button">Perfect!</button>
 				  	&nbsp;&nbsp;
 				  <button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button>
+				  </form>
 				</div>
 			  </div>
 			</div>
-		  </form>
+
 
         </div>
 	</div>
