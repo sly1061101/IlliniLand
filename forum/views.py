@@ -21,9 +21,9 @@ from django.db import connection
 # weights for course recommendation
 prof_w = 1
 overall_w = 1
-diff_w = 1
-work_w = 1
-major_w = 1
+diff_w = -1
+work_w = -1
+major_w = 5
 rand_w = 1
 
 
