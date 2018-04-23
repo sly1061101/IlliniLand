@@ -357,12 +357,12 @@ def subscribe_course(request, course_id):
 	if request.method == 'DELETE':
 		n_row = Take.objects.get(user=request.user,course=Course.objects.get(id=course_id)).delete()
 		if n_row > 0:
-			return render(request, 'forum/user.html', status=201)
+			return render(request, 'forum/user/home.html', status=201)
 		else:
-			return render(request, 'forum/user.html', status=400)
+			return render(request, 'forum/user/home.html', status=400)
 	elif request.method == 'POST':
 		Take(user=request.user,course=Course.objects.get(id=course_id)).save()
-		return render(request, 'forum/user.html', status=201)
+		return render(request, 'forum/user/home.html', status=201)
 
 
 def square(request):
