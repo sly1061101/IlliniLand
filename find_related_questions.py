@@ -135,8 +135,6 @@ if __name__ == '__main__':
 	while cnt < 3 and not q.empty():
 		temp = q.get()
 		if all_questions_title[temp[1]] != s_query_title and temp[0] < 50:
-			print(s_query_title)
-			print(all_questions_title[temp[1]])
 			file.write(str(temp[1]) + "\n")
 			cnt += 1
 		# print(s_query_title)
