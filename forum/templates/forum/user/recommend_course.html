@@ -73,9 +73,10 @@
 	  				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
 						<p>Provide feedback to get better result!</p>
 						<form class="form-inline my-2 my-lg-0" method="POST"> {% csrf_token %}
+							<div class="row">
    				  <button type="submit" name="good" class="btn btn-info" role="button">Perfect!</button>
    				  	&nbsp;&nbsp;
-   				  <button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button>
+   				  <button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button></div>
    				  </form>
 			  </div>
 		  </div>
