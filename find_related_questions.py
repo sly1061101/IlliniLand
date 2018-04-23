@@ -116,7 +116,7 @@ if __name__ == '__main__':
 	for i in range(0, len(all_questions_title)):
 		dis_t.append(similarity(s_query_title, all_questions_title[i]))
 		dis_c.append(similarity(s_query_title, all_questions_content[i]))
-		distance.append(5*dis_t[i] + dis_c[i])
+		distance.append(dis_t[i] + dis_c[i]/100)
 
 	# print(dis_t)
 	# print(dis_c)
