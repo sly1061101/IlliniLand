@@ -4,7 +4,7 @@
 
    <head>
 
-      <title>IlliniLand - Your Profile</title>
+      <title>Course Recommendation</title>
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -23,72 +23,71 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/square/">Square</span></a>
+              <a class="nav-link" href="/square/">Square<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/user/home/">Home</a>
             </li>
-             <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/user/profile/">Profile</a>
             </li>
 			<li class="nav-item">
-              <a class="nav-link" href="/user/recommend_course/">Recommendation</a>
+              <a class="nav-link active" href="/user/recommend_course/">Recommendation</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
-		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
-            {% csrf_token %}
-            <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS411" aria-label= "Search">
-            <select class ="form-control" name="search_type">
-                <option value="course">course</option>
-                <option value="question">question</option>
-            </select> &nbsp;&nbsp;
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
           </form>
         </div>
       </nav>
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+  		<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+          <!-- left course menu -->
+            {% csrf_token %}
+			<div class="card-deck">
+				{% for course in courses%}
+				<div class="col-sm-4">
+        		<div class="card">
+            		<div class="card-body">
+						<a href="/course/{{ course.id }}/">
+		                    <h5 class="card-title">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+		                </a>
+            		</div>
+					<div class="card-footer">
+				      <small class="text-muted">Subscribed by {{ course.get_number_user }} user(s).</small>
+				    </div>
+        		</div><br></div><br>
+				{% endfor %}
+        	</div>
 
+	        </div>
 
-
-				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
-					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Profile</h1>
-					<form action="" method="POST">
-						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">Illinois Email : </label>
-							<label for="email" class="col-sm-4 col-form-label">{{ user }}@illinois.edu </label>
-						</div>
-
-            <div class="form-group row">
-              <label for="name" class="col-sm-4 col-form-label">Name : </label>
-              <label for="email" class="col-sm-4 col-form-label">{{ student.name }}</label>
-            </div>
-
-            <div class="form-group row">
-              <label for="major" class="col-sm-4 col-form-label">Major : </label>
-              <label for="email" class="col-sm-4 col-form-label">{{ student.department.name }}</label>
-            </div>
-
-            <div class="form-group row">
-              <label for="bio" class="col-sm-4 col-form-label">Bio : </label>
-              <label for="bio" class="col-sm-4 col-form-label">{{ student.bio }}</label>
-            </div>
-
-            <a href="/user/edit_profile/" class="btn btn-info" role="button">Edit Profile</a><br>
-
-
-		</form><br>
-
-
-
-				</div>
-			</div>
+			<div style="min-height: 100%;">
+	  			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+	  				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
+						<p>Provide feedback to get better result!</p>
+						<form class="form-inline my-2 my-lg-0" method="POST"> {% csrf_token %}
+							<div class="container">
+  							<button type="submit" name="good" class="btn btn-info" role="button">Perfect!</button>
+  		  				<button type="submit" name="bad" class="btn btn-info" role="button">Not intereted.</button>
+					    </div>
+   				  </form>
+			  </div>
+		  </div>
 		</div>
+
+
+
+
+
+        </div>
+	</div>
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

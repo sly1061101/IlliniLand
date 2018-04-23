@@ -31,13 +31,21 @@
             <li class="nav-item">
               <a class="nav-link" href="/user/profile/">Profile</a>
             </li>
+			<li class="nav-item">
+              <a class="nav-link" href="/user/recommend_course/">Recommendation</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" href="/logout/">Logout</a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS411" aria-label= "Search">
+            <select class ="form-control" name="search_type">
+                <option value="course">course</option>
+                <option value="question">question</option>
+            </select> &nbsp;&nbsp;
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>
@@ -54,10 +62,24 @@
           {% endif %}
           {% for course in courses %}
             {% if course.id == curr_course.id %}
-              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active">{{ course.department.name }} {{ course.number }}</a>
+              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action active clearfix">
+				  {{ course.department.name }} {{ course.number }}
+				  <form class="float-right" action="/user/delete_course/{{course.id}}/" method="GET">
+					  {% csrf_token %}
+					  <button class="btn btn-xs btn-warning" type="submit">Delete</button>
+				  </form>
+			  </a>
+
             {% else %}
-              <a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action">{{ course.department.name }} {{ course.number }}</a>
+				<a href="?course_id={{ course.id }}" class="list-group-item list-group-item-action clearfix">
+					{{ course.department.name }} {{ course.number }}
+					<form class="float-right" action="/user/delete_course/{{course.id}}/" method="GET">
+						{% csrf_token %}
+						<button class="btn btn-xs btn-warning" type="submit">Delete</button>
+					</form>
+				</a>
             {% endif %}
+
           {% endfor %}
           <a href="/user/addCourse/" class="list-group-item list-group-item-action">Add Course</a>
         </div>
@@ -66,24 +88,36 @@
           <div class="card-columns" style="column-count: 1;">
             {% if questions|length == 0 and curr_course.id is not None %}
                 <div class="card">
-                  <a class="card-link" href="/course/{{ curr_course.id }}/">
                     <h5 class="card-header">{{ curr_course.department.name }} {{ curr_course.number }}</h5>
-                  </a>
 
                   <div class="card-body">
-                      <a class="card-link" href="/course/{{ curr_course.id }}/">
+
                     <h5 class="card-title">Empty Forum</h5>
-                    <p class="card-text">The course you subscribed has no question yet. Go to course website and add one!</p>
-                  </a></div>
+                    <p class="card-text">The course you subscribed has no question yet. Go to
+						<a class="card-link" href="/course/{{ curr_course.id }}/">course website</a> and add one!</p>
+                  </div>
 
                 </div>
                 <br>
             {% endif %}
 
+			{% if courses|length == 0 %}
+                <div class="card">
+                    <h5 class="card-header">Welcome to Illiniland!</h5>
+                  <div class="card-body">
+                    <h5 class="card-title">You haven't subscribe any course yet!</h5>
+                    <p class="card-text">Go <a href="/user/addCourse/">add course</a> now!</p>
+	              </div>
+
+                </div>
+                <br>
+            {% endif %}
+
+
             {% for question in questions %}
 
             <div class="card">
-              <a href="/course/{{question.id}}/">
+              <a href="/course/{{question.course.id}}/">
                 <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
               </a>
 
@@ -92,12 +126,13 @@
                 <h5 class="card-title">{{ question.title }}</h5>
                 <p class="card-text">{{ question.content }}</p>
               </a></div>
-              <div class="row card-footer text-muted">
+              <div class=" card-footer text-muted">
+				  <div class="row">
                 <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
                   <a href="#">{{ question.user.username }}</a>
                 </small>
                 <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
-              </div>
+			</div></div>
             </div>
             <br>
 

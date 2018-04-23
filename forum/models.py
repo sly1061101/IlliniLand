@@ -21,7 +21,11 @@ class Course(models.Model):
 	def get_number_comments(self):
 		all_comments = Comment.objects.filter(course_id=self.id)
 		return len(all_comments)
-	
+
+	def get_number_user(self):
+		all_users = Take.objects.filter(course_id=self.id)
+		return len(all_users)
+
 	def get_avg_scores(self):
 		all_comments = Comment.objects.filter(course_id=self.id)
 		n_comments = len(all_comments)
@@ -37,6 +41,15 @@ class Course(models.Model):
 		if n_comments == 0:
 			n_comments = 1
 		return (total_overall/n_comments, total_difficulty/n_comments, total_workload/n_comments, total_professor/n_comments)
+
+	def to_string(self):
+		s = ""
+		s += self.department.name
+		s += str(self.number)
+		# str += self.description
+		return s
+
+
 
 
 class Take(models.Model):

@@ -1,10 +1,10 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
    <head>
 
-      <title>IlliniLand - Register</title>
+      <title>Search Result</title>
       <!-- <base href = "http://illiniland.web.engr.illinois.edu" /> -->
 
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -12,6 +12,8 @@
    </head>
 
    <body class="bg-ac">
+
+
 
      <!-- NAVBAR -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,17 +24,20 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item ">
+            <li class="nav-item">
               <a class="nav-link" href="/square/">Square <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/user/home/">Home</a>
+              <a class="nav-link" href="/user/home">Home</a>
             </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Sign In / Register</a>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/profile/">Profile</a>
+            </li>
+			<li class="nav-item">
+              <a class="nav-link" href="/user/recommend_course/">Recommendation</a>
             </li>
           </ul>
-		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
+          <form method="POST" class="form-inline my-2 my-lg-0" >
             {% csrf_token %}
             <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS411" aria-label= "Search">
             <select class ="form-control" name="search_type">
@@ -46,54 +51,51 @@
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+      <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+        <!-- left course menu -->
+        {% if courses|length > 0 %}
+        <div class="question-card-container">
+            {% for course in courses%}
+            <div class="card">
+                <a href="/course/{{ course.id }}/">
+                    <h5 class="card-header">{{ course.department.name }} {{ course.number }}: {{ course.title }}</h5>
+                </a>
+              <div class="card-body" style="max-width=100%">
+                <p class="card-text">{{ course.description }}</p>
+              </div>
+          </div><br>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- right all course questions -->
+        {% if questions|length > 0 %}
+        <div class="question-card-container" id="question_cards">
+            {% for question in questions %}
+            <div class="card">
+              <a href="/course/{{question.course.id}}/">
+                <h5 class="card-header">{{ question.course.department.name }} {{ question.course.number }}</h5>
+              </a>
 
-
-
-				<div class="card col-md-8 offset-md-2 text-center pr-sm-5 pl-sm-5">
-					<h1 class="mt-4 mb-sm-4 mb-3 content-heading">Create an Account</h1>
-					<form action="" method="POST">
-            {% csrf_token %}
-						<div class="form-group row">
-							<label for="email" class="col-sm-4 col-form-label">Illinois Email : </label>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<input type="text" class="form-control" name="register_email" placeholder="NetID..." requdired="">
-									<div class="input-group-addon">@illinois.edu</div>
-								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="password" class="col-sm-4 col-form-label">Password : </label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" name="register_password" placeholder="Password..." reqduired="">
-							</div>
-						</div>
-						<div class="form-group row mb-5">
-							<label for="password" class="col-sm-4 col-form-label">Confirm Password : </label>
-							<div class="col-sm-8">
-								<input type="password" class="form-control" name="register_password_confirm" placeholder="Password..." requdired="">
-							</div>
-						</div>
-
-						<button type="submit" name="register_submit" class="btn btn-primary mb-3">Create Account</button>
-            {% if status == "already-exist" %}
-              <p><label>Username exist! Please try again.</label></p>
-            {% elif status == "password-different" %}
-              <p><label>Password and Confirm Password not identical! Please try again.</label></p>
-            {% endif %}
-						<div class="pb-3">
-							<hr>
-							Already have an account? Sign in <a href="/login/">here!</a>
-						</div>
-
-					</form>
-
-
-
-				</div>
+              <div class="card-body">
+                  <a class="card-link" href="/question/{{ question.id }}">
+                <h5 class="card-title">{{ question.title }}</h5>
+                <p class="card-text">{{ question.content }}</p>
+              </a></div>
+              <div class="card-footer text-muted">
+				  <div class="row">
+                <small class="col-md-6 text-left">Asked {{ question.time|date:"Y/m/d H:i" }} by
+                  <a href="#">{{ question.user.username }}</a>
+                </small>
+                <small class="text-info col-md-6 text-right">{{ question.get_number_answers }} Answers</small>
 			</div>
-		</div>
+              </div>
+            </div>
+            <br>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
 
 
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

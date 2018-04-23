@@ -27,23 +27,31 @@
             <li class="nav-item">
               <a class="nav-link" href="/square/">Square <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/user/home/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/user/profile/">Profile</a>
             </li>
+			<li class="nav-item">
+              <a class="nav-link" href="/user/recommend_course/">Recommendation</a>
+            </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Course Name" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search Course</button>
+		  <form action="/search/" method="POST" class="form-inline my-2 my-lg-0" >
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" name ="search_string" type="search" value="CS411" aria-label= "Search">
+            <select class ="form-control" name="search_type">
+                <option value="course">course</option>
+                <option value="question">question</option>
+            </select> &nbsp;&nbsp;
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </div>
       </nav>
 
       <!-- body -->
       <div style="min-height: 100%;">
-			<div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
+      <div class="container pl-xs-5 pr-xs-5 pt-4 pb-4">
         <div class="question-card-container" id="question_cards">
 
           <!-- question -->
@@ -53,16 +61,32 @@
               Question</h5>
             <div class="card-body" style="max-width=100%">
               <h5 class="card-title">{{question.title}}</h5>
-              <p class="card-text">{{question.content}}</p>
+              <p class="card-text"><label style="white-space: pre-wrap">{{question.content}}</label></p>
             </div>
-            <div class="row card-footer text-muted">
+            <div class="card-footer text-muted">
+				<div class="row">
               <small class="col-md-6 text-left">Asked {{question.time}} by
                 <a href="#">{{question.user.username}}</a>
               </small>
               <small class="text-info col-md-6 text-right">{{answer_set|length}} Answers</small>
+		  </div>
             </div>
 
           </div>
+
+        <div class="card">
+            <h7 class="card-header">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+              Related Questions
+            </h7>
+            <div class="card-body">
+             {% for q in related_questions %}
+              <p><a href="/question/{{q.id}}/">{{q.title}}</a></p>
+              {% endfor %}
+			  <p>Or you can check out more question from <a href="/course/{{question.course.id}}">{{question.course.department.name}} {{question.course.number}}</a>.</p>
+            </div>
+          </div>
+
           <!-- add answer -->
           <div class="card">
             <h7 class="card-header">
@@ -73,8 +97,8 @@
               <form action="/question/{{question.id}}/new_answer/" method="POST">
                 {% csrf_token %}
                 <div class="col-sm-8" style="margin: auto;">
-  								<textarea class="form-control" name = "new_answer" id="my_answer" placeholder="add your answer to the question..." rows="3"></textarea>
-  							</div>
+                  <textarea class="form-control" name = "new_answer" id="my_answer" placeholder="add your answer to the question..." rows="3"></textarea>
+                </div>
                 <br>
                 <div class="text-center">
                   <button type="submit" class="btn btn-outline-secondary btn-sm">Submit</button>
