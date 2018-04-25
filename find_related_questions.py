@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 	file = open("result.txt", "w")
 	cnt = 0
-	while cnt < 3 and results[cnt][1] > 0:
+	while cnt < 5 and results[cnt][1] > 0:
 		file.write(str(results[cnt][0]) + "\n")
 		cnt += 1
 	file.close()

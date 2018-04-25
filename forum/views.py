@@ -226,7 +226,7 @@ def question(request, question_id):
 	question_all = Question.objects.all()
 
 	#Find related questions
-	
+
 	#save questions to file
 	f = open('all_questions_title.txt','w')
 	for q in question_all:
@@ -334,7 +334,8 @@ def question(request, question_id):
 			related.append(int(line))
 	related_questions = []
 	for num in related:
-		related_questions.append(question_all[num])
+		if num != question_id:
+			related_questions.append(question_all[num])
 
 	context["related_questions"] = related_questions
 
