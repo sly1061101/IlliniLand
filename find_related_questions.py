@@ -37,11 +37,9 @@ if __name__ == '__main__':
 	for i, r in enumerate(results):
 		results[i] = (r[0], r[1] - results[len(results)-1][1])
 
-	print(results)
-
 	file = open("result.txt", "w")
-	cnt = 1
-	while cnt < 4 and results[cnt][1] > 0:
+	cnt = 0
+	while cnt < 3 and results[cnt][1] > 0:
 		file.write(str(results[cnt][0]) + "\n")
 		cnt += 1
 	file.close()
