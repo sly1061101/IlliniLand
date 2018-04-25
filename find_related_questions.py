@@ -38,10 +38,8 @@ if __name__ == '__main__':
 			results_c2c[i] = 0
 		#give different weights for similarities between title with title, title with content and content with content
 		results[i] = results_t2t[i]*3 + results_t2c[i]*1 + results_c2c[i]*0.25
-
 	results = sorted(results.items(), key=operator.itemgetter(1))
 	results.reverse()
-
 	# for i, r in enumerate(results):
 	# 	results[i] = (r[0], r[1] - results[len(results)-1][1])
 
