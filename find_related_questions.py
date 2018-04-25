@@ -20,8 +20,6 @@ if __name__ == '__main__':
 	s_query_content = file.read()
 	file.close()
 
-	print(s_query_title)
-
 	q = Query("all_questions_title.txt")
 	results_t2t = q.search_with_all_docs(s_query_title)
 	q = Query("all_questions_content.txt")
@@ -30,12 +28,11 @@ if __name__ == '__main__':
 
 	results = {}
 	for i in results_t2t.keys():
+		#give different weights for similarities between title with title, title with content and content with content
 		results[i] = results_t2t[i]*3 + results_t2c[i]*1 + results_c2c[i]*0.5
 
 	results = sorted(results.items(), key=operator.itemgetter(1))
 	results.reverse()
-
-	print(results)
 
 	file = open("result.txt", "w")
 	cnt = 1

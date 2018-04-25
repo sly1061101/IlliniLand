@@ -226,7 +226,7 @@ def question(request, question_id):
 	question_all = Question.objects.all()
 
 	#Find related questions
-
+	
 	#save questions to file
 	f = open('all_questions_title.txt','w')
 	for q in question_all:
@@ -266,24 +266,24 @@ def question(request, question_id):
 		f.write(s + '\n')
 	f.close()
 
-	f = open('all_questions.txt','w')
-	for q in question_all:
-		s = q.title + " " + q.content
-		s = s.replace('\r', ' ').replace('\n', '')
-		doc = metapy.index.Document()
-		doc.content(s)
-		tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
-		tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
-		tok = metapy.analyzers.LowercaseFilter(tok)
-		tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-		tok = metapy.analyzers.Porter2Filter(tok)	
-		tok.set_content(doc.content())	
-		tokens = [token for token in tok]	
-		s = ""
-		for t in tokens:
-			s += t + " "
-		f.write(s + '\n')
-	f.close()
+	# f = open('all_questions.txt','w')
+	# for q in question_all:
+	# 	s = q.title + " " + q.content
+	# 	s = s.replace('\r', ' ').replace('\n', '')
+	# 	doc = metapy.index.Document()
+	# 	doc.content(s)
+	# 	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+	# 	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+	# 	tok = metapy.analyzers.LowercaseFilter(tok)
+	# 	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# 	tok = metapy.analyzers.Porter2Filter(tok)	
+	# 	tok.set_content(doc.content())	
+	# 	tokens = [token for token in tok]	
+	# 	s = ""
+	# 	for t in tokens:
+	# 		s += t + " "
+	# 	f.write(s + '\n')
+	# f.close()
 
 	#save current question title to file
 	s = question.title
