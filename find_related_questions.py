@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 	results = {}
 	for i in results_t2t.keys():
-		results[i] = results_t2t[i]*3 + results_t2c[i]*2 + results_c2c[i]
+		results[i] = results_t2t[i]*3 + results_t2c[i]*1 + results_c2c[i]*0.5
 
 	results = sorted(results.items(), key=operator.itemgetter(1))
 	results.reverse()
