@@ -240,6 +240,13 @@ def question(request, question_id):
 	f_t.close()
 	f_c.close()
 
+	f = open('all_questions.txt','w')
+	for q in question_all:
+		s = q.title + " " + q.content
+		s = s.replace('\r', ' ').replace('\n', '')
+		f.write(s + '\n')
+	f.close()
+
 	#save current question title to file
 	s_query = question.title
 	s_query = s_query.replace('\r', ' ').replace('\n', '')

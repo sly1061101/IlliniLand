@@ -7,6 +7,7 @@ import os
 import shutil
 import numpy as np
 import queue as Q
+from querytexts import Query
 
 def similarity(seq1, seq2):  
 	size_x = len(seq1) + 1
@@ -40,104 +41,46 @@ if __name__ == '__main__':
 	s_query_title = file.read()
 	file.close()
 
-	doc = metapy.index.Document()
-	doc.content(s_query_title)
-	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	# tok = metapy.analyzers.LowercaseFilter(tok)	
-	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	# tok = metapy.analyzers.Porter2Filter(tok)	
-	tok.set_content(doc.content())	
-	tokens = [token for token in tok]	
-	s_query_title = ""	
-	for t in tokens:	
-		s_query_title += t + " "
+	# doc = metapy.index.Document()
+	# doc.content(s_query_title)
+	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+	# # tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	# # tok = metapy.analyzers.LowercaseFilter(tok)	
+	# # tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# # tok = metapy.analyzers.Porter2Filter(tok)	
+	# tok.set_content(doc.content())	
+	# tokens = [token for token in tok]	
+	# s_query_title = ""	
+	# for t in tokens:	
+	# 	s_query_title += t + " "
 
-	file = open("s_query_content.txt", "r")
-	s_query_content = file.read()
-	file.close()
+	# file = open("s_query_content.txt", "r")
+	# s_query_content = file.read()
+	# file.close()
 
-	doc = metapy.index.Document()
-	doc.content(s_query_content)
-	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	# tok = metapy.analyzers.LowercaseFilter(tok)	
-	# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	# tok = metapy.analyzers.Porter2Filter(tok)	
-	tok.set_content(doc.content())	
-	tokens = [token for token in tok]	
-	s_query_content = ""	
-	for t in tokens:	
-		s_query_content += t + " "
- 
-	q = Q.PriorityQueue()
+	# doc = metapy.index.Document()
+	# doc.content(s_query_content)
+	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
+	# # tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
+	# # tok = metapy.analyzers.LowercaseFilter(tok)	
+	# # tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# # tok = metapy.analyzers.Porter2Filter(tok)	
+	# tok.set_content(doc.content())	
+	# tokens = [token for token in tok]	
+	# s_query_content = ""	
+	# for t in tokens:	
+	# 	s_query_content += t + " "
 
-	all_questions_title = []
-	with open("all_questions_title.txt") as fp:  
-		for cnt, line in enumerate(fp):
-			doc = metapy.index.Document()
-			doc.content(line)
-			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-			# tok = metapy.analyzers.LowercaseFilter(tok)	
-			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-			# tok = metapy.analyzers.Porter2Filter(tok)	
-			tok.set_content(doc.content())	
-			tokens = [token for token in tok]	
-			line = ""	
-			for t in tokens:	
-				line += t + " "
-			all_questions_title.append(line)
+	print(s_query_title)
 
+	q = Query("all_questions.txt")
+	results = q.search_with_all_docs(s_query_title)
 
-	all_questions_content = []
-	with open("all_questions_content.txt") as fp:  
-		for cnt, line in enumerate(fp):
-			doc = metapy.index.Document()
-			doc.content(line)
-			tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-			# tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-			# tok = metapy.analyzers.LowercaseFilter(tok)	
-			# tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-			# tok = metapy.analyzers.Porter2Filter(tok)	
-			tok.set_content(doc.content())	
-			tokens = [token for token in tok]	
-			line = ""	
-			for t in tokens:	
-				line += t + " "
-			all_questions_content.append(line)
-
-	# print(all_questions_title)
-	# print(all_questions_content)
-
-	dis_t = []
-	dis_c = []
-	distance = []
-	for i in range(0, len(all_questions_title)):
-		dis_t.append(similarity(s_query_title, all_questions_title[i]))
-		dis_c.append(similarity(s_query_title, all_questions_content[i]))
-		if dis_t[i] < 5:
-			distance.append(dis_t[i])
-		elif dis_c[i] < 10:
-			distance.append(dis_c[i])
-		else:
-			distance.append(dis_t[i] + dis_c[i]/100)
-
-	# print(dis_t)
-	# print(dis_c)
-	# print(distance)
-
-	for i in range(0, len(distance)):
-		q.put((distance[i], i))
+	print(results)
 
 	file = open("result.txt", "w")
 	cnt = 0
-	while cnt < 3 and not q.empty():
-		temp = q.get()
-		if all_questions_title[temp[1]] != s_query_title and temp[0] < 35:
-			file.write(str(temp[1]) + "\n")
-			cnt += 1
-		# print(s_query_title)
-		# print(all_questions_title[temp[1]])
-		# print(temp[0])
+	while cnt < 3 and results[cnt][1] > 0:
+		file.write(str(results[cnt][0]) + "\n")
+		cnt += 1
 	file.close()
