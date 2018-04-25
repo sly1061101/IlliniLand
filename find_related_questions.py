@@ -42,6 +42,7 @@ if __name__ == '__main__':
 	results = sorted(results.items(), key=operator.itemgetter(1))
 	results.reverse()
 
+	print(results)
 	# for i, r in enumerate(results):
 	# 	results[i] = (r[0], r[1] - results[len(results)-1][1])
 
