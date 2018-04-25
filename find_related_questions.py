@@ -46,9 +46,7 @@ if __name__ == '__main__':
 	# 	s_query_content += t + " "
 
 	q = Query("all_questions.txt")
-	results = q.search_with_all_docs(s_query_title + " " + s_query_content)
-
-	print(results)
+	results = q.search_with_all_docs(s_query_title)
 
 	file = open("result.txt", "w")
 	cnt = 1
