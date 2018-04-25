@@ -334,7 +334,7 @@ def question(request, question_id):
 			related.append(int(line))
 	related_questions = []
 	for num in related:
-		if num != question_id:
+		if question_all[num].id != question_id:
 			related_questions.append(question_all[num])
 
 	context["related_questions"] = related_questions
