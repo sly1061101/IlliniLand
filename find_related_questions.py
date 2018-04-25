@@ -15,38 +15,12 @@ if __name__ == '__main__':
 	s_query_title = file.read()
 	file.close()
 
-	# doc = metapy.index.Document()
-	# doc.content(s_query_title)
-	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	# # tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	# # tok = metapy.analyzers.LowercaseFilter(tok)	
-	# # tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	# # tok = metapy.analyzers.Porter2Filter(tok)	
-	# tok.set_content(doc.content())	
-	# tokens = [token for token in tok]	
-	# s_query_title = ""	
-	# for t in tokens:	
-	# 	s_query_title += t + " "
-
-	# file = open("s_query_content.txt", "r")
-	# s_query_content = file.read()
-	# file.close()
-
-	# doc = metapy.index.Document()
-	# doc.content(s_query_content)
-	# tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)	
-	# # tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)	
-	# # tok = metapy.analyzers.LowercaseFilter(tok)	
-	# # tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
-	# # tok = metapy.analyzers.Porter2Filter(tok)	
-	# tok.set_content(doc.content())	
-	# tokens = [token for token in tok]	
-	# s_query_content = ""	
-	# for t in tokens:	
-	# 	s_query_content += t + " "
+	file = open("s_query_content.txt", "r")
+	s_query_content = file.read()
+	file.close()
 
 	q = Query("all_questions.txt")
-	results = q.search_with_all_docs(s_query_title)
+	results = q.search_with_all_docs(s_query_title + " " + s_query_content)
 
 	file = open("result.txt", "w")
 	cnt = 1
