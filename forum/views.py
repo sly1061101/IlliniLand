@@ -227,30 +227,100 @@ def question(request, question_id):
 
 	#Find related questions
 
-	#save all questions to file
-	f_t = open('all_questions_title.txt','w')
-	f_c = open('all_questions_content.txt','w')
+	#save questions to file
+	f = open('all_questions_title.txt','w')
 	for q in question_all:
 		s = q.title
 		s = s.replace('\r', ' ').replace('\n', '')
-		f_t.write(s + '\n')
+		doc = metapy.index.Document()
+		doc.content(s)
+		tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+		tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+		tok = metapy.analyzers.LowercaseFilter(tok)
+		tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+		tok = metapy.analyzers.Porter2Filter(tok)	
+		tok.set_content(doc.content())	
+		tokens = [token for token in tok]	
+		s = ""
+		for t in tokens:
+			s += t + " "
+		f.write(s + '\n')
+	f.close()
+
+	f = open('all_questions_content.txt','w')
+	for q in question_all:
 		s = q.content
 		s = s.replace('\r', ' ').replace('\n', '')
-		f_c.write(s + '\n')
-	f_t.close()
-	f_c.close()
+		doc = metapy.index.Document()
+		doc.content(s)
+		tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+		tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+		tok = metapy.analyzers.LowercaseFilter(tok)
+		tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+		tok = metapy.analyzers.Porter2Filter(tok)	
+		tok.set_content(doc.content())	
+		tokens = [token for token in tok]	
+		s = ""
+		for t in tokens:
+			s += t + " "
+		f.write(s + '\n')
+	f.close()
+
+	# f = open('all_questions.txt','w')
+	# for q in question_all:
+	# 	s = q.title + " " + q.content
+	# 	s = s.replace('\r', ' ').replace('\n', '')
+	# 	doc = metapy.index.Document()
+	# 	doc.content(s)
+	# 	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+	# 	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+	# 	tok = metapy.analyzers.LowercaseFilter(tok)
+	# 	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	# 	tok = metapy.analyzers.Porter2Filter(tok)	
+	# 	tok.set_content(doc.content())	
+	# 	tokens = [token for token in tok]	
+	# 	s = ""
+	# 	for t in tokens:
+	# 		s += t + " "
+	# 	f.write(s + '\n')
+	# f.close()
 
 	#save current question title to file
-	s_query = question.title
-	s_query = s_query.replace('\r', ' ').replace('\n', '')
+	s = question.title
+	s = s.replace('\r', ' ').replace('\n', '')
+	doc = metapy.index.Document()
+	doc.content(s)
+	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+	tok = metapy.analyzers.LowercaseFilter(tok)
+	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	tok = metapy.analyzers.Porter2Filter(tok)	
+	tok.set_content(doc.content())	
+	tokens = [token for token in tok]	
+	s = ""
+	for t in tokens:
+		s += t + " "
 	f_t = open('s_query_title.txt','w')
-	f_t.write(s_query)
+	f_t.write(s)
 	f_t.close()
 
-	s_query = question.content
-	s_query = s_query.replace('\r', ' ').replace('\n', '')
+	#save current question content to file
+	s = question.content
+	s = s.replace('\r', ' ').replace('\n', '')
+	doc = metapy.index.Document()
+	doc.content(s)
+	tok = metapy.analyzers.ICUTokenizer(suppress_tags=True)
+	tok = metapy.analyzers.LengthFilter(tok, min=2, max=30)
+	tok = metapy.analyzers.LowercaseFilter(tok)
+	tok = metapy.analyzers.ListFilter(tok, "lemur-stopwords.txt", metapy.analyzers.ListFilter.Type.Reject)	
+	tok = metapy.analyzers.Porter2Filter(tok)	
+	tok.set_content(doc.content())	
+	tokens = [token for token in tok]	
+	s = ""
+	for t in tokens:
+		s += t + " "	
 	f_c = open('s_query_content.txt','w')
-	f_c.write(s_query)
+	f_c.write(s)
 	f_c.close()
 
 	#call external program to search
@@ -264,7 +334,8 @@ def question(request, question_id):
 			related.append(int(line))
 	related_questions = []
 	for num in related:
-		related_questions.append(question_all[num])
+		if question_all[num].id != question_id:
+			related_questions.append(question_all[num])
 
 	context["related_questions"] = related_questions
 
