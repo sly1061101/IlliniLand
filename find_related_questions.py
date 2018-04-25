@@ -45,10 +45,8 @@ if __name__ == '__main__':
 	# for t in tokens:	
 	# 	s_query_content += t + " "
 
-	print(s_query_title + " " + s_query_content)
-
 	q = Query("all_questions.txt")
-	results = q.search_with_all_docs(s_query_title)
+	results = q.search_with_all_docs(s_query_title + " " + s_query_content)
 
 	print(results)
 
