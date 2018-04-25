@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
 	print(s_query_title)
 
-	q = Query("all_questions.txt")
+	q = Query("all_questions_title.txt")
 	results = q.search_with_all_docs(s_query_title)
 
 	print(results)
