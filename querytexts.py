@@ -81,6 +81,6 @@ class Query:
 		for filename in self.index.tfidf:
 			vector_doc = self.get_vector(self.index.tfidf[filename])
 			results[filename] = self.cosine(vector_query, vector_doc)
-		sorted_results = sorted(results.items(), key=operator.itemgetter(1))
-		sorted_results.reverse()
-		return sorted_results
+		# sorted_results = sorted(results.items(), key=operator.itemgetter(1))
+		# sorted_results.reverse()
+		return results

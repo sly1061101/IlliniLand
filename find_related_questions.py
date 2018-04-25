@@ -8,6 +8,7 @@ import shutil
 import numpy as np
 import queue as Q
 from querytexts import Query
+import operator
 
 if __name__ == '__main__':
 	cwd = os.getcwd()
@@ -19,8 +20,22 @@ if __name__ == '__main__':
 	s_query_content = file.read()
 	file.close()
 
-	q = Query("all_questions.txt")
-	results = q.search_with_all_docs(s_query_title + " " + s_query_content)
+	print(s_query_title)
+
+	q = Query("all_questions_title.txt")
+	results_t2t = q.search_with_all_docs(s_query_title)
+	q = Query("all_questions_content.txt")
+	results_t2c = q.search_with_all_docs(s_query_title)
+	results_c2c = q.search_with_all_docs(s_query_content)
+
+	results = {}
+	for i in results_t2t.keys():
+		results[i] = results_t2t[i]*3 + results_t2c[i]*2 + results_c2c[i]
+
+	results = sorted(results.items(), key=operator.itemgetter(1))
+	results.reverse()
+
+	print(results)
 
 	file = open("result.txt", "w")
 	cnt = 1
