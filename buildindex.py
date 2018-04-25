@@ -33,6 +33,12 @@ class BuildIndex:
 				#file_to_terms[file] = [stemmer.stem_word(w) for w in file_to_terms[file]]
 		return file_to_terms
 
+	def avg_file_len(self):
+		sum = 0
+		for i in range(0, self.num_of_docs):
+			sum += len(self.file_to_terms[i])
+		return sum/self.num_of_docs
+
 	#input = [word1, word2, ...]
 	#output = {word1: [pos1, pos2], word2: [pos2, pos434], ...}
 	def index_one_file(self, termlist):

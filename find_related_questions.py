@@ -34,6 +34,11 @@ if __name__ == '__main__':
 	results = sorted(results.items(), key=operator.itemgetter(1))
 	results.reverse()
 
+	for i, r in enumerate(results):
+		results[i] = (r[0], r[1] - results[len(results)-1][1])
+
+	print(results)
+
 	file = open("result.txt", "w")
 	cnt = 1
 	while cnt < 4 and results[cnt][1] > 0:
