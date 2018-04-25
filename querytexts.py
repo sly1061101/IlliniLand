@@ -37,7 +37,7 @@ class Query:
 		#query_raw_tf = {"word1": frequency of word1, ...}
 		#words are those that the documents contain
 		query_raw_tf = {}
-		for word in self.index.totalIndex:
+		for word in self.invertedIndex:
 			if word in query_word_count:
 				query_raw_tf[word] = query_word_count[word]
 			else:
@@ -94,12 +94,12 @@ class Query:
 		sum = 0
 		for word in query_raw_tf:
 			if query_raw_tf[word] != 0:
-				doc_term_count = len(self.index.regdex[filename][word]) if word in self.index.regdex[filename].keys() else 0
+				doc_term_count = len(self.regularIndex[filename][word]) if word in self.regularIndex[filename].keys() else 0
 				num_docs = self.index.num_of_docs
 				tfn = doc_term_count*math.log(1.0+param*self.index.avg_file_len()/float(len(self.index.file_to_terms)),2)
 				corpus_term_count = 0
-				for filename in self.index.totalIndex[word]:
-					corpus_term_count += len(self.index.totalIndex[word][filename])
+				for filename in self.invertedIndex[word]:
+					corpus_term_count += len(self.invertedIndex[word][filename])
 				lamb = float(num_docs)/float(corpus_term_count)
 				if lamb<1.0 or tfn<=0:
 					sum += 0
@@ -114,12 +114,31 @@ class Query:
 			vector.append(tfidf[word])
 		return vector
 
-	def search_with_all_docs(self, query):
-		query_tfidf = self.query_term_frequency_inversed_document_frequency(query)
-		vector_query = self.get_vector(query_tfidf)
+	def rank_results(self, query, filenames):
 		results = {}
-		for filename in self.index.tfidf:
-			results[filename] = self.PL25(query, filename, 3.0)
+		for filename in filenames:
+			results[filename] = self.PL25(query, filename, 3.0)		
+		return results
+
+	def one_word_query(self, word):
+		pattern = re.compile('[\W_]+')
+		word = pattern.sub(' ',word)
+		if word in self.invertedIndex.keys():
+			return [filename for filename in self.invertedIndex[word].keys()]
+		else:
+			return []
+
+	def free_text_query(self, string):
+		pattern = re.compile('[\W_]+')
+		string = pattern.sub(' ',string)
+		result = []
+		for word in string.split():
+			result += self.one_word_query(word)
+		return list(set(result))
+
+	def search_with_all_docs(self, query):
+		filenames = self.free_text_query(query)
+		results = self.rank_results(query, filenames)
 		# sorted_results = sorted(results.items(), key=operator.itemgetter(1))
 		# sorted_results.reverse()
 		return results
